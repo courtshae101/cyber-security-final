@@ -1,0 +1,1579 @@
+---
+title: "Midterm project - New York Air Quality Analysis"
+author: "Courtney Kennedy"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Exploratory data analysis is compared to detective work: it is the process of gathering evidence.
+ 
+Please load the airquality dataset  and other necessary packages in R and follow the following steps:
+
+1.    Read the description of the dataset and learn about its variables. List two main questions/hypotheses you want to test about your data.
+2.    Identify at least two variables that are relevant to your questions. Argue why other variables may not be relevant to the questions. 
+3.    Search for evidence by visualising, transforming, and modeling your data.
+4.    Discuss the evidence to answer/refine your questions, test your hypotheses, and/or generate new questions. Summarize and conclude your findings.
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library(tinytex)
+
+airquality <- airquality %>%
+  mutate(Date = as.Date(paste("1973",Month,Day,sep="/")))
+```
+
+
+# Step 1. Describe what the dataset is about and list at least two main questions/hypotheses you want to test about the data. (10 points)
+
+The data set is the daily air quality measurements in New York from May to September in 1973.  The measurements include ozone, solar radiation, wind in mph, temperature in degree Fahrenheit, the month and the day.  The ozone measurement is in parts per billion and it was taken from 1300 to 1500 hours at Roosevelt Island.  The solar radiation measurement is in Langleys and was taken from 0800 to 1200 hours at Central Park.  The wind measurement is in miles per hour and was taken from 0700 to 1000 hours at LaGuardia Airport.  The temperature measurement is in degrees and was taken at LaGuardia Airport.  All the data is from the New York State Department of Conservation and the National Weather Service. 
+
+## Question 1:
+
+In New York how does the temperature affect the wind speed? 
+
+  -Hypothesis: The stronger the wind speeds the colder the high temperature is that day. 
+
+## Question 2:
+
+In New York is there a seasonal effect on the mean Ozone values?
+
+  -Hypothesis: Warmer Months, which are common in the summer season, will have higher Ozone values because the heat traps the Ozone. 
+
+## Question 3:
+
+How does wind speed effect the mean Ozone value?
+
+  -Hypothesis:  Faster wind speeds blow away Ozone accumulation, making the ozone value lower for higher wind speeds.
+  
+## Question 4:
+If there is an increase in ozone values will this cause an increase in temperature?
+
+  -Hypothesis: If ozone levels increase, temperature will also increase because ozone traps heat in the atmosphere. 
+
+
+# Step 2. Identify at least two variables that are relevant to each question. (10 points)
+
+## Varaibles relevant to Q1 
+
+The variables relevant to Q1 are Wind, Month, Temp, Day, and Date.
+
+**- What are the types of those variables? How do you determine that?**
+
+Wind, Month, Temp, and Day are of type int, and Date, which was created using the mutate function and the Month and Day variables, is of type date.  This can be determined by using the function head() to look at the airquality dataset and the variable types. 
+
+```{r}
+head(airquality)
+```
+
+
+**- Describe why these variables may be relevant to this question and why other variables are not relevant**
+
+Wind and Temp are two relevant variables because in order to look at the relationship of how the Wind and the temperature affect one another, both the Wind and Temp variable need to be used.  Month, Day and Date are also relevant because they can be used to see trends along time which may lead to patterns based on the temperature and wind depending on the time of year.  The other variables are not relevant because solar radiation, and ozone are not involved in the relationship between wind and temperature.  
+
+## Variables relevant to Q2 
+
+The variables relevant to Q2 are Month, Day, Date, and Ozone
+
+**- What are the types of those variables? How do you determine that?**
+
+Month, Day, and Ozone are all of type int, and Date, which was an added variable explained above, is of type date.  This can be determined by using the function head() to look at the airquality dataset and the variable types.
+
+```{r}
+head(airquality)
+```
+
+
+**- Describe why these variables may be relevant to this question and why other variables are not relevant **
+
+Date and Ozone are two relevant variables because in order to look at the relationship between the season and the ozone, both the Date and Ozone variable need to be used.  Day and Month are also relevant because they can be used to see trends along time which may lead to patterns based on the season.  The other variables are not relevant because solar radiation, wind, and temperature are not involved in the relationship between season and Ozone. 
+
+## Varaibles relevant to Q3 
+
+The variables relevant to Q3 are Wind and Ozone.
+
+**- What are the types of those variables? How do you determine that?**
+
+Wind and Ozone are of type int.  This can be determined by using the function head() to look at the airquality dataset and the variable types. 
+
+```{r}
+head(airquality)
+```
+
+
+**- Describe why these variables may be relevant to this question and why other variables are not relevant **
+
+Wind and Ozone are the two relevant variables because in order to look at the relationship between the wind speed and the mean ozone value, both the Wind and Ozone variable need to be used.  The other variables are not relevant because solar radiation, month, day, date, and temperature are not involved in the relationship between wind and Ozone. 
+
+
+
+## Varaibles relevant to Q4 
+
+The variables relevant to Q4 are Temp and Ozone.
+
+**- What are the types of those variables? How do you determine that?**
+
+Temp and Ozone are of type int.  This can be determined by using the function head() to look at the airquality dataset and the variable types. 
+
+```{r}
+head(airquality)
+```
+
+
+**- Describe why these variables may be relevant to this question and why other variables are not relevant **
+
+Temp and Ozone are the two relevant variables because in order to look at the relationship between the temperature and the mean ozone value, both the Temp and Ozone variable need to be used.  The other variables are not relevant because solar radiation, month, day, date, and Wind are not involved in the relationship between Temp and Ozone. 
+
+# Step 3. Search for evidence by visualising, transforming, and modeling your data (60 points)
+(Check RDS 3, 5, 7.3, 7.4, 7.5, 7.6 for ideas and inspiration)
+
+## 3.1 What type of variation occurs within each variable? (30+ points)
+
+### 3.1.1 Variable 1 (15 points)
+
+Ozone
+
+#### 3.1.1.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+ozone_box <- airquality %>%
+  ggplot(aes(x=Ozone)) +
+  geom_boxplot()
+
+ozone_hist <- airquality %>%
+  ggplot(aes(x=Ozone)) +
+  geom_histogram()
+
+ggarrange(ozone_box, ozone_hist, nrow = 2)
+
+summary(airquality$Ozone)
+
+IQR(airquality$Ozone, na.rm = TRUE)
+
+```
+
+
+**- Which values are the most common? Why?** 
+
+The most common values for ozone are 18.0 to 63.25 parts per billion, which is seen in the peak in the left shifted histogram from around 20 to 50.  These common values can also be seen in the histogram, which has an IQR from 18.0 to 63.25 and a mean of 42.13.  It can be derived from the data that this is a normal range of Ozone in New York and therefore it has the most common values. 
+
+**- Which values are rare? Why? Does that match your expectations?**
+
+Values of Ozone above 125 parts per million are rarer, seen in the small number of observations with an ozone value in the range.  This does match my expectations because Ozone levels above 125 parts per million are very high, and therefore should not be a common daily value. The rare ozone values can also be seen as outliers in the histogram. 
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There are no unusal patterns in the data such as cycles or multiple peaks, however the data is skewed right indicating that there some values that are shifting the mean to a higher value, but the actual median of the Ozone values in New York is lower.  This is most likely due to the few outlier Ozone values.     
+
+
+**- Are there clusters in the data? If so,**
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+  There does not appear to be a clear cluster in the Ozone variable.  Seen in the histogram, there is a peak around 20-25 parts per billion, but this data is not "clusted" away from the other data. Looking at a boxplot of the Ozone values separated by month, it appears this peak appears in the IQR for May, June, and September.  
+  
+```{r}
+airquality %>%
+  ggplot(aes(x = Month, y = Ozone, group = Month)) +
+  geom_boxplot()
+```
+  
+  
+  **- How can you explain or describe the clusters?**
+  
+Since there are not clear clusters in the Ozone variable, they can not be explained by any reason.  However the peak can be explained by the median being 31.50 and therefore the right skewed histogram will peak around the median.  This peak can also be assumed to be the range of the majority of Ozone values in New York.  
+  
+#### 3.1.1.2 Unusual values (2 points)
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+#Ozone level chart from https://www.epa.gov/ozone-pollution-and-your-patients-health/patient-exposure-and-air-quality-index#AQI
+knitr::include_graphics("Ozone_level.png")
+```
+
+
+There were no negative ozone values, and low values of Ozone are deemed good, and therefore should not be removed.  The high values of Ozone are shown in the two data frames below, Unhealthy_for_sensitive_Ozone, and Unhealthy_Ozone.  The values were determined by the chart above and were filtered out of the airquality data set and displayed below.  More exploration has to be done to determine if they should be removed.   
+
+```{r}
+Unhealthy_for_sensitive_Ozone <- airquality %>%
+  filter(Ozone > 100) %>%
+  filter(Ozone < 151)
+
+Unhealthy_for_sensitive_Ozone
+
+Unhealthy_Ozone <- airquality %>%
+  filter(Ozone > 150)
+
+Unhealthy_Ozone
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the Ozone values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The Ozone data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the Ozone.  The two outlier values are an Ozone value of 135 and an Ozone value of 168. 
+
+
+```{r}
+stdev <-  sd(airquality$Ozone, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Ozone, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Ozone, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Ozone, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Ozone < (firstQ - innerQ * 1.5) | 
+        Ozone > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Ozone)) + 
+  geom_boxplot()
+```
+
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Ensuring that the x axis size and the binwidth are equal for both distributions, it is easier to compare the two histograms with and without outliers (the unsual values).  The main difference in the distributions is the tail of the histogram, which is more spread out with the outliers included. The data becomes less right skewed when the outliers are removed. 
+
+```{r}
+with_outliers <- airquality %>%
+  ggplot(aes(x = Ozone)) +
+  geom_histogram(binwidth = 10) +
+  xlim(0, 180) +
+  labs(title = "Outliers Included")
+
+without_outliers <- airquality %>%
+  filter( Ozone < (thirdQ + innerQ * 1.5))%>%
+  ggplot(aes(x = Ozone)) +
+  geom_histogram(binwidth = 10) +
+  xlim(0, 180) +
+  labs(title = "Outliers Removed") 
+
+ggarrange(without_outliers, with_outliers, ncol = 2)
+
+```
+
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+The Unusual values do not need to be removed since they are important at looking at the safety Ozone levels and their relation to the month or wind depending on the question being explored.  The outlier Ozone values may actually be the most important in determining a relationship between Ozone and other variables since they are in an Ozone category of their own. 
+
+
+#### 3.1.1.3 Missing values (2 points) 
+
+**- Does this variable include missing values? Demonstrate how you determine that.** 
+
+Yes there are 37 missing values.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).
+
+```{r}
+missing <- is.na(airquality$Ozone)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+```
+
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.** 
+
+The missing values should be removed since there is no constant value or value based on the distribution that would properly represent a missing ozone measurement.  Any substituted value would skew the statistics done on the Ozone variable.  It can be assumed that no Ozone meausurement was done on the days with NA Ozone values.  
+
+```{r}
+#NA values still in airquality Ozone variable
+head(airquality)
+
+#NA values removed from airquality Ozone variable
+aq_no_na <- airquality[!is.na(airquality$Ozone),]
+head(aq_no_na)
+
+```
+
+
+**- Show how your data looks in each case after handling missing values.  Describe and discuss the distribution.**
+
+Looking at just the distribution via a histogram of the Ozone variable with and without the NA values is not helpful since the geom_histogram() function automatically removes NA values when plotting the histogram.  It is easier to see the effect of removing the NA values in a line graph of Ozone vs Date.  When the NA values are present there are clear breaks in the data, however when the NA values are removed the line is continuous.  When the line is continuous the data is much easier to interpret, however there does not appear to be an obvious pattern between Ozone and Date.   
+
+```{r}
+no_missing_hist <- aq_no_na %>%
+  ggplot(aes(x = Ozone)) +
+  geom_histogram() +
+  labs(title = "No NA Values Included")
+
+missing_hist <- airquality %>%
+  ggplot(aes(x = Ozone)) +
+  geom_histogram() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_missing_hist, missing_hist, ncol = 2)
+
+no_misisng_line <- aq_no_na %>%
+  ggplot(aes(x = Date, y = Ozone)) +
+  geom_line() +
+  labs(title = "No NA Values Included")
+
+missing_line <- airquality %>% 
+  ggplot(aes(x = Date, y = Ozone)) + 
+  geom_line() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_misisng_line, missing_line, nrow = 2)
+
+```
+
+
+
+#### 3.1.1.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Ozone to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups. 
+
+**- What type can the variable be converted to?**
+
+Ozone is of type int, but it can converted to a logical.  By making the value of Ozone TRUE when the ozone is less than 100 and FALSE when the value of the Ozone is greater than 100, we can see if the ozone level is healthy or unhealthy.  Converting Ozone to a logical is a simpler way to interpret Ozone values. The converted Ozone type is saved as a new variable Healthy_Ozone.
+
+```{r}
+typeof(airquality$Ozone)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+healthy_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 100){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Healthy_Ozone <- sapply(airquality$Ozone, healthy_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+Most of the Ozone variable falls into the Healthy Ozone category, which is good since people are living in New York at the time with these Ozone levels.  There is also clearly a lot of NA values in this distribution, which demonstrates that many of the days, 37 days determined earlier, did not have an Ozone value recording. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Healthy_Ozone, fill = Healthy_Ozone)) +
+  geom_bar()
+```
+
+
+
+#### 3.1.1.5 What new variables do you need to create from this? (RDS 5.5, 5.6) (3)
+In order to compare different levels a factor variable of Ozone is needed. 
+
+**- List the variables**
+
+Ozone_categories which will be a factor variable that has the ozone value converted to a category based on groups in graphic above. 
+
+```{r}
+Ozone_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 50){
+    return("Good")
+  }
+  else if(x > 50 && x <= 100){
+    return("Moderate")
+  }
+  else if(x > 100 && x <= 150){
+    return("Unhealthy_For_Sensitive")
+  }
+  else if(x > 150 && x <= 200){
+    return("Unhealthy")
+  }
+  else{
+    return("Very_Unhealthy")
+  }
+}
+
+airquality$Ozone_categories <- sapply(airquality$Ozone, Ozone_factor)
+
+health_levels = c("Good", "Moderate", "Unhealthy_For_Sensitive", "Unhealthy", "Very_Unhealthy")
+
+airquality$Ozone_categories <- factor(airquality$Ozone_categories, levels= health_levels)
+
+head(airquality$Ozone_categories)
+
+```
+
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+
+Ozone_categories, a factor variable, is needed for categorical analysis.  Being able to evaluate Ozone in categories based on Air Quality Index, given in the graphic above, will lead to new evaluations of the relationship between Ozone and the other variables.  Being able to look at Ozone as both a categorical and continuous variable will hopefully bring new insights into Ozone in New York.  I plan on using the Ozone_categories variable to look at the distribution of days and months with different Ozone categories.  An example bar graph of the categorical Ozone values is seen below.   
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Ozone_categories, fill = Ozone_categories)) +
+  geom_bar()
+```
+
+
+### 3.1.2 Variable 2  (15 points)
+Wind
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+wind_box <- airquality %>%
+  ggplot(aes(x=Wind)) +
+  geom_boxplot(binwidth = .5)
+
+wind_hist <- airquality %>%
+  ggplot(aes(x=Wind)) +
+  geom_histogram(binwidth = .5)
+
+ggarrange(wind_box, wind_hist, nrow = 2)
+
+summary(airquality)
+
+IQR(airquality$Wind)
+```
+
+
+**- Which values are the most common? Why?** 
+
+The values in the IQR are the most common which ranges from 7.4 to 11.5 mph. This can be seen in the histogram since the peak is centered around 10 mph. The majority of the values fall in this range and therefore they are statistically the most common.  This can be interpreted that in New York the wind usually ranges from 7.4 to 11.5 mph.    
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+Wind levels that are above 17.65 mph (3rd Quartile + 1.5 * IQR) or below 1.25 mph (1st Quartile - 1.5 * IQR) are rare since they are outliers in the data.  There are 3 days where the wind is above 17.65 mph, which can be seen in the disconnected tail of the histogram. This does make sense because days with wind above 17.65 is a very strong wind speed.
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There is no cycle pattern present in the wind data.  The only slightly unusual pattern is that there are two peaks in the histogram, one around 8 mph and one around 11 mph.  This could possibly be explained by common wind speeds in New York city falling around 8 mph and 11 mph depending on different weather conditions.  More data is needed to make a confident interpretation of why there are two peaks. 
+
+**- Are there clusters in the data? If so,**
+Yes there are about 4 clusters seen in the histogram.
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  The main difference in the clusters is the wind speed value.  The 4 cluster groupings are approximately 2-6 mph, 7-9 mph, 11-13 mph, and 14-16 mph.  Within the clusters looking at the concentration of each cluster by month it appears the 7-9 mph cluster is primarily earlier months, May and June, while the 11-13 mph cluster is primarily later months, August and September.
+  
+```{r}
+airquality %>%
+  ggplot(aes(x=Wind, fill = Month, group = Month)) +
+  geom_histogram(binwidth = .5)
+```
+  
+  
+  **- How can you explain or describe the clusters?**
+  
+  The clusters can be explained by the wind speed readings.  Most likely the device used to record the wind in the 70s was more likely to record a wind speed in each of the specific clusters.  The other possible explaination is that the time of year the wind is recorded has an effect on the wind speed, which will be explored later.    
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+#Wind speed chart from https://www.weather.gov/jetstream/beaufort_max
+knitr::include_graphics("wind_scale.jpg")
+```
+
+There were no negative wind values, and low values of wind are deemed safer, and therefore should not be removed.  The high values of wind are shown in the data frame below, Fresh_wind.  The values were determined by the chart above and were filtered out of the airquality data set and displayed below.  More exploration has to be done to determine if they should be removed.
+
+```{r}
+Fresh_Wind <- airquality %>%
+  filter(Wind > 19)
+
+Fresh_Wind
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the Wind values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The Wind data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the Wind.  The three outlier values are an Wind value of 20.1 mph, 18.4 mph, and 20.7 mph. 
+
+
+```{r}
+stdev <-  sd(airquality$Wind, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Wind, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Wind, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Wind, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Wind < (firstQ - innerQ * 1.5) | 
+        Wind > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Wind)) + 
+  geom_boxplot()
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Ensuring that the x axis size and the binwidth are equal for both distributions, it is easier to compare the two histograms with and without outliers (the unsual values).  The main difference in the distributions is the tail of the histogram, which is more spread out with the outliers included.
+
+```{r}
+with_outliers <- airquality %>%
+  ggplot(aes(x = Wind)) +
+  geom_histogram(binwidth = .5) +
+  xlim(0, 22) +
+  labs(title = "Outliers Included")
+
+without_outliers <- airquality %>%
+  filter( Wind < (thirdQ + innerQ * 1.5))%>%
+  ggplot(aes(x = Wind)) +
+  geom_histogram(binwidth = .5) +
+  xlim(0, 22) +
+  labs(title = "Outliers Removed") 
+
+ggarrange(without_outliers, with_outliers, ncol = 2)
+
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+The Unusual values do not need to be removed since they are important at looking at the more extreme wind levels and their relation to the month or Ozone depending on the question being explored.  The outlier Wind values may actually be the most important in determining a relationship between Wind and other variables since they are in a Wind category of their own called Fresh, which despite the name is a stronger wind category.
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+No there are not any missing values in the Wind variable.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).  It can also be confirmed by calling summary() on the Wind variable, which also shows that there are no NA values in the Wind variable.  
+
+```{r}
+missing <- is.na(airquality$Wind)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+summary(airquality$Wind)
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+Since there is no missing data for the Wind variable, no replacing or removing is necessary. 
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+Since there is no missing values, no distribution of before or after the missing values can be shown.  The histogram below is of all of the Wind values.  As mentioned earlier there are two peaks of wind speed shown in the histogram, but overall the distribution is centered around 10 mph. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Wind)) +
+  geom_histogram()
+```
+
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Wind to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups.  
+
+**- What type can the variable be converted to?**
+
+Wind is of type double, but it can converted to a logical.  By making the value of Wind TRUE when the Wind is less than 7 mph and FALSE when the value of the Wind is greater than 7 mph, we can see if the Wind level is considered light or not, based on the table of distributions presented earlier.  Converting Wind to a logical is a simpler way to interpret Wind values. The converted Wind type is saved as a new variable Light_Wind.
+
+```{r}
+typeof(airquality$Wind)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+light_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 7){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Light_Wind <- sapply(airquality$Wind, light_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+From plotting the converted logical Wind variable as a bar graph, we can see that the majority of the days were not light wind days. Logically this makes sense because New York is on the water and therefore will have higher wind speeds on average.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Light_Wind, fill = Light_Wind)) +
+  geom_bar()
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+In order to compare different levels of Wind a factor variable of Wind is needed.
+As mentioned above the wind can also be turned into a logical variable.
+
+**- List the variables**
+Light_Wind which is a logical variable that is TRUE if the wind speed is less than 7 and FALSE if it is greater than 7.  The variable creation and distribution is seen above. 
+
+Wind_Categories which will be a factor variable that has the Wind value converted to a category based on groups in graphic above of Beaufort Wind Force. 
+
+```{r}
+Wind_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 7){
+    return("Light")
+  }
+  else if(x > 7 && x <= 10){
+    return("Gentle")
+  }
+  else if(x > 10 && x <= 16){
+    return("Moderate")
+  }
+  else if(x > 16 && x <= 21){
+    return("Fresh")
+  }
+  else{
+    return("Strong")
+  }
+}
+
+airquality$Wind_Categories <- sapply(airquality$Wind, Wind_factor)
+
+wind_levels = c("Light", "Gentle", "Moderate", "Fresh", "Strong")
+
+airquality$Wind_Categories <- factor(airquality$Wind_Categories, levels= wind_levels)
+
+head(airquality)
+
+```
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Light_Wind, a logical variable, is needed in exploring the distribution of wind values since logical are simpler to evaluate when larger continuous data is converted into two groups.  I plan to use the variable to compare wind speed, specifically light wind to Temp. 
+
+Wind_Categories, a factor variable, is needed for categorical analysis.  Being able to evaluate Wind in categories based on the Beaufort Wind Force Ranges, given in the graphic above, will lead to new evaluations of the relationship between Wind and the other variables.  Being able to look at Wind as both a categorical and continuous variable will hopefully bring new insights into Wind in New York.  I plan on using the Wind_Categories variable to look at the distribution of days and months with different Wind categories.  An example bar graph of the categorical Wind values is seen below.   
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Wind_Categories, fill = Wind_Categories)) +
+  geom_bar()
+```
+
+### Varibale 3, 4, ... if any (extra 15 points)
+Repeat the same as above
+
+### 3.1.3 Variable 3  
+Solar.R
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+solar_box <- airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_boxplot()
+
+solar_hist <- airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_histogram(binwidth = 15)
+
+ggarrange(solar_box, solar_hist, nrow = 2)
+
+summary(airquality)
+
+IQR(airquality$Solar.R, na.rm = TRUE)
+```
+
+
+**- Which values are the most common? Why?** 
+
+The values in the IQR are the most common which ranges from 115.8 to 258.8. This can be seen in the histogram since the peak is centered around 225 mph. The majority of the values fall in this range and therefore they are statistically the most common.  This can be interpreted that in New York the solar radiation usually ranges from 115.8 to 258.8 mph.    
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+Wind levels that are above 473.3 mph (3rd Quartile + 1.5 * IQR) or below -98.7 mph (1st Quartile - 1.5 * IQR) are rare since they are outliers in the data.  There can only be solar radiation of 0 however so the lower outlier bound is not applicable.  There are no outliers in this data and therefore it can be derived that there are no "rare" values.  Overall the data for solar radiation is very evenly distributed and therefore rare values will not exist.  This does make sense since the sun is shinning everyday and the slight variation has to do with weather which results in most solar radiation values being common. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_boxplot()
+
+#no outliers
+```
+
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There is no cycle pattern present in the solar radiation data.  The only slightly unusual pattern is that there is not a pattern.  Overall the histogram is pretty flat and the boxplot is widely spread.  This could be due to, as explain earlier, the cause of solar radiation variation having to do with weather which results in common solar radiation meausrements throughout the months this data was recorded.  
+
+**- Are there clusters in the data? If so,**
+No there are no clusters in the data, all of the data is relatively evenly distributed.
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+  As mentioned above there are no clusters present.  
+  
+  **- How can you explain or describe the clusters?**
+
+  As mentioned above there are no clusters present.
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+#Solar radiation chart from https://www.researchgate.net/figure/Mean-daily-solar-radiation-source-US-Department-of-Commerce-1968-superimposed-on-the_fig1_42345390
+knitr::include_graphics("solar_radiation_graph.png")
+```
+
+There were no negative solar radiation values, and all other values present in the data fall into one of the ranges seen in the solar radiation graph above, and therefore should not be removed.  The high values of solar radiation are shown in the data frame below, high_solar.  Since most of the values fall in the low category shown on the map I will be considering 200-250 low, 250-300 medium, and 300-350 high. The values were determined by the map above and were filtered out of the airquality data set and displayed below.  More exploration has to be done to determine if they should be removed.
+
+```{r}
+high_solar <- airquality %>%
+  filter(Solar.R > 300)
+
+high_solar
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the Solar Radiation values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The Wind data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the Solar Radiation  There are no outliers in the solar radiation data. 
+
+
+```{r}
+stdev <-  sd(airquality$Solar.R, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Solar.R, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Solar.R, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Solar.R, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Solar.R < (firstQ - innerQ * 1.5) | 
+        Solar.R > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Solar.R)) + 
+  geom_boxplot()
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Since there are no outliers, there are no unusal values to remove.  The distribution of the solar radiation data can be seen below. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() 
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+Since there are no values deemed unusal there are none that need to be removed.
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+Yes there are 7 missing values in the Solar Radiation variable.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).  It can also be confirmed by calling summary() on the Wind variable, which also shows that there are 7 NA values in the Solar Radiation variable.  
+
+```{r}
+missing <- is.na(airquality$Solar.R)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+summary(airquality$Solar.R)
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+The NA solar radiation values can be removed since there is no value to replace them with that would add to the analysis of solar radiation.
+```{r}
+no_na_solar <- airquality[!is.na(airquality$Ozone),]
+
+head(no_na_solar)
+```
+
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+Looking at just the distribution via a histogram of the Solar.R variable with and without the NA values is not helpful since the geom_histogram() function automatically removes NA values when plotting the histogram.  It is easier to see the effect of removing the NA values in a line graph of Solar.R vs Date.  When the NA values are present there are clear breaks in the data, however when the NA values are removed the line is continuous.  When the line is continuous the data is much easier to interpret, however there does not appear to be an obvious pattern between Solar.R and Date.   
+ 
+
+```{r}
+no_missing_hist <- no_na_solar %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "No NA Values Included")
+
+missing_hist <- airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_missing_hist, missing_hist, ncol = 2)
+
+no_misisng_line <- no_na_solar %>%
+  ggplot(aes(x = Date, y = Solar.R)) +
+  geom_line() +
+  labs(title = "No NA Values Included")
+
+missing_line <- airquality %>% 
+  ggplot(aes(x = Date, y = Solar.R)) + 
+  geom_line() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_misisng_line, missing_line, nrow = 2)
+```
+
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Solar.R to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups.  
+
+**- What type can the variable be converted to?**
+
+Solar.R is of type integer, but it can converted to a logical.  By making the value of Solar.R TRUE when the Solar.R is less than 250 and FALSE when the value of the Solar.R is greater than 250, we can see if the Solar.R level is considered low or not, based on the table of distributions presented earlier.  Converting Solar.R to a logical is a simpler way to interpret Solar.R values. The converted Solar.R type is saved as a new variable Low_Solar.
+
+```{r}
+typeof(airquality$Solar.R)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+low_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Low_Solar <- sapply(airquality$Solar.R, low_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+From plotting the converted logical Solar variable as a bar graph, we can see that the majority of the days were low solar days. Logically this makes sense because New York is not known for being incredibly sunny.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Low_Solar, fill = Low_Solar)) +
+  geom_bar()
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+In order to compare different levels of Solar radiation a factor variable of Solar is needed.
+As mentioned above the Solar.R can also be turned into a logical variable.
+
+**- List the variables**
+Low_Solar which is a logical variable that is TRUE if the solar radiation less than 250 and FALSE if it is greater than 250.  The variable creation and distribution is seen above. 
+
+Solar_Categories which will be a factor variable that has the Solar value converted to a category based on groups in graphic above. 
+
+```{r}
+solar_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return("Low")
+  }
+  else if(x > 250 && x <= 300){
+    return("Medium")
+  }
+  else {
+    return("High")
+  }
+}
+
+airquality$Solar_Categories <- sapply(airquality$Solar.R, solar_factor)
+
+solar_levels = c("Low", "Medium", "High")
+
+airquality$Solar_Categories <- factor(airquality$Solar_Categories, levels= solar_levels)
+
+head(airquality)
+
+```
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Low_Solar, a logical variable, is needed in exploring the distribution of solar radiation values since logical are simpler to evaluate when larger continuous data is converted into two groups.  I plan to use the variable to compare temperature. 
+
+Solar_Categories, a factor variable, is needed for categorical analysis.  Being able to evaluate solar in categories based on the radiation Ranges, given in the graphic above, will lead to new evaluations of the relationship between solar radiation and the other variables.  Being able to look at solar radiation as both a categorical and continuous variable will hopefully bring new insights into solar radiation in New York when used to compare to variable like temperature.
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Solar_Categories, fill = Solar_Categories)) +
+  geom_bar()
+```
+
+### 3.1.4 Variable 4  (15 points)
+Temp
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+temp_box <- airquality %>%
+  ggplot(aes(x=Temp)) +
+  geom_boxplot()
+
+temp_hist <- airquality %>%
+  ggplot(aes(x=Temp)) +
+  geom_histogram()
+
+ggarrange(temp_box, temp_hist, nrow = 2)
+
+summary(airquality)
+
+IQR(airquality$Temp)
+```
+
+
+**- Which values are the most common? Why?** 
+
+The values in the IQR are the most common which ranges from 72 to 85 degrees. This can be seen in the histogram since the peak is centered around 79 degrees. The majority of the values fall in this range and therefore they are statistically the most common.  This can be interpreted that in New York the temperature usually ranges from 72 to 85 degrees.    
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+Temp levels that are above 104.5 degrees (3rd Quartile + 1.5 * IQR) or below 52.5 degrees (1st Quartile - 1.5 * IQR) are rare since they are outliers in the data.  There are no days that are considered outliers and therefore considered rare.  Very low temperature and very high temperatures are less common seen in the bell shape of the histogram.  This is expected because during the summer months the temperatures on average will be warmer and not one of the extremes. 
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There is no cycle pattern present in the temperature data or any other patterns that stand out.  
+
+**- Are there clusters in the data? If so,**
+No there are no clusters in the temperature data.
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  As mentioned before there are no clusters. 
+  
+  **- How can you explain or describe the clusters?**
+  
+  As mentioned before there are no clusters.     
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+There were no negative temperature values or extremely high or low values in the Temperature data.  This can be determined using a histogram and seeing that there are no extreme values in either direction.
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Temp)) +
+  geom_histogram()
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the temp values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The temp data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the temp  There are no outliers. 
+
+
+```{r}
+stdev <-  sd(airquality$Temp, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Temp, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Temp, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Temp, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Temp < (firstQ - innerQ * 1.5) | 
+        Temp > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Temp)) + 
+  geom_boxplot()
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Since there are no unusual values there are no unusual values to remove to compare distributions.  The distribution of Temp can be seen in the above histograms. 
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+Since there are no values deemed unusal there are no unusual values to remove.  
+
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+No there are not any missing values in the Temp variable.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).  It can also be confirmed by calling summary() on the Temp variable, which also shows that there are no NA values in the Temp variable.  
+
+```{r}
+missing <- is.na(airquality$Temp)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+summary(airquality$Temp)
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+Since there is no missing data for the Temp variable, no replacing or removing is necessary. 
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+Since there is no missing values, no distribution of before or after the missing values can be shown.  The histogram below is of all of the Temp values which peaks around 80 degrees.
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Temp)) +
+  geom_histogram()
+```
+
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Temp to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups.  
+
+**- What type can the variable be converted to?**
+
+Temp is of type integer, but it can converted to a logical.  By making the value of Temp TRUE when the Temp is less than 70 degrees and FALSE when the value of the TEmp is greater than 70 degrees, we can see if the Temp level is considered cool or not.  Converting Temp to a logical is a simpler way to interpret Temp values. The converted Temp type is saved as a new variable Cool_Temp.
+
+```{r}
+typeof(airquality$Temp)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+cool_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 70){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Cool_Temp <- sapply(airquality$Temp, cool_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+From plotting the converted logical Wind variable as a bar graph, we can see that the majority of the days were not cool temp days. Logically this makes sense because New York is in the north and therefore will be colder on average.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Cool_Temp, fill = Cool_Temp)) +
+  geom_bar()
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+In order to compare different levels of Temp a factor variable of Temp is needed.
+As mentioned above the wind can also be turned into a logical variable.
+
+**- List the variables**
+Cool_Temp which is a logical variable that is TRUE if the Temp speed is less than 70 and FALSE if it is greater than 70.  The variable creation and distribution is seen above. 
+
+Temp_Categories which will be a factor variable that has the Wind value converted to a category based on groups cold, cool, warm, and hot. 
+
+```{r}
+temp_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 60){
+    return("Cold")
+  }
+  else if(x > 60 && x <= 70){
+    return("Cool")
+  }
+  else if(x > 70 && x <= 80){
+    return("Warm")
+  }
+  else {
+    return("Hot")
+  }
+}
+
+airquality$Temp_Categories <- sapply(airquality$Temp, temp_factor)
+
+temp_levels = c("Cold", "Cool", "Warm", "Hot")
+
+airquality$Temp_Categories <- factor(airquality$Temp_Categories, levels= temp_levels)
+
+head(airquality)
+
+```
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Cool_temp, a logical variable, is needed in exploring the distribution of temp values since logical are simpler to evaluate when larger continuous data is converted into two groups.  I plan to use the variable to compare temperature to wind. 
+
+Temp_Categories, a factor variable, is needed for categorical analysis.  Being able to evaluate Temp in categories will lead to new evaluations of the relationship between Temp and the other variables.  Being able to look at Temp as both a categorical and continuous variable will hopefully bring new insights into Temp in New York.  I plan on using the Temp_Categories variable to look at the distribution of days and months with different Temperature categories.  An example bar graph of the categorical temp values is seen below.   
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Temp_Categories, fill = Temp_Categories)) +
+  geom_bar()
+```
+
+
+## 3.2. What type of covariation occurs between the variables? (30 points)
+If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
+
+### 3.2.1 Between a categorical and continuous variable (10 points)
+
+**- Describe what type of visualization you can use and why.**
+A boxplot of Wind as a categorical variable and Temperature as a continuous variable can be used.  Using the box plot makes it clear the spread of the data depending on each wind type.  Boxplots are also compact and easier to compare the different types of wind and their temperature distributions. 
+```{r}
+airquality %>%
+  ggplot(aes(x=Wind_Categories, y=Temp)) +
+  geom_boxplot()
+
+```
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+There is a clear pattern that the stronger the wind, the colder the temperature is.  Based on this representation of the data, it is reasonable to assume that this pattern could not be due to chance.  The strongest and lightest wind categories have no overlap in their boxes, which indicates that the temperatures are very different dependent on the wind type. 
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+There is a negative correlation between wind speed and temperature.  As the wind speed category increases, which indicates higher wind speeds, the temperature decreases on average. This is seen by the boxes moving down in temperature as the Wind category increases. 
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+One approach at looking at correlation between categorical and continuous variables is from  "https://medium.com/@outside2SDs/an-overview-of-correlation-measures-between-categorical-and-continuous-variables-4c7f85610365".  
+
+The approach is to group the continuous variable using the categorical variable, measure the variance in each group and comparing it to the overall variance of the continuous variable. If the variance after grouping falls down significantly, it means that the categorical variable can explain most of the variance of the continuous variable and so the two variables likely have a strong association. If the variables have no correlation, then the variance in the groups is expected to be similar to the original variance.
+
+These calculations were done and can be seen in the data frames Temp_and_wind and Temp_summary.  Overall I would say there is a strong correlation because the variance for just the Temp variable is 89.59, and when group by the categories all of the variances decreased.  Therefore grouping by wind category has a strong correlation on the Temperature data.   
+
+```{r}
+Temp_and_wind <- airquality %>%
+  group_by(Wind_Categories) %>%
+  summarize(sd = sd(Temp))
+
+Temp_and_wind %>%
+  mutate(var = sd^2)
+
+Temp_summary <- airquality %>%
+  summarize(sd = sd(Temp))
+
+Temp_summary %>%
+  mutate(var = sd^2)
+```
+
+
+**- Discuss what other variables might affect the relationship**
+Since temperatures change with the month, summer months are hotter than spring or fall months, it is reasonable to assume that the month may also affect the relationship between wind speed category and temperature.  
+
+Looking at the boxplot below that is temperature distributions by month, it appears that May and September have the coldest average temperatures. Since temperature varies by month it is very likely that Month has an affect on the wind speed category and temperature relationship. 
+
+
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Month, y=Temp, group = Month)) +
+  geom_boxplot()
+```
+
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+We can look at the subgroup of only temperatures above 70 degrees, since most people only like to be outside in warmer temperatures, and therefore would only care about the wind on those days. The distribution becomes a lot more concentrated for all categories above light.  Since the light category only had temperatures above 70 nothing changed.  However all the other categories had values below 70 degrees, and therefore when only looking at the warmer temperature subgroup the distribution becomes a lot more compact.  Specifically looking at the Moderate category, by only looking at the warmer subgroup an outlier temperature for that category was created since that data in the moderate category became so much less variable. 
+
+```{r}
+warm_temp <- airquality %>%
+  filter(Temp >= 70) %>%
+  ggplot(aes(x=Wind_Categories, y=Temp)) +
+  geom_boxplot() +
+  ylim(55, 100) +
+  labs(title = "Only temperatures above 70 degrees")
+
+all_temp <-  airquality %>%
+  ggplot(aes(x=Wind_Categories, y=Temp)) +
+  geom_boxplot() + 
+  ylim(55, 100) +
+  labs(title = "All temperatures")
+
+ggarrange(warm_temp, all_temp, ncol = 2)
+```
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+Converting the wind_categories back to a continuous variable helps visulaize what type of relationship there is between wind and temperature. No actual conversion of data is needed since we have the continuous variable of wind. 
+
+Looking at a scatter plot of Temp vs Wind with a geom smooth linear model line fit on the data, we can see that there is in fact a negative relationship between Wind and Temperature.  The correlation is calculated to be -0.46 which is considered to moderate association by the chart below. 
+
+```{r}
+#association chart from https://www.chegg.com/homework-help/definitions/pearson-correlation-coefficient-pcc-31
+knitr::include_graphics("association_chart.png")
+```
+
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Wind, y=Temp)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+
+cor(x=airquality$Wind, y=airquality$Temp)
+```
+
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
+
+Based on the covaration between the Wind variable and the Temperature Variable it can be concluded that wind speed and temperature have a negative relationship with one another.  This is seen in the box plot of different wind speed categories and the temperatures associated with them decreasing as the category moved up in strength.  This supports my hypothesis that days with stronger wind speeds have colder high temperatures, since there was a visual association between the two variables.  Put in simpler terms, if there are higher wind speeds in New York, the temperature will also be colder.   
+
+
+
+
+### 3.2.2 Between two categorical variables (10 points)
+
+Comparing Ozone_categories and Wind_categories.
+
+
+**- Describe what type of visualization you can use and why.**
+
+A geom_tile() visualization is used to display the count of each observation at each of the combination of values.  The lighter the color of tile the more of that combination of observations there will be.  The covariation between the Ozone and Wind categories will appear as a strong correlation between specific x and y values. I also created a geom_count() visualization, but it is just a different way to view the same relationships.
+
+```{r}
+airquality %>%
+  filter(is.na(airquality$Wind_Categories) == FALSE) %>%
+  filter(is.na(airquality$Ozone_categories) == FALSE) %>%
+  ggplot(aes(x=Wind_Categories, y=Ozone_categories))+
+  geom_count(na.rm = TRUE)
+
+airquality %>%
+  filter(is.na(airquality$Wind_Categories) == FALSE) %>%
+  filter(is.na(airquality$Ozone_categories) == FALSE) %>%
+  count(Wind_Categories, Ozone_categories) %>%
+  ggplot(aes(x=Wind_Categories, y=Ozone_categories)) +
+  geom_tile(aes(fill = n), na.rm=TRUE)
+```
+
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+The main pattern present is that Moderate Wind Speeds are also most frequently at a Good Ozone level.  This is seen as the lightest blue square in the visualization above. The other pattern is that the extreme categories for both Wind Speed and Ozone level have the least amount of observations.  This indicates that it is more rare to have light wind and unhealthy ozone level. The relationship appears to be that the stronger the wind category is the more lower the ozone level observations there are.  The only slight disagrement with this summarization is that Fresh Wind actually does not have a lot of observations that are Good Ozone level, however all of the Fresh Wind observations are in the Good Ozone category supporting this pattern.  It is not likely that this pattern is due to chance because the correlation is very strong in the visualization.  If there were more Ozone values reported, since 37 were NA, then the pattern may be different, but given the current data it appears that the relationship between Ozone and Wind is not a coincidence.   
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+It appears that the stronger the wind category is the more safer/lower ozone level observations there are.  This would indicate a negative correlation between Wind and Ozone when looking at the variables in a categorial format. 
+
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+Since the two variables Wind_Categories and Ozone_categories are categorical variables it is not possible to calculate a numerical correlation value.  However looking at the graph above it is clear based on count concentration and combinations of categories present (ex: Moderate Wind and Unhealthy Ozone is not present) that there is a strong negative correlation between Ozone_categories and Wind_categories. To find a numerical value for correlation the continuous variables for Wind and Ozone can be used, and there is a -0.6015 correlation.  Based on the association chart above this is considered a Moderate Association. 
+
+```{r}
+cor(x=airquality$Wind, y=airquality$Ozone, use="complete.obs")
+```
+
+
+**- Discuss what other variables might affect the relationship**
+
+The other variable that may affect the relationship between Wind_categories and Ozone_categories is Temp. Since we saw earlier that wind speed and temperature have a moderate negative correlation, it can be assumed that temperature may also affect ozone levels.  Looking at the distribution of Temp based on Ozone_categories it appears that Ozone has a negative quadratic relationship with temperature.  Therefore it is possible that the Ozone and Wind category relationship may be affected by temperature however the relationship between the two categories seems to be stronger than with temperature.   
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Ozone_categories, y=Temp)) +
+  geom_boxplot()
+
+airquality %>%
+  ggplot(aes(x=Ozone, y=Temp)) +
+  geom_point() +
+  geom_smooth()
+```
+
+
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+Yes when looking at Wind speeds above 12 mph the wind_categories and Ozone_categories relationship appears to change.  In the geom_tile() visulization the number of category combination possibilities decreased to only three combinations.  It appears that there is a much weaker relationship between Wind_Categories and Ozone_categories when only looking at observations with wind speeds above 12.  To confirm that the correlation is weaker I plotted the continuous variable Ozone vs Wind for values of wind above 12 mph.  The relationship has change to a correlation with no slope from a relatively strong negative correlation not in this subgroup.  It can be determined that for higher wind speed categories the strength in correlation with Ozone decreases significantly. 
+```{r}
+airquality %>%
+  filter(is.na(airquality$Wind_Categories) == FALSE) %>%
+  filter(is.na(airquality$Ozone_categories) == FALSE) %>%
+  filter(Wind >12)%>%
+  count(Wind_Categories, Ozone_categories) %>%
+  ggplot(aes(x=Wind_Categories, y=Ozone_categories))+
+  geom_tile(aes(fill=n))
+
+airquality %>%
+  filter(Wind >12)%>%
+  ggplot(aes(x=Wind, y=Ozone))+
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+As mentioned above converting the type for exploring the relationship between wind and ozone back to continuous allows for numeric calculations of the correlation.  It also allows for a more clear negative correlation line when using a scatter plot with a line of best fit seen below. The relationship between ozone and wind can be explored using categorical variables, but also using the continuous version of the variables makes the relationship more clear.   
+
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Wind, y=Ozone))+
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+- Discuss how the observed patterns support/reject your hypotheses or answer your questions.
+
+The covariation between wind_categories and Ozone_categories supports the hypothesis that higher wind speeds will result in a lower ozone levels. The negative correlation relationship between Wind_Categories and Ozone_categories indicates that as wind speed increases the ozone level decreases.  While the specific reason for why wind has a negative correlation with ozone is unknown, analyzing the two categorical variables for wind and ozone and the two continuous variables for wind and ozone there is a moderately strong negative relationship between wind speed and ozone, supporting that faster wind will result in lower ozone.     
+
+
+### 3.2.3 Between two continuous variables (10 points)
+Comparing Ozone and Temp
+
+**- Describe what type of visualization you can use and why.**
+
+The visualization for comparing the continuous variable Temp and the continuous variable Ozone a scatter plot with geom_point() can be used.  The covaration can be seen as a positive linear relationship, demonstrated by the distribution of points and the geom_smooth() line of best fit with a linear model applied to the data.  Using the scatterplot allows for a quick visual demonstration of the distribution of the data points and a understanding of the covaration between the variables can be derived.   
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Temp, y=Ozone)) +
+  geom_point(na.rm = TRUE) +
+  geom_smooth(method = "lm", na.rm = TRUE)
+```
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+The pattern of the data in the scatterplot above is as Temp increases the Ozone value also increases.  This pattern is seen in the distribution of the points in a generally positive slope and in the linear positive line of best fit.  This pattern could be due to chance because the ends of the data are less strongly correlated with the linear fit seen in the wider grey region, however using the data given it appears this is a moderately strong pattern. 
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+The relationship between temperature and ozone is a positive correlation.  It is clear from the graph in the pattern of points and the line of best fit that the Temp and Ozone relationship is linear and a positive relationship. 
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+Using the correlation calculation with Temp as the x variable and Ozone as the y variable the correlation is calculated to be 0.698.  This correlation is a moderate positive association according the association chart above.
+
+```{r}
+cor(x=airquality$Temp, y=airquality$Ozone, use="complete.obs")
+```
+
+**- Discuss what other variables might affect the relationship**
+
+Since different months have different average temperatures it is possible that month also has an affect on Ozone, which may appear as a relationship between temperature and Ozone.  This relationship between month and ozone will be explored below in the next section.
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+Looking at only the relationship between temperatures above 85 degrees and the Ozone level causes the relationship to have a much weaker correlation between temperature and Ozone.  The weaker correlation is seen in the less steep line of best fit and a much wider grey band of uncertainity. 
+
+```{r}
+airquality %>%
+  filter(Temp > 85) %>%
+  ggplot(aes(x=Temp, y=Ozone)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+Converting the ozone variable to a categorical variable with groups based on the ozone chart referenced above, and looking at the relationship with Temp using a boxplot.  Overall the trend is less clear using the categorical Ozone variable, since there does not appear to be a clear pattern in the boxplots. Grouping the data by Ozone category does not do a good of a job demonstrating the relationship between Temp and Ozone as using two continuous variables.  
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Ozone_categories, y=Temp))+
+  geom_boxplot()
+```
+
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
+
+Since the relationship between temperature and ozone is a positive linear relationship, it supports the hypothesis that as temperature increases the ozone value will also increase.  It is difficult to determine the reasoning behind this relationship, but the data supports the hypothesis as mentioned previously and answers the question if there is an increase in ozone values will this cause an increase in temperature.  We can be relaitively confident in answering this quesiton because of the covaritation between the Ozone and temperature variables is a moderately strong postive relationship. 
+
+### 3.2.4 Between two other continuous/categorical variables (if any) (10 extra points)
+
+Looking at relationship between categorical month and continuous ozone.  In order to make the analysis make more sense I converted the Month variable into a factor with month names as categories. 
+
+```{r}
+Month_Factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x == 5){
+    return("May")
+  }
+  else if(x == 6){
+    return("June")
+  }
+  else if(x == 7){
+    return("July")
+  }
+  else if(x == 8){
+    return("August")
+  }
+  else{
+    return("September")
+  }
+}
+
+airquality$Month_Names <- sapply(airquality$Month, Month_Factor)
+
+Month_Levels = c("May", "June", "July", "August", "September")
+
+airquality$Month_Names <- factor(airquality$Month_Names, levels= Month_Levels)
+
+head(airquality)
+
+```
+
+**- Describe what type of visualization you can use and why.**
+
+A boxplot of Month as a categorical variable and Ozone as a continuous variable can be used.  Using the box plot makes it clear the spread of the data depending on each wind type.  This spread is further emphasize by using geom_jitter() to see the distribution of data points that make up the boxplots.  Boxplots are also compact and easier to compare the different months and their ozone distributions. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Month_Names, y=Ozone, color = Month_Names)) +
+  geom_boxplot() +
+  geom_jitter()
+```
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+The main pattern is July and August, two of the summer months,have a higher average ozone distribution.  The boxes are wider than the other months indicating that the data is less concentrated, which is also seen in the individual points in those months.  So while the average Ozone level is higher for those months, it may be due to chance because the data during July and August is more distributed.  It is clear from the boxplot that the month does affect the average Ozone value. 
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+The relationship appears to be a negative quadratic relationship since the middle months, July and August, have the highest average values of Ozone.  This relationship can also be seen by plotting the Ozone vs the Month and using the geom_jitter() method to add slight variation in the data.  A line of best fit on this visualization has a slightly weaker correlation than earlier relationships, seen in the wider grey uncertainty region, but the line appears to be quadratic.  
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Month, y=Ozone)) +
+  geom_jitter() +
+  geom_smooth()
+```
+
+
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+Using the approach above to group the continuous variable using the categorical variable, measure the variance in each group and comparing it to the overall variance of the continuous variable, and comparing if the variance after grouping falls down significantly.  
+
+
+The grouping by month and summarizing the variance for both the grouped Ozone data and the non grouped Ozone data were done and can be seen in the data frames Month_and_Ozone and Ozone_summary.  Overall I would say there is a weaker correlation because the variance for just the Ozone variable is 1088.201, and when group by the categories all of the variances decreased except for August's variance which increased to 1574.59.  Since not every variance decreased when grouping by month it can be concluded that there is a weaker correlation between Month and Ozone.  
+ 
+
+```{r}
+Month_and_Ozone <- airquality %>%
+  filter(is.na(airquality$Ozone) == FALSE) %>%
+  group_by(Month_Names) %>%
+  summarize(sd = sd(Ozone))
+
+Month_and_Ozone %>%
+  mutate(var = sd^2)
+
+Ozone_summary <- airquality %>%
+  filter(is.na(airquality$Ozone) == FALSE) %>%
+  summarize(sd = sd(Ozone))
+
+Ozone_summary %>%
+  mutate(var = sd^2)
+
+
+```
+
+**- Discuss what other variables might affect the relationship**
+
+As mentioned earlier, Months vary in average temperature, and therefore it is likely that temperature is affecting the relationship between month and Ozone.  The relationship between temperature and ozone is stronger than the relationship between month and ozone, and therefore it can be assumed that temperature is affecting the relationship.  
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+Looking at the subgroup of only the months May and June, the two earliest months in the data set, there does not appear to be a strong realtionship between month and Ozone.  Seen in the boxplot below there is not much variation between the May and June boxplot even though they are different months.  This indicates in this early month subgroup the relationship between month and ozone is realtively weak. 
+
+```{r}
+airquality %>%
+  filter(Month_Names == "May" | Month_Names == "June") %>%
+  ggplot(aes(x=Month_Names, y = Ozone)) +
+  geom_boxplot()
+```
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+As shown earlier, converting the month to a continous variable of type int rather than a factor variable allows for a scatterplot using geom_jitter() to be created.  This scatterplot again supports the conclusion that there is not a strong realtionship between month and Ozone since the correlation is weak between the month and ozone variable. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Month, y=Ozone)) +
+  geom_jitter() +
+  geom_smooth()
+```
+
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
+
+Since Month and Ozone have such a weak correlation to one another, it rejects my hypothesis that warmer Months, which are common in the summer season, will have higher Ozone values because the heat traps the Ozone.  The relationship between Month and Ozone did not have a clear pattern, although July and August did have a higher on average Ozone value, the data was not conclusive that seasonal changes alone affect Ozone.  
+
+
+# Step 4. Summarize your findings (20 points)
+
+**- Summarize your findings about the questions you asked at the beginning. (5 points)**
+From the analysis of the airquality data I found the following relationships that relate to the questions I asked in the beginning, in New York how does the temperature affect the wind speed and in New York is there a seasonal effect on the mean Ozone values and how does wind speed effect the mean Ozone value.
+
+  -Ozone and Temp have a positive correlation
+    -The higher the temperature the higher the ozone value
+  -Wind and Ozone have a negative correlation
+    -The greater the wind speeds the lower the ozone value
+  -Wind and Temp have a negative correlation
+    -The higher the wind speed the lower the temperature
+  -Ozone and Month have a weak correlation that is slightly negative quadratic 
+  -Moderate Wind speeds are the most common
+  -Good Ozone values are the most common 
+
+**- Describe and discuss how your observations support or reject your hypotheses or answer your questions. (5 points)**
+The hypothesis that the stronger the wind speeds the colder the high temperature is that day is supported by 
+the Wind variable and the Temperature Variable having a negative relationship with one another seen in the box plots. As the wind speed categories moved up in strength, the temperatures associated with them decreased. The hypothesis that warmer months, which are common in the summer season, will have higher Ozone values because the heat traps the Ozone was rejected.  Since the Month and the Ozone had a weak correlation becasue they did not have a clear pattern. Although July and August did have a higher on average Ozone value, the data was not conclusive that seasonal changes alone affect Ozone. The hypothesis that faster wind speeds blow away Ozone accumulation, making the ozone value lower for higher wind speeds was supported by the negative correlation relationship between Wind_Categories and Ozone_categories.  The stronger wind category there was the weaker ozone category that was associated with it. The hypothesis that if ozone levels increase, temperature will also increase because ozone traps heat in the atmosphere was supported since the relationship between temperature and ozone is a positive linear relationship.  Looking at the two continuous variables temperature and ozone, as one increased the other also increased, and the correlation was strong.  
+
+**- Describe what new questions your analysis may generate. (5 points)**
+
+Based on the analysis of the airquality data it lead me to develop several new questions.  The first question is how the observations for Ozone, Solar Radiation, Wind, and Temperature would change if the data collected was from 2020 rather than 1973?  Since the climate has changed so much since the 70s it would be interesting to compare the variables in different years.  Another question that I had from my analysis is how taking the different measurements of the variables from the same location versus a variety of locations across New York, which is how the airquality data was collected, would affect the trends in the observations.   
+
+**- Discuss if you have enough evidence to make a conclusion about your analysis. (5 points)**
+Based on my analysis I believe there is enough evidence to make a conclusion about relationships between Temperature, Wind, Solar Radiation, and Month.  Overall there were not many NA values in these variables, if any at all, and the trends were moderately strong.  I do not believe there is enough evidence about the Ozone variable to make any confident conclusions since 37 out of 153 observations were NA values.  General conclusions about Ozone can be made, but with more Ozone data the confidence in those relationships would increase. Also all of these conclusions can only be confidently made about New York in the year 1973 since that is the only year and location we have airquality data for to analyze.  
+

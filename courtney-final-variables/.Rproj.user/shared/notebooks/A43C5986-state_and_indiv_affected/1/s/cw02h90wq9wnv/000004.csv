@@ -1,0 +1,7 @@
+"0","breaches <- read_csv(""Cyber Security Breaches (1).csv"","
+"0","                     col_types = cols("
+"0","                      State = col_factor(),"
+"0","                      Individuals_Affected = col_integer()"
+"0","                     )"
+"0","                  )"
+"2","Missing column names filled in: 'X1' [1]"

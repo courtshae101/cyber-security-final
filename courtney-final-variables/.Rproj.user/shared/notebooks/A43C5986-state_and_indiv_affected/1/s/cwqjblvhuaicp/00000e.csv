@@ -1,0 +1,4 @@
+"0","# breaches_cleaned <- breaches[as.numeric(breaches$Individuals_Affected),]"
+"0","# breaches_cleaned <- breaches[as.factor(breaches$State, levels = ),]"
+"0","# head(breaches_cleaned)"
+"0","                             "

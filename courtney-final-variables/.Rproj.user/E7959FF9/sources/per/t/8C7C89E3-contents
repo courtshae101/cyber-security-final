@@ -1,0 +1,536 @@
+---
+title: "State_and_indiv"
+author: "Courtney"
+date: "4/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+```
+
+
+```{r}
+breaches <- read_csv("Cyber Security Breaches (1).csv",
+                     col_types = cols(
+                      State = col_factor(),
+                      Individuals_Affected = col_integer()
+                     )
+                  )
+```
+```{r}
+head(breaches)
+```
+
+### 3.1.3 Variable 3  
+State
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+state_bar <- breaches %>%
+  mutate(State = State %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x=State)) +
+  geom_bar()+
+  coord_flip()
+
+state_bar
+
+count_state <- breaches %>%
+  mutate(State = State %>% fct_infreq() %>% fct_rev()) %>%
+  count(State)
+
+count_state
+```
+
+
+**- Which values are the most common? Why?** 
+
+Breaches in the State of California are the most common since they have the most breaches at 113. This is most likely due to the fact that California is highly populated with lots of buisnesses and tech industries, therefore can have more opportunities for breaches.      
+
+**- Which values are rare? Why? Does that match your expectations?** 
+The most rare values are VT, ME, SD, and HI which all have only one breach.  Since these are not very largely populated states this does make sense. 
+ 
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There does not appear to be any unusal patterns in the State breach count.  Some states have more breaches than others but there is not any outliers of cycles of number of breaches.  
+
+**- Are there clusters in the data? If so,**
+No there are no clusters in the data, all of the data is relatively evenly distributed.
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+  As mentioned above there are no clusters present.  
+  
+  **- How can you explain or describe the clusters?**
+
+  As mentioned above there are no clusters present.
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+#Solar radiation chart from https://www.researchgate.net/figure/Mean-daily-solar-radiation-source-US-Department-of-Commerce-1968-superimposed-on-the_fig1_42345390
+knitr::include_graphics("solar_radiation_graph.png")
+```
+
+There were no negative solar radiation values, and all other values present in the data fall into one of the ranges seen in the solar radiation graph above, and therefore should not be removed.  The high values of solar radiation are shown in the data frame below, high_solar.  Since most of the values fall in the low category shown on the map I will be considering 200-250 low, 250-300 medium, and 300-350 high. The values were determined by the map above and were filtered out of the airquality data set and displayed below.  More exploration has to be done to determine if they should be removed.
+
+```{r}
+high_solar <- airquality %>%
+  filter(Solar.R > 300)
+
+high_solar
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the Solar Radiation values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The Wind data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the Solar Radiation  There are no outliers in the solar radiation data. 
+
+
+```{r}
+stdev <-  sd(airquality$Solar.R, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Solar.R, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Solar.R, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Solar.R, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Solar.R < (firstQ - innerQ * 1.5) | 
+        Solar.R > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Solar.R)) + 
+  geom_boxplot()
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Since there are no outliers, there are no unusal values to remove.  The distribution of the solar radiation data can be seen below. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() 
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+Since there are no values deemed unusal there are none that need to be removed.
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+Yes there are 7 missing values in the Solar Radiation variable.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).  It can also be confirmed by calling summary() on the Wind variable, which also shows that there are 7 NA values in the Solar Radiation variable.  
+
+```{r}
+missing <- is.na(airquality$Solar.R)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+summary(airquality$Solar.R)
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+The NA solar radiation values can be removed since there is no value to replace them with that would add to the analysis of solar radiation.
+```{r}
+no_na_solar <- airquality[!is.na(airquality$Ozone),]
+
+head(no_na_solar)
+```
+
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+Looking at just the distribution via a histogram of the Solar.R variable with and without the NA values is not helpful since the geom_histogram() function automatically removes NA values when plotting the histogram.  It is easier to see the effect of removing the NA values in a line graph of Solar.R vs Date.  When the NA values are present there are clear breaks in the data, however when the NA values are removed the line is continuous.  When the line is continuous the data is much easier to interpret, however there does not appear to be an obvious pattern between Solar.R and Date.   
+ 
+
+```{r}
+no_missing_hist <- no_na_solar %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "No NA Values Included")
+
+missing_hist <- airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_missing_hist, missing_hist, ncol = 2)
+
+no_misisng_line <- no_na_solar %>%
+  ggplot(aes(x = Date, y = Solar.R)) +
+  geom_line() +
+  labs(title = "No NA Values Included")
+
+missing_line <- airquality %>% 
+  ggplot(aes(x = Date, y = Solar.R)) + 
+  geom_line() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_misisng_line, missing_line, nrow = 2)
+```
+
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Solar.R to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups.  
+
+**- What type can the variable be converted to?**
+
+Solar.R is of type integer, but it can converted to a logical.  By making the value of Solar.R TRUE when the Solar.R is less than 250 and FALSE when the value of the Solar.R is greater than 250, we can see if the Solar.R level is considered low or not, based on the table of distributions presented earlier.  Converting Solar.R to a logical is a simpler way to interpret Solar.R values. The converted Solar.R type is saved as a new variable Low_Solar.
+
+```{r}
+typeof(airquality$Solar.R)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+low_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Low_Solar <- sapply(airquality$Solar.R, low_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+From plotting the converted logical Solar variable as a bar graph, we can see that the majority of the days were low solar days. Logically this makes sense because New York is not known for being incredibly sunny.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Low_Solar, fill = Low_Solar)) +
+  geom_bar()
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+In order to compare different levels of Solar radiation a factor variable of Solar is needed.
+As mentioned above the Solar.R can also be turned into a logical variable.
+
+**- List the variables**
+Low_Solar which is a logical variable that is TRUE if the solar radiation less than 250 and FALSE if it is greater than 250.  The variable creation and distribution is seen above. 
+
+Solar_Categories which will be a factor variable that has the Solar value converted to a category based on groups in graphic above. 
+
+```{r}
+solar_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return("Low")
+  }
+  else if(x > 250 && x <= 300){
+    return("Medium")
+  }
+  else {
+    return("High")
+  }
+}
+
+airquality$Solar_Categories <- sapply(airquality$Solar.R, solar_factor)
+
+solar_levels = c("Low", "Medium", "High")
+
+airquality$Solar_Categories <- factor(airquality$Solar_Categories, levels= solar_levels)
+
+head(airquality)
+
+```
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Low_Solar, a logical variable, is needed in exploring the distribution of solar radiation values since logical are simpler to evaluate when larger continuous data is converted into two groups.  I plan to use the variable to compare temperature. 
+
+Solar_Categories, a factor variable, is needed for categorical analysis.  Being able to evaluate solar in categories based on the radiation Ranges, given in the graphic above, will lead to new evaluations of the relationship between solar radiation and the other variables.  Being able to look at solar radiation as both a categorical and continuous variable will hopefully bring new insights into solar radiation in New York when used to compare to variable like temperature.
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Solar_Categories, fill = Solar_Categories)) +
+  geom_bar()
+```
+### 3.1.3 Variable 3  
+Solar.R
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+solar_box <- airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_boxplot()
+
+solar_hist <- airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_histogram(binwidth = 15)
+
+ggarrange(solar_box, solar_hist, nrow = 2)
+
+summary(airquality)
+
+IQR(airquality$Solar.R, na.rm = TRUE)
+```
+
+
+**- Which values are the most common? Why?** 
+
+The values in the IQR are the most common which ranges from 115.8 to 258.8. This can be seen in the histogram since the peak is centered around 225 mph. The majority of the values fall in this range and therefore they are statistically the most common.  This can be interpreted that in New York the solar radiation usually ranges from 115.8 to 258.8 mph.    
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+Wind levels that are above 473.3 mph (3rd Quartile + 1.5 * IQR) or below -98.7 mph (1st Quartile - 1.5 * IQR) are rare since they are outliers in the data.  There can only be solar radiation of 0 however so the lower outlier bound is not applicable.  There are no outliers in this data and therefore it can be derived that there are no "rare" values.  Overall the data for solar radiation is very evenly distributed and therefore rare values will not exist.  This does make sense since the sun is shinning everyday and the slight variation has to do with weather which results in most solar radiation values being common. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Solar.R)) +
+  geom_boxplot()
+
+#no outliers
+```
+
+
+**- Can you see any unusual patterns? What might explain them?**
+
+There is no cycle pattern present in the solar radiation data.  The only slightly unusual pattern is that there is not a pattern.  Overall the histogram is pretty flat and the boxplot is widely spread.  This could be due to, as explain earlier, the cause of solar radiation variation having to do with weather which results in common solar radiation meausrements throughout the months this data was recorded.  
+
+**- Are there clusters in the data? If so,**
+No there are no clusters in the data, all of the data is relatively evenly distributed.
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+  As mentioned above there are no clusters present.  
+  
+  **- How can you explain or describe the clusters?**
+
+  As mentioned above there are no clusters present.
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+#Solar radiation chart from https://www.researchgate.net/figure/Mean-daily-solar-radiation-source-US-Department-of-Commerce-1968-superimposed-on-the_fig1_42345390
+knitr::include_graphics("solar_radiation_graph.png")
+```
+
+There were no negative solar radiation values, and all other values present in the data fall into one of the ranges seen in the solar radiation graph above, and therefore should not be removed.  The high values of solar radiation are shown in the data frame below, high_solar.  Since most of the values fall in the low category shown on the map I will be considering 200-250 low, 250-300 medium, and 300-350 high. The values were determined by the map above and were filtered out of the airquality data set and displayed below.  More exploration has to be done to determine if they should be removed.
+
+```{r}
+high_solar <- airquality %>%
+  filter(Solar.R > 300)
+
+high_solar
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+An outlier is 1.5 times the interquartile range away from either the lower or upper quartile.  In order to determine if any of the Solar Radiation values are outliers the interquartile range, first quartile, and third quartile need to be calculated.  The Wind data then has to be filtered for values that are less than the first quartile minus the IQR times 1.5 and values that are greater than the third quartile plus the IQR times 1.5. The outliers can also be seen in the boxplot of all the data when looking at the Solar Radiation  There are no outliers in the solar radiation data. 
+
+
+```{r}
+stdev <-  sd(airquality$Solar.R, na.rm = TRUE)
+stdev
+
+innerQ <-  IQR(airquality$Solar.R, na.rm = TRUE)
+innerQ
+
+firstQ <- quantile(airquality$Solar.R, 0.25, na.rm = TRUE)
+firstQ <- firstQ[[1]]
+
+thirdQ <- quantile(airquality$Solar.R, 0.75, na.rm = TRUE)
+thirdQ <- thirdQ[[1]]
+
+outlier_list <- airquality %>%
+  filter(Solar.R < (firstQ - innerQ * 1.5) | 
+        Solar.R > (thirdQ + innerQ * 1.5))
+
+outlier_list
+
+airquality %>%
+  ggplot(aes(x = Month, y = Solar.R)) + 
+  geom_boxplot()
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+Since there are no outliers, there are no unusal values to remove.  The distribution of the solar radiation data can be seen below. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() 
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+Since there are no values deemed unusal there are none that need to be removed.
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+Yes there are 7 missing values in the Solar Radiation variable.  The method is.na with the column name can be used and then the vector returned can be turned into a data frame that represents the number of NA values (TRUE) and non NA values (FALSE).  It can also be confirmed by calling summary() on the Wind variable, which also shows that there are 7 NA values in the Solar Radiation variable.  
+
+```{r}
+missing <- is.na(airquality$Solar.R)
+
+num_missing <- as.data.frame(table(missing))
+
+num_missing
+  
+summary(airquality$Solar.R)
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+The NA solar radiation values can be removed since there is no value to replace them with that would add to the analysis of solar radiation.
+```{r}
+no_na_solar <- airquality[!is.na(airquality$Ozone),]
+
+head(no_na_solar)
+```
+
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+Looking at just the distribution via a histogram of the Solar.R variable with and without the NA values is not helpful since the geom_histogram() function automatically removes NA values when plotting the histogram.  It is easier to see the effect of removing the NA values in a line graph of Solar.R vs Date.  When the NA values are present there are clear breaks in the data, however when the NA values are removed the line is continuous.  When the line is continuous the data is much easier to interpret, however there does not appear to be an obvious pattern between Solar.R and Date.   
+ 
+
+```{r}
+no_missing_hist <- no_na_solar %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "No NA Values Included")
+
+missing_hist <- airquality %>%
+  ggplot(aes(x = Solar.R)) +
+  geom_histogram() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_missing_hist, missing_hist, ncol = 2)
+
+no_misisng_line <- no_na_solar %>%
+  ggplot(aes(x = Date, y = Solar.R)) +
+  geom_line() +
+  labs(title = "No NA Values Included")
+
+missing_line <- airquality %>% 
+  ggplot(aes(x = Date, y = Solar.R)) + 
+  geom_line() +
+  labs(title = "NA Values Included")
+
+ggarrange(no_misisng_line, missing_line, nrow = 2)
+```
+
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+Yes converting Solar.R to a logical may be helpful in exploring the distribution of its values or identifying outliers or missing values since logical are simpler to evaluate when larger continuous data is converted into two groups.  
+
+**- What type can the variable be converted to?**
+
+Solar.R is of type integer, but it can converted to a logical.  By making the value of Solar.R TRUE when the Solar.R is less than 250 and FALSE when the value of the Solar.R is greater than 250, we can see if the Solar.R level is considered low or not, based on the table of distributions presented earlier.  Converting Solar.R to a logical is a simpler way to interpret Solar.R values. The converted Solar.R type is saved as a new variable Low_Solar.
+
+```{r}
+typeof(airquality$Solar.R)
+
+#function to determine if the ozone levels are healthy using values given in graphic above
+low_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return(TRUE)
+  }
+  else{
+    return(FALSE)
+  }
+}
+
+airquality$Low_Solar <- sapply(airquality$Solar.R, low_check)
+head(airquality)
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+From plotting the converted logical Solar variable as a bar graph, we can see that the majority of the days were low solar days. Logically this makes sense because New York is not known for being incredibly sunny.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+
+```{r}
+airquality %>%
+  ggplot(aes(x=Low_Solar, fill = Low_Solar)) +
+  geom_bar()
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+In order to compare different levels of Solar radiation a factor variable of Solar is needed.
+As mentioned above the Solar.R can also be turned into a logical variable.
+
+**- List the variables**
+Low_Solar which is a logical variable that is TRUE if the solar radiation less than 250 and FALSE if it is greater than 250.  The variable creation and distribution is seen above. 
+
+Solar_Categories which will be a factor variable that has the Solar value converted to a category based on groups in graphic above. 
+
+```{r}
+solar_factor <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x >= 0 && x <= 250){
+    return("Low")
+  }
+  else if(x > 250 && x <= 300){
+    return("Medium")
+  }
+  else {
+    return("High")
+  }
+}
+
+airquality$Solar_Categories <- sapply(airquality$Solar.R, solar_factor)
+
+solar_levels = c("Low", "Medium", "High")
+
+airquality$Solar_Categories <- factor(airquality$Solar_Categories, levels= solar_levels)
+
+head(airquality)
+
+```
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Low_Solar, a logical variable, is needed in exploring the distribution of solar radiation values since logical are simpler to evaluate when larger continuous data is converted into two groups.  I plan to use the variable to compare temperature. 
+
+Solar_Categories, a factor variable, is needed for categorical analysis.  Being able to evaluate solar in categories based on the radiation Ranges, given in the graphic above, will lead to new evaluations of the relationship between solar radiation and the other variables.  Being able to look at solar radiation as both a categorical and continuous variable will hopefully bring new insights into solar radiation in New York when used to compare to variable like temperature.
+
+```{r}
+airquality%>%
+  ggplot(aes(x=Solar_Categories, fill = Solar_Categories)) +
+  geom_bar()
+```
