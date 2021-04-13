@@ -25,23 +25,36 @@ number_of_breaches <- breaches %>%
 ggplot(number_of_breaches, aes(year, freq)) +
   geom_histogram(stat = "identity")
 ```
-#### 3.1.1.3 Missing values (2 points) 
+#### 3.1.1.2 Unusual values (2 points)
 ```{r}
-missing <- is.na(breaches$year)
+ggplot(breaches, aes(x = year)) +
+  geom_boxplot()
+```
+I would want to remove the outliers in the data because I am interested in the overall trend of the data.
+
+```{r}
+number_of_breaches %>%
+  filter(year > 2005) %>%
+  ggplot(aes(year, freq)) +
+  geom_histogram(stat = "identity")
 ```
 
-#### 3.1.1.5 What new variables do you need to create from this? (RDS 5.5, 5.6) (3)
-
-- List the variables
-
-- Describe and discuss why they are needed and how you plan to use them. 
+#### 3.1.1.3 Missing values (2 points) 
+```{r}
+missing <- breaches %>% filter(is.na(year))
+missing
+```
 
 # Step 4. Summarize your findings (20 points)
 
 - Summarize your findings about the questions you asked at the beginning. (5 points)
-
+  The number of breaches increases up to 2013 and ends at 2014. This may be because the data ends sometime in 2014. 
+  
 - Describe and discuss how your observations support or reject your hypotheses or answer your questions. (5 points)
+  There is an increasing trend for the number of breaches as the year increases.
 
 - Describe what new questions your analysis may generate. (5 points)
+  Does the trend continue past 2014?
 
 - Discuss if you have enough evidence to make a conclusion about your analysis. (5 points)
+  There is not enough data as the data stops at 2014 and starts roughly at 2005 with a few data points from prior to 2005. 
