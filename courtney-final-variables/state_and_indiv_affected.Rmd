@@ -2,7 +2,9 @@
 title: "State_and_indiv"
 author: "Courtney"
 date: "4/5/2021"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -27,8 +29,8 @@ breaches <- read_csv('C:/Users/student/Documents/SYS 2202/cyber-security-final/c
 head(breaches)
 ```
 
-### 3.1.3 Variable 3  
-State
+### 3.1.3 State Variable 
+
 
 #### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
 
@@ -186,7 +188,7 @@ Yes converting State to a logical may be helpful in exploring the distribution o
 State is of type factor, but it can converted to a logical.  By making the value of State TRUE when the State is in the northeast and FALSE when the value of the State is not in the northeast, we can see if the northeast has a large number of breaches.  Converting State to a logical is a simpler way to interpret State values. The converted State type is saved as a new variable northeast.
 
 ```{r}
-northeast_list <- c("CT", "MA", "NH", "NJ", "NY", "PA", "RI", "VT", "DE", "MD")
+northeast_list <- c("CT", "MA", "NH", "NJ", "NY", "PA", "RI", "VT", "DE", "MD", "ME")
 #function to determine if the states are in the northeast
 northeast_check <- function(x) {
   if(is.na(x)){
@@ -221,11 +223,13 @@ breaches %>%
 **- List the variables**
 northeast, westcoast, midwest, south.
 
-All are logical variables that are true or false if the breach is in the region. 
+All are logical variables that are true or false if the breach is in the region.
+
+Region, which is a factor variable that sorts the US into northeast, westcoast, midwest, south and other. 
 
 ```{r}
 
-westcoast_list <- c("WY", "CO", "UT", "NV", "ID", "CA", "OR", "WA", "AK")
+westcoast_list <- c("WY", "CO", "UT", "NV", "ID", "CA", "OR", "WA", "AK", "AZ", "NM")
 #function to determine if the states are on the West Coast
 westcoast_check <- function(x) {
   if(is.na(x)){
@@ -245,7 +249,7 @@ head(breaches)
 ```
 
 ```{r}
-midwest_list <- c("ND", "SD", "NE", "KS", "MO", "IA", "MN", "WI", "MI", "IL", "IN", "OH")
+midwest_list <- c("ND", "SD", "NE", "KS", "MO", "IA", "MN", "WI", "MI", "IL", "IN", "OH", "MT")
 #function to determine if the states are in the midwest
 midwest_check <- function(x) {
   if(is.na(x)){
@@ -262,9 +266,14 @@ midwest_check <- function(x) {
 breaches$midwest <- sapply(breaches$State, midwest_check)
 head(breaches)
 ```
+```{r}
+southwest_list <- c("AZ", "NM", "OK", "TX")
+other_list <- c("DC", "PR")
+```
+
 
 ```{r}
-south_list <- c("MD", "DE", "VA", "WV", "KY", "TN", "NC", "SC", "FL", "GA", "AL", "MS", "LA", "AK", "TX", "OK", "DC", "PR")
+south_list <- c("MD", "DE", "VA", "WV", "KY", "TN", "NC", "SC", "FL", "GA", "AL", "MS", "LA", "AK", "OK", "TX", "DC", "AR")
 #function to determine if the states are in the south
 south_check <- function(x) {
   if(is.na(x)){
@@ -282,9 +291,48 @@ breaches$south <- sapply(breaches$State, south_check)
 head(breaches)
 
 ```
+```{r}
+region_check <- function(x) {
+  if(is.na(x)){
+    return(NA)
+  }
+  else if(x %in% westcoast_list){
+    return("westcoast")
+  }
+  else if(x %in% northeast_list){
+    return("northeast")
+  }
+  else if(x %in% midwest_list){
+    return("midwest")
+  }
+  else if(x %in% south_list){
+    return("south")
+  }
+  else{
+    return("other")
+  }
+}
+
+
+breaches$region <- sapply(breaches$State, region_check)
+
+region_levels = c("northeast", "midwest", "south", "westcoast", "other")
+
+breaches$region <- factor(breaches$region, levels= region_levels)
+
+```
+
+```{r}
+breaches %>%
+  ggplot(aes(x = region, y = Individuals_Affected, fill = region)) +
+  geom_col()
+```
+
 
 **- Describe and discuss why they are needed and how you plan to use them.**
 northeast, westcoast, midwest, and south, are all a logical variable.  They are needed in exploring the distribution of breaches per state in different regions of the US.  Logical variables are used since logical are simpler to evaluate when larger factor data is converted into two groups.  I plan to use the variables to compare individuals affected by their location. 
+
+The region variable sorts the US into regions based on the state the breach occured in.  I am planning on using the region variable to compare the categorical states to the individuals affected in boxplots and bar graphs. 
 
 
 
@@ -311,8 +359,8 @@ breaches %>%
 
 ggarrange(northeast_bar, midwest_bar, westcoast_bar, south_bar, nrow = 2, ncol = 2)
 ```
-### 3.1.3 Variable 3  
-Individuals_affected
+### 3.1.3 Individuals_affected Variable  
+
 
 #### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
 
@@ -495,7 +543,7 @@ head(breaches)
 
 **- How will the distribution look? Please demonstrate with appropriate plots.**
 
-From plotting the converted logical Solar variable as a bar graph, we can see that the majority of the days were low solar days. Logically this makes sense because New York is not known for being incredibly sunny.  We can also see that there are no NA values, which confirms the analysis done earlier. 
+From plotting the converted logical Individuals Affected variable as a bar graph, we can see that the majority of the breaches were above 20,000 people affected. We can also see that there are no NA values, which confirms the analysis done earlier. 
 
 ```{r}
 breaches %>%
@@ -511,4 +559,327 @@ The new variable large_affected was created above and also explained above.
 
 **- Describe and discuss why they are needed and how you plan to use them.**
 Large_affected is needed to look at the outliers of the individuals affected and see if there is a trend with the large values and the states.  I plan to use the logical and see if there is a correlation with the state the breach occured in. 
+
+
+## 3.2. What type of covariation occurs between the variables? (30 points)
+If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
+
+### 3.2.1 Between a categorical and continuous variable (10 points)
+
+**- Describe what type of visualization you can use and why.**
+A boxplot of State as a categorical variable and Individuals Affected as a continuous variable can be used.  Using the box plot makes it clear the spread of the data depending on each state of the US.  Boxplots are also compact and easier to compare the different states and the individuals affected distributions. A bar graph can also be used to look at the total number of individuals affected rather than the distribution by state. 
+```{r fig.height=10, fig.align= "center"}
+breaches %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Number of Individuals Affected in Breaches by State")
+
+
+breaches %>%
+  mutate(State = as.factor(State) %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_col() +
+  coord_flip() +
+  labs(title = "Number of Individuals Affected in Breaches by State 
+       (in order of states with most breaches)")
+
+total_affected_state <- breaches %>%
+  group_by(State) %>%
+  summarize(sum_indiv = sum(Individuals_Affected))
+
+total_affected_state$State = with(total_affected_state, reorder(State, sum_indiv))
+
+
+total_affected_state$region <- sapply(total_affected_state$State, region_check)
+
+
+total_affected_state$region <- factor(total_affected_state$region, levels= region_levels)
+
+total_affected_state %>%
+  ggplot(aes(State, sum_indiv)) +
+  geom_col() +
+  coord_flip()+
+  labs(title = "Number of Individuals Affected in Breaches by State 
+       (in order of states with most individuals affected)")
+
+```
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+The boxplot does not appear to have a clear pattern, but there are a lot of outliers, indicating that there were many breaches that affected a large number of individuals. Looking at the bar graphs, the states with big well known cities have breaches that affect the most number of people. This could be due to chance since just one large breach could influence a state's total individuals affected, however the trend seems to be consistent for most of the states with big cities.  The outlier in this trend is Puerto Rico, which doesn't have a large city.   
+
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+There is a positive correlation between the states with big cities and the number of individuals affected. Overall however since States is not a measurable factor there is not a correlation.  Sorting by feature may lead to a stronger correlation by region. 
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+One approach at looking at correlation between categorical and continuous variables is from  "https://medium.com/@outside2SDs/an-overview-of-correlation-measures-between-categorical-and-continuous-variables-4c7f85610365".  
+
+The approach is to group the continuous variable using the categorical variable, measure the variance in each group and comparing it to the overall variance of the continuous variable. If the variance after grouping falls down significantly, it means that the categorical variable can explain most of the variance of the continuous variable and so the two variables likely have a strong association. If the variables have no correlation, then the variance in the groups is expected to be similar to the original variance.
+
+These calculations were done and can be seen in the data frames state_and_indiv and indiv_summary.  Overall I would say there is minimal correlation because the variance for just the indivuals affected variable is 51920099070, and when breaches is grouped by region, northeast, westcoast, and other variances decrease, but midwest and south increase. Therefore grouping by region has a minimal correlation on the Individuals Affected data.   
+
+```{r}
+state_and_indiv <- breaches %>%
+  group_by(region) %>%
+  summarize(sd = sd(Individuals_Affected))
+
+state_and_indiv %>%
+  mutate(var = sd^2)
+
+indiv_summary <- breaches %>%
+  summarize(sd = sd(Individuals_Affected))
+
+indiv_summary %>%
+  mutate(var = sd^2)
+```
+
+
+**- Discuss what other variables might affect the relationship**
+Some other variables that may affect the relationship between State and Individuals Affected are type, length of breach, year, and location of breached information, all of which are being explored by other members.  
+
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+Looking at whether the breach was below 20,000 people affected or above, gives new insight into the relationship between State and Individuals affected.  In the small breaches, WY and LA and PR all stand out with a box plot that has a median higher than the other states.  In just the large breaches VA, GA, FL, IL, MA, CA and TN are all positively skewed in the large breach, meaning they have breaches with a larger variation above the median. 
+
+
+```{r fig.height=10, fig.align= "center"}
+small_breach <- breaches %>%
+  filter(large_affected == FALSE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Small Breach: Less than 20,000 Affected")
+
+large_breach <- breaches %>%
+  filter(large_affected == TRUE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot()+
+  coord_flip() +
+  labs(title = "Large Breach: More than 20,000 Affected")
+
+small_breach
+large_breach
+```
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+Converting the State to a factor, called region we are able to explore how the distribution and total number of individuals affected changes by region.
+
+```{r}
+small_breach_region <- breaches %>%
+  filter(large_affected == FALSE) %>%
+  ggplot(aes(x=region, y=Individuals_Affected)) +
+  geom_boxplot() +
+  coord_flip() +
+  labs(title = "Small Breach: Less than 20,000 Affected")
+
+large_breach_region <- breaches %>%
+  filter(large_affected == TRUE) %>%
+  ggplot(aes(x=region, y=Individuals_Affected)) +
+  geom_boxplot()+
+  coord_flip() +
+  labs(title = "Large Breach: More than 20,000 Affected")
+
+
+region_bar <- total_affected_state %>%
+  ggplot(aes(x=region, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Bar")
+
+ggarrange(small_breach_region, large_breach_region, nrow = 2)
+region_bar
+```
+In small breaches, the other states have a higher median value than the other regions, however the total number of individuals affected is the lowest.  The south's distribution has the most variation in the large breaches and also has the highest total number of individuals affected. 
+
+```{r}
+northeast_states <- breaches %>%
+  filter(northeast == TRUE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "All Breaches in Northeast")
+
+large_northeast_states <- breaches %>%
+  filter(northeast == TRUE, large_affected == TRUE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Large Breaches in Northeast")
+
+small_northeast_states <- breaches %>%
+  filter(northeast == TRUE, large_affected == FALSE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Small Breaches in Northeast")
+
+northeast_bar <- total_affected_state %>%
+  filter(region == "northeast") %>%
+  ggplot(aes(x=State, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Bar")
+
+northeast_states
+large_northeast_states
+small_northeast_states
+northeast_bar
+ 
+
+```
+New Jersey has the highest median of individuals affected for large breaches, but does not stand out in small breaches. New York does not stand out in either small or large breaches, however it does have an extremely large outlier value, which makes it the largest total number of individuals affected. 
+
+```{r}
+westcoast_states <- breaches %>%
+  filter(westcoast == TRUE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "All Breaches in Westcoast")
+
+large_westcoast_states <- breaches %>%
+  filter(westcoast == TRUE, large_affected == TRUE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Large Breaches in Westcoast")
+
+small_westcoast_states <- breaches %>%
+  filter(westcoast == TRUE, large_affected == FALSE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Small Breaches in Westcoast")
+
+westcoast_bar <- total_affected_state %>%
+  filter(region == "westcoast") %>%
+  ggplot(aes(x=State, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Total Indivduals Affected by State in Westcoast")
+
+westcoast_states
+large_westcoast_states
+small_westcoast_states
+westcoast_bar
+```
+There are not many large breaches on the westcoast, with CA as the exception, having 3 outlier breaches that lead to CA having the highest total number of individuals affected on the Westcoast. Overall the small breaches have a median of slightly below 2500 indivuals affected, with ID and WY standing out and having a higher median.  However both ID and WY are two of the lowest total number of individuals affected.  
+
+```{r}
+midwest_states <- breaches %>%
+  filter(midwest == TRUE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "All Breaches in midwest")
+
+large_midwest_states <- breaches %>%
+  filter(midwest == TRUE, large_affected == TRUE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Large Breaches in midwest")
+
+small_midwest_states <- breaches %>%
+  filter(midwest == TRUE, large_affected == FALSE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Small Breaches in midwest")
+
+midwest_bar <- total_affected_state %>%
+  filter(region == "midwest") %>%
+  ggplot(aes(x=State, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Total Indivduals Affected by State in midwest")
+
+midwest_states
+large_midwest_states
+small_midwest_states
+midwest_bar
+```
+In the small breaches, there are many outlier values, but no states median is significantly higher than any of the others.  SD is the exception, but there is only one small breach and that value is therefore the median. IL stands out in the large breaches, having the widest distribution and the largest outlier value.  IL is significantly higher in the total number of individuals affected.
+
+```{r}
+south_states <- breaches %>%
+  filter(south == TRUE) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "All Breaches in south")
+
+large_south_states <- breaches %>%
+  filter(south == TRUE, large_affected == TRUE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Large Breaches in south")
+
+small_south_states <- breaches %>%
+  filter(south == TRUE, large_affected == FALSE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Small Breaches in south")
+
+south_bar <- total_affected_state %>%
+  filter(region == "south") %>%
+  ggplot(aes(x=State, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Total Indivduals Affected by State in south")
+
+south_states
+large_south_states
+small_south_states
+south_bar
+```
+In the south the top 5 states by total individuals affected are VA, FL, TN, TX, and AL, all of which have distribution that are more spread out in large breaches, other than TX.  Texas does have 2 outlier values in the large breaches that bring the total individuals affected up.  In smaller breaches, LA has a higher median, but the total number of individuals affected is one of the lowest in the south.
+
+```{r}
+other_states <- breaches %>%
+  filter(region == "other") %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "All Breaches in other states")
+
+large_other_states <- breaches %>%
+  filter(region == "other", large_affected == TRUE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Large Breaches in other states")
+
+small_other_states <- breaches %>%
+  filter(region == "other", large_affected == FALSE ) %>%
+  ggplot(aes(x=State, y=Individuals_Affected)) +
+  geom_boxplot() + 
+  coord_flip() +
+  labs(title = "Small Breaches in other states")
+
+other_bar <- total_affected_state %>%
+  filter(region == "other") %>%
+  ggplot(aes(x=State, y=sum_indiv)) +
+  geom_col()+
+  coord_flip() +
+  labs(title = "Total Indivduals Affected by State in other states")
+
+other_states
+large_other_states
+small_other_states
+other_bar
+```
+The only state that truly plays a role in breaches in other is PR, which has some outlier individuals affected in the large breach, that brings the total number of individuals up.  HI only had 1 breach and it was a small breach. 
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
+The state of the breach does affect the number of individuals affected by the breach.  The states with the most individuals affected have a large city associated with them, Virginia(Virginia Beach, Arlington), CA (Los Angles, San Francisco), IL (Chicago), FL(Miami and Tampa), NY(New York City), TN(Nashville), TX(Houston, San Antonio, Dallas, Austin), AL(Birmingham), MA(Boston), NJ(Newark), UT(Salt Lake City). PR which is a territory breaks this trend. Since most of the breaches were in the medical field, states with large cities have larger populations and therefore have more opportunity to affect more individuals. 
+
 
