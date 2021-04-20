@@ -75,6 +75,14 @@ ggplot(data = breach, mapping = aes(x = Type_of_Breach, y = Individuals_Affected
   coord_flip() +
   ylim(0,100000)
 ```
+```{r}
+ggplot(breach, aes(x=Type_of_Breach, y=Individuals_Affected)) +
+  geom_bar(stat="identity") +
+  labs(x= 'Type of Breach', y= 'Individuals affected') +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_flip()
+```
+
 
 
 
@@ -141,4 +149,22 @@ the data is skewed to the right - there are a large number of flights with small
 - Summarize your findings about the questions you asked at the beginning. 
 
 - Discuss if you have enough evidence to make a conclusion about your analysis. 
+
+```{r}
+library(modelr)
+mod <- lm(Individuals_Affected ~ Type_of_Breach, data = breach)
+
+grid <- breach %>% 
+  data_grid(Type_of_Breach) %>% 
+  add_predictions(mod, "Individuals_Affected")
+
+ggplot(breach, aes(Type_of_Breach, Individuals_Affected)) + 
+  geom_boxplot() +
+  geom_point(data = grid, colour = "red", size = 4) +
+  theme(axis.text.x = element_text(angle = 90)) +
+  coord_flip()+
+  ylim(0,100000)
+  
+```
+
 
