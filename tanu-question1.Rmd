@@ -1,0 +1,143 @@
+---
+title: "question1"
+author: "tanu roy"
+date: "4/22/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+library(tidyverse)
+```
+
+
+# Step 1. Describe the main question you are testing.
+What, if any, is the correlation between the location of the breach and the number of individuals affected?
+
+
+# Step 2. Identify the variables that are relevant to the question.
+- What are the types of those variables? How do you determine that?
+
+
+
+- Describe why those variables may be relevant to this question and why other variables are not relevant 
+
+
+# Step 3. Search for evidence by visualising, transforming, and modeling your data
+(Check RDS 3, 5, 7.3, 7.4, 7.5, 7.6 for ideas and inspiration)
+
+
+## 3.1 What type of variation occurs within each variable? 
+Pick one variable and test the following:
+
+### 3.1.1 Variable 1 (dep_delay, arr_delay)
+```{r}
+```
+
+
+#### 3.1.1.1 Visualising distributions (Barcharts, Histograms, etc.) (RDS 7, RDS 3) -Qinyuan
+
+- What chart is appropriate for this variable? Why?
+
+
+- Which values are the most common? Why? 
+
+- Which values are rare? Why? Does that match your expectations? 
+
+- Can you see any unusual patterns? What might explain them? 
+
+```{r}
+
+```
+```{r}
+
+```
+
+
+
+
+#### 3.1.1.2 Unusual values (RDS 7, 5.2)
+
+- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
+
+- Describe and demonstrate how you determine if they are outliers. 
+
+- Show how do your distributions look like with and without the unusual values. 
+
+- Discuss whether or not you need to remove unusual values and why. 
+
+
+
+
+
+#### 3.1.1.3 Missing values (RDS 5.2.3) 
+
+- Does this variable include missing values? Demonstrate how you determine that. 
+
+- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc. 
+
+- Show how your data looks in each case after handling missing values. Describe and discuss the distribution. 
+
+#### 3.1.1.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (RDS 7) 
+
+- What type can the variable be converted to? 
+
+- How will the distribution look? Please demonstrate with appropriate plots.
+
+#### 3.1.1.5 What new variables do you need to create from this? (RDS 5.5, 5.6, 5.7)
+
+- List the variables
+
+- Describe and discuss why they are needed and how you plan to use them. 
+
+## 3.2. What type of covariation occurs between the two variables? (RDS 7)
+
+### 3.2.1 Between a categorical and continuous variable or between two categorical variables or between two continuous variables -Julia
+
+- Describe what type of visualization you can use and why.
+It is a categorical(airports) vs continuous(delay time)
+
+- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?
+
+- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)
+
+- Calculate the strength of the relationship implied by the pattern (e.g., correlation) 
+
+- Discuss how the observed patterns support/reject your hypotheses or answer your questions.
+
+A histogram should be used to visualize the data - can handle continuous data types
+the data is skewed to the right - there are a large number of flights with small delays, shifting down to a lower delay time
+
+
+# Step 4. Summarize your findings 
+
+- Summarize your findings about the questions you asked at the beginning. 
+
+- Discuss if you have enough evidence to make a conclusion about your analysis. 
+
+```{r}
+
+  
+```
