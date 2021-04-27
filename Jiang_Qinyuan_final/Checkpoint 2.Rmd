@@ -58,3 +58,20 @@ missing
 
 - Discuss if you have enough evidence to make a conclusion about your analysis. (5 points)
   There is not enough data as the data stops at 2014 and starts roughly at 2005 with a few data points from prior to 2005. 
+
+#Modeling
+```{r}
+library(modelr)
+mod <- lm(freq ~ year, data = number_of_breaches)
+summary(mod)
+```
+```{r}
+range <- number_of_breaches %>% 
+  filter(year > 2009 & year < 2014) %>%
+  add_predictions(mod, "freq1") 
+
+ggplot(number_of_breaches, aes(year, freq)) +
+  geom_col() +
+  geom_line(data = range, colour = "red", size = 1)
+```
+
