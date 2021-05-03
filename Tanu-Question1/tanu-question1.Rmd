@@ -1,0 +1,340 @@
+---
+title: "The relationship between location of breach and the number of individuals affected"
+author: "Tanu Roy"
+date: "5/3/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+```
+
+
+```{r}
+breach_data <- read_csv('C:\Users\tanu roy\OneDrive\Desktop\SYS2202\cyber-security-final',
+                     col_types = cols(
+                      Location_of_Breach = col_factor(),
+                      Individuals_Affected = col_integer()
+                     )
+                  )
+```
+```{r}
+head(breach_data)
+```
+
+### 3.1.3 Location of Breach Variable 
+
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+
+```
+
+
+**- Which values are the most common? Why?** 
+
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+
+**- Can you see any unusual patterns? What might explain them?**
+
+
+**- Are there clusters in the data? If so,**
+
+
+  **- How are the observations within each cluster similar to or different from each other?**
+
+  
+  **- How can you explain or describe the clusters?**
+
+
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+
+
+```{r}
+
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+
+```{r}
+
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+
+
+```{r}
+
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+
+ 
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+ 
+
+**- What type can the variable be converted to?**
+
+
+
+```{r}
+
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+
+
+```{r}
+
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+
+
+**- List the variables**
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+
+
+
+
+```{r}
+
+```
+### 3.1.3 Individuals_affected Variable  
+
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+
+```
+
+
+**- Which values are the most common? Why?** 
+
+
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+
+
+```{r}
+
+```
+
+
+**- Can you see any unusual patterns? What might explain them?**
+
+
+**- Are there clusters in the data? If so,**
+
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+ 
+  
+  **- How can you explain or describe the clusters?**
+
+ 
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+
+```{r}
+
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+
+```{r}
+
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+
+```{r}
+
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+
+
+```{r}
+
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+ 
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+
+
+**- What type can the variable be converted to?**
+
+
+```{r}
+
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+
+```{r}
+
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+
+
+**- List the variables**
+
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+
+
+
+## 3.2. What type of covariation occurs between the variables? (30 points)
+If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
+
+### 3.2.1 Between a categorical and continuous variable (10 points)
+
+**- Describe what type of visualization you can use and why.**
+
+```{r fig.height=10, fig.align= "center"}
+
+```
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+
+
+```{r}
+
+```
+
+
+**- Discuss what other variables might affect the relationship**
+  
+
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+
+
+```{r fig.height=10, fig.align= "center"}
+
+```
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+
+```{r}
+
+```
+
+
+```{r}
+
+ 
+```
+
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+
+```
+
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
