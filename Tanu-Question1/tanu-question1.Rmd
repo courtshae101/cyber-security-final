@@ -14,48 +14,57 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(ggpubr)
+library()
 ```
 
 
 ```{r}
-breach_data <- read_csv('C:\Users\tanu roy\OneDrive\Desktop\SYS2202\cyber-security-final',
-                     col_types = cols(
-                      Location_of_Breach = col_factor(),
-                      Individuals_Affected = col_integer()
-                     )
-                  )
+breach_data <- read_csv('C:/Users/tanu roy/OneDrive/Desktop/SYS2202/cyber-security-final/Tanu-Question1/Cyber Security Breaches.csv')
+
+location_levels <- c('Paper', 'Laptop', 'Desktop Computer', 'Network Server', 'Other', 'E-mail, Other Portable Electronic Device' , 'Other Portable Electronic Device, Other', 'Other Portable Electronic Device', 'Electronic Medical Record' ,'Other, Electronic Medical Record', 'Laptop, Network Server, E-mail', 'Laptop, E-mail, Other Portable Electronic Device' , 'Laptop, Desktop Computer', 'Laptop Computer')
+location <- factor(breach_data$Location_of_Breached_Information, levels = location_levels)
+                     
+
 ```
 ```{r}
 head(breach_data)
 ```
 
-### 3.1.3 Location of Breach Variable 
+### 3.1.3 Location of Breached Information Variable 
 
 
 #### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
 
 ```{r}
+col_types = cols( 
+  Individuals_Affected = col_integer(),
+  Location_of_Breached_Information = col_factor()
+  )
+location_bargraph <- breach_data %>%
+  mutate(location_graph = location %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
+location_bargraph
 
 ```
 
 
 **- Which values are the most common? Why?** 
-
+The most common location of breached information is those stolen in a paper format.
 
 **- Which values are rare? Why? Does that match your expectations?** 
-
+In this data set, the rarest values are electronic medical devices and breaches where several types of information are located (such as a breach where a desktop and several laptops were stolen). This matches expectations as hospitals and other areas that utilize medical devices are under oath to protect patient confidentiality (HIPAA). 
 
 **- Can you see any unusual patterns? What might explain them?**
-
+There are no unusual patterns in this column. 
 
 **- Are there clusters in the data? If so,**
-
+Since this a bar graph of independent factors within our variable, any clusters are due to how the graph has been ordered and not due to a specific reason causing said clusters. 
 
   **- How are the observations within each cluster similar to or different from each other?**
-
+See above
   
   **- How can you explain or describe the clusters?**
-
+See above
 
   
 #### 3.1.2.2 Unusual values (2 points) 
