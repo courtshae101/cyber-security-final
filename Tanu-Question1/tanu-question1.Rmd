@@ -1,0 +1,359 @@
+---
+title: "The relationship between location of breach and the number of individuals affected"
+author: "Tanu Roy"
+date: "5/3/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(ggpubr)
+library()
+```
+
+
+```{r}
+breach_data <- read_csv('C:/Users/tanu roy/OneDrive/Desktop/SYS2202/cyber-security-final/Tanu-Question1/Cyber Security Breaches.csv')
+levels <- unique(breach_data$Location_of_Breached_Information, incompareables= FALSE)
+location_levels <- c(levels)
+location <- factor(breach_data$Location_of_Breached_Information, levels = location_levels)
+                     
+
+```
+```{r}
+head(breach_data)
+```
+
+### 3.1.3 Location of Breached Information Variable 
+
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+col_types = cols( 
+  Individuals_Affected = col_integer(),
+  Location_of_Breached_Information = col_factor()
+  )
+location_bargraph <- breach_data %>%
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=16)) + geom_bar() + theme(axis.text = element_text(size=rel(0.5))) 
+location_bargraph
+
+location_scatter <- breach_data %>%
+  ggplot(aes(x=location)) + geom_dotplot() +  scale_x_discrete(guide = guide_axis(n.dodge=20)) + ylim(0, 250)
+location_scatter
+#mutate(location_graph = location %>% fct_infreq() %>% fct_rev())
+```
+
+
+**- Which values are the most common? Why?** 
+The most common location of breached information is those stolen in a paper format.The second most common are laptops. This can be explained by the fact that paper is hard to secure. It can be left lying around or it could be in an easy to breach storage system like an unlocked file cabinet. Compared to locations like electronic medical records which are most likely encrypted and stored in difficult areas, paper is the most definitely the easiest to breach.
+
+**- Which values are rare? Why? Does that match your expectations?** 
+In this data set, the rarest values are electronic medical devices and breaches where several types of information are located (such as a breach where a desktop and several laptops were stolen). This matches expectations as hospitals and other areas that utilize medical devices are under oath to protect patient confidentiality (HIPAA). The other type, where several mediums of information are stolen, also is not surprising. Breaching one type of location seems like an onerous task, so multiple locations in one breach must be rare. 
+
+**- Can you see any unusual patterns? What might explain them?**
+There are no unusual patterns in this column. 
+
+**- Are there clusters in the data? If so,**
+Since this a bar graph of independent factors within our variable, any clusters are due to how the graph has been ordered and not due to a specific reason causing said clusters. 
+
+  **- How are the observations within each cluster similar to or different from each other?**
+See above
+  
+  **- How can you explain or describe the clusters?**
+See above
+```{r}
+
+```
+
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+```{r}
+location_bargraph <- breach_data %>%
+  mutate(location_graph = location %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
+location_bargraph
+```
+There are no unusual values such as negatives or values that are exponentially (or some other factor) larger than the rest. 
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+
+
+```{r}
+location_count <- breach_data %>%
+  group_by(Location_of_Breached_Information) %>%
+  count()
+location_count
+
+boxplot.stats(location_count)$out
+
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+The distribution looks the same since there are no unusual values. 
+
+```{r}
+
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+NO values need to be removed since none are unusual.
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+This variable has no missing values. This is determined by using a data frame that can provide a number of how many NA values there are as well as what type (TRUE OR FALSE). The data frame says that there are 1055 values in this variable and all are FALSe, meaning there are no missing values. 
+
+
+```{r}
+missing_values <- is.na(breach_data$Location_of_Breached_Information)
+
+number_of_missing_values <- as.data.frame(table(missing_values))
+number_of_missing_values
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+There are no missing values
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+The data is unchanged since there are no missing values. 
+ 
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+ 
+
+**- What type can the variable be converted to?**
+The variable is already converted to a factor with levels.
+
+
+```{r}
+
+```
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+
+
+```{r}
+
+```
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+I would need to create new variables that allow for a separation between those that are grouped together already, those that are "other" and combined with another type of location. 
+
+**- List the variables**
+Upon analysis, creating just one variable that allows us to just see the single location types such as just paper, or just laptops was sufficient. Fortunately, I explored this variable first and it allowed me to understand that the remaining breaches that were located in more that one place such as a breach where paper, laptops, and e-mails were breached all together was labeled as "NA" in my first bar graph (seen below). There is no need to create anymore variables. I decided to single out the singles as these types were the top most common types
+
+```{r}
+
+```
+
+
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+Explained above.
+
+
+
+```{r}
+
+singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
+location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
+
+
+
+
+breach_data 
+
+
+
+breach_data %>%
+  ggplot(aes(x=location_singles, y=Individuals_Affected, fill = location_singles)) +geom_col()
+```
+
+
+
+
+### 3.1.3 Individuals_affected Variable  
+
+
+#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+
+```{r}
+#histogram <- breach_data %>%
+  #ggplot(aes(x=Individuals_Affected)) + geom_boxplot()
+#histogram
+
+boxplot <- breach_data %>%
+  ggplot(aes(x=Individuals_Affected)) +geom_boxplot() + xlim(0, 20000)
+boxplot
+
+
+histogram <- breach_data %>%
+  ggplot(aes(x=Individuals_Affected)) + geom_histogram() + xlim(0, 20000)
+histogram
+```
+
+
+**- Which values are the most common? Why?** 
+
+
+
+**- Which values are rare? Why? Does that match your expectations?** 
+
+
+
+```{r}
+
+```
+
+
+**- Can you see any unusual patterns? What might explain them?**
+
+
+**- Are there clusters in the data? If so,**
+
+
+  **- How are the observations within each cluster similar to or different from each other?**
+  
+ 
+  
+  **- How can you explain or describe the clusters?**
+
+ 
+  
+#### 3.1.2.2 Unusual values (2 points) 
+
+**- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
+
+
+```{r}
+
+```
+
+
+**- Describe and demonstrate how you determine if they are outliers.**
+
+
+```{r}
+
+```
+
+**- Show how do your distributions look like with and without the unusual values.**
+
+
+```{r}
+
+```
+
+**- Discuss whether or not you need to remove unusual values and why.**
+
+#### 3.1.2.3 Missing values (2 points)
+
+**- Does this variable include missing values? Demonstrate how you determine that.**
+
+
+
+```{r}
+
+```
+
+**- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
+
+**- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
+
+ 
+
+#### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
+
+
+
+**- What type can the variable be converted to?**
+
+
+**- How will the distribution look? Please demonstrate with appropriate plots.**
+
+
+
+#### 3.1.2.5 What new variables do you need to create?  (3)
+
+
+**- List the variables**
+
+
+**- Describe and discuss why they are needed and how you plan to use them.**
+
+
+
+## 3.2. What type of covariation occurs between the variables? (30 points)
+If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
+
+### 3.2.1 Between a categorical and continuous variable (10 points)
+```{r}
+#affected_location <- breach_data %>%
+  #group_by(location_singles) %>%
+  #summarize(individuals = sum(Individuals_Affected))
+#affected_location$singles= with(affected_location, reorder(location_singles, individuals))
+
+
+
+#affected_location %>% 
+ # ggplot(aes(x= Location_of_Breached_Information, y= individuals)) + geom_col()+  scale_x_discrete(guide = guide_axis(n.dodge=20))
+
+
+
+#affected_location %>% 
+ # ggplot(aes(x= Location_of_Breached_Information, y= individuals)) + geom_boxplot()+  scale_x_discrete(guide = guide_axis(n.dodge=20))
+
+
+
+
+affected_location %>%
+  ggplot(aes(x=location_singles, y=individuals)) +geom_col()
+
+
+
+
+```
+
+
+**- Describe what type of visualization you can use and why.**
+
+
+**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
+
+
+**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
+
+
+**- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
+
+
+
+
+**- Discuss what other variables might affect the relationship**
+  
+
+
+**- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
+
+
+
+
+**- Demonstrate if converting the type of these variables help exploring the relationship.**
+
+
+**- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**

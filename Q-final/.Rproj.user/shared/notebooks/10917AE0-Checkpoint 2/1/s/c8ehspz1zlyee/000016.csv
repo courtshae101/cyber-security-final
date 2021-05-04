@@ -1,4 +1,0 @@
-"0","ggplot(number_of_breaches, aes(year, freq)) +
-  geom_histogram(stat = ""identity"")
-"
-"2","Ignoring unknown parameters: binwidth, bins, pad"
