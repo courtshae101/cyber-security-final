@@ -20,8 +20,8 @@ library()
 
 ```{r}
 breach_data <- read_csv('C:/Users/tanu roy/OneDrive/Desktop/SYS2202/cyber-security-final/Tanu-Question1/Cyber Security Breaches.csv')
-
-location_levels <- c('Paper', 'Laptop', 'Desktop Computer', 'Network Server', 'Other', 'E-mail, Other Portable Electronic Device' , 'Other Portable Electronic Device, Other', 'Other Portable Electronic Device', 'Electronic Medical Record' ,'Other, Electronic Medical Record', 'Laptop, Network Server, E-mail', 'Laptop, E-mail, Other Portable Electronic Device' , 'Laptop, Desktop Computer', 'Laptop Computer')
+levels <- unique(breach_data$Location_of_Breached_Information, incompareables= FALSE)
+location_levels <- c(levels)
 location <- factor(breach_data$Location_of_Breached_Information, levels = location_levels)
                      
 
@@ -42,17 +42,17 @@ col_types = cols(
   )
 location_bargraph <- breach_data %>%
   mutate(location_graph = location %>% fct_infreq() %>% fct_rev()) %>%
-  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=16)) + geom_bar() + theme(axis.text = element_text(size=rel(0.5))) 
 location_bargraph
 
 ```
 
 
 **- Which values are the most common? Why?** 
-The most common location of breached information is those stolen in a paper format.
+The most common location of breached information is those stolen in a paper format.The second most common are laptops. This can be explained by the fact that paper is hard to secure. It can be left lying around or it could be in an easy to breach storage system like an unlocked file cabinet. Compared to locations like electronic medical records which are most likely encrypted and stored in difficult areas, paper is the most definitely the easiest to breach.
 
 **- Which values are rare? Why? Does that match your expectations?** 
-In this data set, the rarest values are electronic medical devices and breaches where several types of information are located (such as a breach where a desktop and several laptops were stolen). This matches expectations as hospitals and other areas that utilize medical devices are under oath to protect patient confidentiality (HIPAA). 
+In this data set, the rarest values are electronic medical devices and breaches where several types of information are located (such as a breach where a desktop and several laptops were stolen). This matches expectations as hospitals and other areas that utilize medical devices are under oath to protect patient confidentiality (HIPAA). The other type, where several mediums of information are stolen, also is not surprising. Breaching one type of location seems like an onerous task, so multiple locations in one breach must be rare. 
 
 **- Can you see any unusual patterns? What might explain them?**
 There are no unusual patterns in this column. 
@@ -65,6 +65,9 @@ See above
   
   **- How can you explain or describe the clusters?**
 See above
+```{r}
+
+```
 
   
 #### 3.1.2.2 Unusual values (2 points) 
@@ -72,45 +75,57 @@ See above
 **- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
 
 ```{r}
-
+location_bargraph <- breach_data %>%
+  mutate(location_graph = location %>% fct_infreq() %>% fct_rev()) %>%
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
+location_bargraph
 ```
-
+There are no unusual values such as negatives or values that are exponentially (or some other factor) larger than the rest. 
 
 **- Describe and demonstrate how you determine if they are outliers.**
 
 
 
 ```{r}
+location_count <- breach_data %>%
+  group_by(Location_of_Breached_Information) %>%
+  count()
+location_count
+
+boxplot.stats(location_count)$out
 
 ```
 
 **- Show how do your distributions look like with and without the unusual values.**
-
+The distribution looks the same since there are no unusual values. 
 
 ```{r}
 
 ```
 
 **- Discuss whether or not you need to remove unusual values and why.**
-
+NO values need to be removed since none are unusual.
 
 #### 3.1.2.3 Missing values (2 points)
 
 **- Does this variable include missing values? Demonstrate how you determine that.**
-
+This variable has no missing values. This is determined by using a data frame that can provide a number of how many NA values there are as well as what type (TRUE OR FALSE). The data frame says that there are 1055 values in this variable and all are FALSe, meaning there are no missing values. 
 
 
 ```{r}
+missing_values <- is.na(breach_data$Location_of_Breached_Information)
 
+number_of_missing_values <- as.data.frame(table(missing_values))
+number_of_missing_values
 ```
 
 **- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
 
-
+There are no missing values
 
 **- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
 
-
+The data is unchanged since there are no missing values. 
  
 
 #### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
@@ -134,7 +149,7 @@ See above
 ```
 
 #### 3.1.2.5 What new variables do you need to create?  (3)
-
+I would need to create new variables that allow for a seperation between those that are grouped together already, those that are "other" and combined with another type of location, 
 
 **- List the variables**
 
