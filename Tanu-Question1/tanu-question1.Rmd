@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 library(ggpubr)
-library()
+library(forcats)
 ```
 
 
@@ -79,7 +79,7 @@ See above
 
 ```{r}
 location_bargraph <- breach_data %>%
-  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
+  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=22)) + geom_bar() + scale_fill_brewer(palette = "Dark2") + theme(aspect.ratio=1/15) 
 location_bargraph
 ```
 There are no unusual values such as negatives or values that are exponentially (or some other factor) larger than the rest. 
@@ -94,7 +94,7 @@ location_count <- breach_data %>%
   count()
 location_count
 
-boxplot.stats(location_count)$out
+#boxplot.stats(location_count)$out
 
 ```
 
@@ -316,30 +316,50 @@ This separates the individuals_affected variable into two, a split at its mean p
 If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
 
 ### 3.2.1 Between a categorical and continuous variable (10 points)
+
+
 ```{r}
-below <- select(filter(breach_data, breach_data$Individuals_Affected < 258121.8), c(Individuals_Affected))
-
-above <- select(filter(breach_data, breach_data$Individuals_Affected > 258121.8), c(Individuals_Affected))
-
 
 singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
 location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
 
 
-breach_data$below <-below
-breach_data
+breach_data %>%
+  ggplot(aes(x=location_singles, y=log10(Individuals_Affected), fill =location_singles)) +geom_col() + ggtitle("Relationship between individuals affected and type of breach location") +  scale_x_discrete(guide = guide_axis(n.dodge=2))+
+  xlab("Breach Location") + ylab("log(Number of individuals affected") + labs(fill = "Breach location") +scale_fill_brewer(palette = "Dark2")
+
+```
 
 
-
+```{r}
+singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
+location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
 
 
 breach_data %>%
-  ggplot(aes(x=location_singles, y=Individuals_Affected, fill = location_singles)) +geom_col()
+  ggplot(aes(x=location_singles, y=Individuals_Affected, fill =location_singles)) +geom_col() + ggtitle("Relationship between total number of individuals affected and type of breach location") +  scale_x_discrete(guide = guide_axis(n.dodge=2)) + xlab("Breach Location") + ylab("Number of individuals affected") + labs(fill = "Breach location") + scale_fill_brewer(palette = "Dark2")
+
+```
+
+```{r}
+#mutate(breach_data, below = breach_data$Individuals_Affected <= 258121.8)
+
+singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
+location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
+
+
+```
+
+
+```{r}
+#below_data %>%
+ # filter(below == FALSE) %>%
+  #ggplot(breach_data, mapping= aes(x=location_singles, y= Individuals_Affected)) +geom_col()
+head(breach_data)
 
 
 
-breach_data %>% 
-  ggplot(aes(x=location_singles, y=below, fill =location_singles)) +geom_col()
+
 
 ```
 
