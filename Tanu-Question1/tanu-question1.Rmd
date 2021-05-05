@@ -169,18 +169,7 @@ Explained above.
 
 ```{r}
 
-singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
-location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
 
-
-
-
-
-
-
-
-breach_data %>%
-  ggplot(aes(x=location_singles, y=Individuals_Affected, fill = location_singles)) +geom_col()
 ```
 
 
@@ -209,36 +198,48 @@ histogram
 
 **- Which values are the most common? Why?** 
 
-THe most common are values on the lower end (a hypothesis would be that the )
+```{r}
+summary(breach_data$Individuals_Affected)
 
+
+quantile(breach_data$Individuals_Affected)
+
+sd(breach_data$Individuals_Affected)
+
+30262 +  227859.8
+
+
+```
+
+The least is 500 number of individuals affected. 
 **- Which values are rare? Why? Does that match your expectations?** 
-
+The maximum number of individuals affected is 4,900,000. 
 
 
 ```{r}
-head(breach_data)
+
 ```
 
 
 **- Can you see any unusual patterns? What might explain them?**
-
+I see a spike around 10,000 individuals affected. 
 
 **- Are there clusters in the data? If so,**
 There are no clusters.
 
   **- How are the observations within each cluster similar to or different from each other?**
-  
+  No clusters observed
  
   
   **- How can you explain or describe the clusters?**
-
+No clusters observed
  
   
 #### 3.1.2.2 Unusual values (2 points) 
 
 **- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
 
-
+There are no unusual values, all look like they could be explained given a summary of what happened during the breach.
 ```{r}
 
 ```
@@ -246,15 +247,28 @@ There are no clusters.
 
 **- Describe and demonstrate how you determine if they are outliers.**
 
-
+An outlier can be determined using the following method, which is a function that highlights which data points are outliers (using the interval provided by the interquartile range formula). Using this combined with changing it into a data frame allows us to see which values are outliers. 
 ```{r}
-
+outliers_indivduals_affected <- boxplot.stats(breach_data$Individuals_Affected)$out
+outliers_indivduals_affected_df <- data.frame(outliers_indivduals_affected)
+outliers_indivduals_affected_df
 ```
 
 **- Show how do your distributions look like with and without the unusual values.**
 
 
 ```{r}
+boxplot(breach_data$Individuals_Affected,
+  ylab = "individuals affected",
+  main = "Boxplot ofindividuals affected by the breach"
+)
+mtext(paste("Outliers: ", paste(outliers_indivduals_affected, collapse = ", ")))
+```
+
+```{r}
+breach_data %>%
+  ggplot(aes(x= Individuals_Affected)) + geom_boxplot() 
+  
 
 ```
 
@@ -263,7 +277,7 @@ There are no clusters.
 #### 3.1.2.3 Missing values (2 points)
 
 **- Does this variable include missing values? Demonstrate how you determine that.**
-
+There are no missing values
 
 
 ```{r}
@@ -271,60 +285,61 @@ There are no clusters.
 ```
 
 **- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
-
+No missing values
 **- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
 
- 
+ No difference
 
 #### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
 
-
+Since it is an integer, keeping it as a continuous variable is useful. 
 
 **- What type can the variable be converted to?**
-
+None that could help with my analysis
 
 **- How will the distribution look? Please demonstrate with appropriate plots.**
 
-
+See above
 
 #### 3.1.2.5 What new variables do you need to create?  (3)
 
 
 **- List the variables**
-
+individuals_affected_below_mean 
+individuals_affected_above_mean
 
 **- Describe and discuss why they are needed and how you plan to use them.**
 
-
+This separates the individuals_affected variable into two, a split at its mean plus one standard deviation. Looking at the data from two different perspectives might help us see later on if a certain type of location of breach is associated with a number of individuals affected that is higher than the at the split as well as lower than the split value.  I chose this value to split at as I did not want to let the outliers completely skew my data.
 
 ## 3.2. What type of covariation occurs between the variables? (30 points)
 If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
 
 ### 3.2.1 Between a categorical and continuous variable (10 points)
 ```{r}
-#affected_location <- breach_data %>%
-  #group_by(location_singles) %>%
-  #summarize(individuals = sum(Individuals_Affected))
-#affected_location$singles= with(affected_location, reorder(location_singles, individuals))
+below <- select(filter(breach_data, breach_data$Individuals_Affected < 258121.8), c(Individuals_Affected))
+
+above <- select(filter(breach_data, breach_data$Individuals_Affected > 258121.8), c(Individuals_Affected))
 
 
-
-#affected_location %>% 
- # ggplot(aes(x= Location_of_Breached_Information, y= individuals)) + geom_col()+  scale_x_discrete(guide = guide_axis(n.dodge=20))
-
+singles_levels = c("Desktop Computer" , "Other", "Laptop" , "Paper", "Network Server","E-mail")
+location_singles <- factor(breach_data$Location_of_Breached_Information, levels = singles_levels)
 
 
-#affected_location %>% 
- # ggplot(aes(x= Location_of_Breached_Information, y= individuals)) + geom_boxplot()+  scale_x_discrete(guide = guide_axis(n.dodge=20))
+breach_data$below <-below
+breach_data
 
 
 
 
-affected_location %>%
-  ggplot(aes(x=location_singles, y=individuals)) +geom_col()
+
+breach_data %>%
+  ggplot(aes(x=location_singles, y=Individuals_Affected, fill = location_singles)) +geom_col()
 
 
 
+breach_data %>% 
+  ggplot(aes(x=location_singles, y=below, fill =location_singles)) +geom_col()
 
 ```
 
