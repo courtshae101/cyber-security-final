@@ -77,9 +77,10 @@ See above
 
 **- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
 
-```{r}
+```{r fig.height=12}
 location_bargraph <- breach_data %>%
-  ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=22)) + geom_bar() + scale_fill_brewer(palette = "Dark2") + theme(aspect.ratio=1/15) 
+  ggplot(aes(x = location))  + geom_bar() +  scale_fill_brewer(palette = "Dark2") +coord_flip()
+
 location_bargraph
 ```
 There are no unusual values such as negatives or values that are exponentially (or some other factor) larger than the rest. 
@@ -100,10 +101,6 @@ location_count
 
 **- Show how do your distributions look like with and without the unusual values.**
 The distribution looks the same since there are no unusual values. 
-
-```{r}
-
-```
 
 **- Discuss whether or not you need to remove unusual values and why.**
 NO values need to be removed since none are unusual.
@@ -137,42 +134,16 @@ The data is unchanged since there are no missing values.
 The variable is already converted to a factor with levels.
 
 
-```{r}
-
-```
-
-
-**- How will the distribution look? Please demonstrate with appropriate plots.**
-
-
-
-```{r}
-
-```
-
 #### 3.1.2.5 What new variables do you need to create?  (3)
 I would need to create new variables that allow for a separation between those that are grouped together already, those that are "other" and combined with another type of location. 
 
 **- List the variables**
 Upon analysis, creating just one variable that allows us to just see the single location types such as just paper, or just laptops was sufficient. Fortunately, I explored this variable first and it allowed me to understand that the remaining breaches that were located in more that one place such as a breach where paper, laptops, and e-mails were breached all together was labeled as "NA" in my first bar graph (seen below). There is no need to create anymore variables. I decided to single out the singles as these types were the top most common types
 
-```{r}
-
-```
-
 
 
 **- Describe and discuss why they are needed and how you plan to use them.**
 Explained above.
-
-
-
-```{r}
-
-
-```
-
-
 
 
 ### 3.1.3 Individuals_affected Variable  
@@ -213,22 +184,17 @@ sd(breach_data$Individuals_Affected)
 
 The least is 500 number of individuals affected. 
 **- Which values are rare? Why? Does that match your expectations?** 
-The maximum number of individuals affected is 4,900,000. 
-
-
-```{r}
-
-```
+The maximum number of individuals affected is 4,900,000. This matches my expectations as a breach of this many affected individuals must be hard to achieve.
 
 
 **- Can you see any unusual patterns? What might explain them?**
-I see a spike around 10,000 individuals affected. 
+I see a spike around 10,000 individuals affected. There is not enough data in the dataset that could explain why a breach of 10k affected individuals is common.
 
 **- Are there clusters in the data? If so,**
 There are no clusters.
 
   **- How are the observations within each cluster similar to or different from each other?**
-  No clusters observed
+No clusters observed
  
   
   **- How can you explain or describe the clusters?**
@@ -273,7 +239,7 @@ breach_data %>%
 ```
 
 **- Discuss whether or not you need to remove unusual values and why.**
-
+These values are important as they could help us understand why certain breaches affect so many individuals.
 #### 3.1.2.3 Missing values (2 points)
 
 **- Does this variable include missing values? Demonstrate how you determine that.**
@@ -281,21 +247,24 @@ There are no missing values
 
 
 ```{r}
+missing_values <- is.na(breach_data$Individuals_Affected)
 
+number_of_missing_values <- data.frame(table(missing_values))
+number_of_missing_values
 ```
 
 **- Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.**
-No missing values
+No missing values as all 1055 values are FALSE.
 **- Show how your data looks in each case after handling missing values.Describe and discuss the distribution.** 
 
- No difference
+No difference
 
 #### 3.1.2.4 Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values? (3)
 
 Since it is an integer, keeping it as a continuous variable is useful. 
 
 **- What type can the variable be converted to?**
-None that could help with my analysis
+None that could help with my analysis.
 
 **- How will the distribution look? Please demonstrate with appropriate plots.**
 
@@ -364,31 +333,28 @@ head(breach_data)
 ```
 
 
-**- Describe what type of visualization you can use and why.**
-
-
-**- Describe the patterns and relationships you observe. Could the identified patterns be due to coincidence (i.e. random chance)?**
-
-
-**- Describe the relationship implied by the pattern? (e.g., positive or negative correlation)**
-
-
 **- Calculate the strength of the relationship implied by the pattern (e.g., correlation)**
 
+```{r}
+x <- breach_data$Location_of_Breached_Information
+y <- breach_data$Individuals_Affected
+ggplot(breach_data, aes(x,y)) 
+
+
+
+
+
+```
 
 
 
 **- Discuss what other variables might affect the relationship**
   
-
+Other variables that could affect this relationship could be state. Wealthier areas have access to more secure measures that affect less individuals compared to areas that are less wealthy and have less secure measures of storing data.
 
 **- Does the relationship change if you look at individual subgroups of the data? Please discuss and demonstrate.**
 
-
-
-
-**- Demonstrate if converting the type of these variables help exploring the relationship.**
-
+By looking at subgroups where we can just observe singular instances of location versus breaches where multiple locations were involved, we can easily understand the relationship between these two variables. 
 
 **- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
-Upon graphing just the first variable, location_of_breached_information, I assumed paper would be the type of breach location that affected individuals the most. Since it was the most common location of breach in our 
+Upon graphing just the first variable, location_of_breached_information, I assumed paper would be the type of breach location that affected individuals the most.We can also see that paper and laptop breaches are the most common types reported. Thus, it would make sense that the two types of breaches that are most common are also the two types that impact the most number of individuals. As to why paper and laptops are the most common, this can be attributed to the fact that paper can be easily absconded with as there are less robust security measures. Laptops, while they do have significantly more secure protocols for protecting information, can still be breached due to weak passwords, the fact that they are easily portable, and a variety of other reasons. Breaching the data in a laptop is still significantly easier than hacking a network server for example. The impact of network servers on the number of individuals is among the least relatively. When considering why these two types of breaches affect the most number of individuals, it’s important to understand that most data is stored in either of these two formats. Companies and organizations still record social security numbers, customer images and other information in files on their laptops, paper files, paper binders, et cetera. 
