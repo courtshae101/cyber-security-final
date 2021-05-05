@@ -47,7 +47,7 @@ location_bargraph
 location_scatter <- breach_data %>%
   ggplot(aes(x=location)) + geom_dotplot() +  scale_x_discrete(guide = guide_axis(n.dodge=20)) + ylim(0, 250)
 location_scatter
-#mutate(location_graph = location %>% fct_infreq() %>% fct_rev())
+
 ```
 
 
@@ -79,7 +79,6 @@ See above
 
 ```{r}
 location_bargraph <- breach_data %>%
-  mutate(location_graph = location %>% fct_infreq() %>% fct_rev()) %>%
   ggplot(aes(x = location)) + scale_x_discrete(guide = guide_axis(n.dodge=10)) + geom_bar() 
 location_bargraph
 ```
@@ -118,7 +117,7 @@ This variable has no missing values. This is determined by using a data frame th
 ```{r}
 missing_values <- is.na(breach_data$Location_of_Breached_Information)
 
-number_of_missing_values <- as.data.frame(table(missing_values))
+number_of_missing_values <- data.frame(table(missing_values))
 number_of_missing_values
 ```
 
@@ -176,7 +175,7 @@ location_singles <- factor(breach_data$Location_of_Breached_Information, levels 
 
 
 
-breach_data 
+
 
 
 
@@ -210,14 +209,14 @@ histogram
 
 **- Which values are the most common? Why?** 
 
-
+THe most common are values on the lower end (a hypothesis would be that the )
 
 **- Which values are rare? Why? Does that match your expectations?** 
 
 
 
 ```{r}
-
+head(breach_data)
 ```
 
 
@@ -225,7 +224,7 @@ histogram
 
 
 **- Are there clusters in the data? If so,**
-
+There are no clusters.
 
   **- How are the observations within each cluster similar to or different from each other?**
   
@@ -357,3 +356,4 @@ affected_location %>%
 
 
 **- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
+Upon graphing just the first variable, location_of_breached_information, I assumed paper would be the type of breach location that affected individuals the most. Since it was the most common location of breach in our 
