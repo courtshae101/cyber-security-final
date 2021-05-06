@@ -50,7 +50,6 @@ Top 5 Most reported cases:
 ggplot(breach, aes(x=Type_of_Breach, y=Individuals_Affected)) +
   geom_bar(stat="identity") +
   labs(x= 'Type of Breach', y= 'Individuals affected') +
-  theme(axis.text.x = element_text(angle = 90)) +
   coord_flip()
 ```
 Theft and Loss affected the most individuals overall
