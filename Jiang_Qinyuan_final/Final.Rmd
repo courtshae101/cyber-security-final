@@ -57,13 +57,11 @@ ggplot(number_of_breaches, aes(year, freq)) +
     
 
 #### 3.1.1.2 Unusual values (2 points)
+- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
 ```{r}
 ggplot(breaches, aes(x = year)) +
   geom_boxplot()
 ```
-
-
-- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
   
 - Describe and demonstrate how you determine if they are outliers. 
   I use a box plot to determine the outliers within this data.
