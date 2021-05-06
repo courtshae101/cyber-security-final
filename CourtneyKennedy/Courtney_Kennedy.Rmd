@@ -18,7 +18,7 @@ library(ggpubr)
 
 
 ```{r}
-breaches <- read_csv('C:/Users/student/Documents/SYS 2202/cyber-security-final/courtney-final-variables/Cyber Security Breaches (1).csv',
+breaches <- read_csv('Cyber Security Breaches (1).csv',
                      col_types = cols(
                       State = col_factor(),
                       Individuals_Affected = col_integer()
@@ -34,7 +34,7 @@ head(breaches)
 
 ## Visualizing Distribution of State Variable
 
-```{r}
+```{r fig.height=10, fig.align= "center"}
 state_bar <- breaches %>%
   mutate(State = State %>% fct_infreq() %>% fct_rev()) %>%
   ggplot(aes(x=State)) +
@@ -74,11 +74,11 @@ No there are no clusters in the data, all of the data is relatively evenly distr
 
   As mentioned above there are no clusters present.
   
-#### 3.1.2.2 Unusual values (2 points) 
+#### 3.1.2.2 Unusual values 
 
 **- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.**
 
-```{r}
+```{r fig.height=10, fig.align= "center"}
 breaches %>%
   mutate(State = State %>% fct_infreq() %>% fct_rev()) %>%
   ggplot(aes(x=State)) +
@@ -122,7 +122,7 @@ outlier_list
 
  With the outliers removed the distribution is made narrower with less variation. Since the largest state breach counts are removed overall the distribution becomes more similar throughout. 
 
-```{r}
+```{r fig.height=10, fig.align= "center"}
 outlier_state = c("TX", "CA", "FL")
 
 no_out_bar <- breaches %>%
@@ -150,7 +150,7 @@ ggarrange(no_out_bar, out_in_bar, ncol = 2)
 
 Since the largest values will provide d the most insight into why breaches are happeing at such a large rate in certain states they should not be removed. 
 
-#### 3.1.2.3 Missing values (2 points)
+#### 3.1.2.3 Missing values
 
 **- Does this variable include missing values? Demonstrate how you determine that.**
 
@@ -325,7 +325,8 @@ breaches$region <- factor(breaches$region, levels= region_levels)
 ```{r}
 breaches %>%
   ggplot(aes(x = region, y = Individuals_Affected, fill = region)) +
-  geom_col()
+  geom_col()+
+  ylab("Number of Individuals Affected by Breaches")
 ```
 
 
@@ -359,10 +360,10 @@ breaches %>%
 
 ggarrange(northeast_bar, midwest_bar, westcoast_bar, south_bar, nrow = 2, ncol = 2)
 ```
-### 3.1.3 Individuals_affected Variable  
+# Individuals_affected Variable  
 
 
-#### 3.1.2.1 Visualising distributions (Barcharts, Histograms) (5 points)
+## Visualising distributions (Barcharts, Histograms)
 
 ```{r}
 indiv_box <- breaches %>%
@@ -481,7 +482,7 @@ ggarrange(outliers_removed, outliers_included, nrow = 2)
 
 The unusual values should not be removed because since the high individuals affected values will most likely give the most insight into cyber security issues.  
 
-#### 3.1.2.3 Missing values (2 points)
+#### 3.1.2.3 Missing values
 
 **- Does this variable include missing values? Demonstrate how you determine that.**
 
@@ -539,7 +540,8 @@ From plotting the converted logical Individuals Affected variable as a bar graph
 ```{r}
 breaches %>%
   ggplot(aes(x=large_affected, fill = large_affected)) +
-  geom_bar()
+  geom_bar() +
+  labs(x = "Breach over 20,000 Individuals", title = "Distribution of large and small breaches")
 ```
 
 #### 3.1.2.5 What new variables do you need to create?  (3)
@@ -552,10 +554,10 @@ The new variable large_affected was created above and also explained above.
 Large_affected is needed to look at the outliers of the individuals affected and see if there is a trend with the large values and the states.  I plan to use the logical and see if there is a correlation with the state the breach occured in. 
 
 
-## 3.2. What type of covariation occurs between the variables? (30 points)
+## 3.2. What type of covariation occurs between the variables?
 If you don't have variables of a certain type in the original dataset or among the created variables (features), you can further create them from the existing variables. See RDS chap. 5, 7.5 and 7.6.
 
-### 3.2.1 Between a categorical and continuous variable (10 points)
+### 3.2.1 Between a categorical and continuous variable 
 
 **- Describe what type of visualization you can use and why.**
 A boxplot of State as a categorical variable and Individuals Affected as a continuous variable can be used.  Using the box plot makes it clear the spread of the data depending on each state of the US.  Boxplots are also compact and easier to compare the different states and the individuals affected distributions. A bar graph can also be used to look at the total number of individuals affected rather than the distribution by state. 
@@ -592,7 +594,7 @@ total_affected_state %>%
   geom_col() +
   coord_flip()+
   labs(title = "Number of Individuals Affected in Breaches by State 
-       (in order of states with most individuals affected)")
+       (in order of states with most individuals affected)", y="Total Number of Individuals Affected in Breaches")
 
 ```
 
@@ -638,7 +640,7 @@ Some other variables that may affect the relationship between State and Individu
 Looking at whether the breach was below 20,000 people affected or above, gives new insight into the relationship between State and Individuals affected.  In the small breaches, WY and LA and PR all stand out with a box plot that has a median higher than the other states.  In just the large breaches VA, GA, FL, IL, MA, CA and TN are all positively skewed in the large breach, meaning they have breaches with a larger variation above the median. 
 
 
-```{r fig.height=10, fig.align= "center"}
+```{r fig.height=7, fig.align= "center"}
 small_breach <- breaches %>%
   filter(large_affected == FALSE) %>%
   ggplot(aes(x=State, y=Individuals_Affected)) +
@@ -686,6 +688,8 @@ region_bar <- total_affected_state %>%
 ggarrange(small_breach_region, large_breach_region, nrow = 2)
 region_bar
 ```
+
+
 In small breaches, the other states have a higher median value than the other regions, however the total number of individuals affected is the lowest.  The south's distribution has the most variation in the large breaches and also has the highest total number of individuals affected. 
 
 ```{r}
@@ -893,8 +897,10 @@ total_affected_state_sorted$State <- factor(total_affected_state_sorted$State, l
 total_affected_state_sorted %>%
   ggplot(aes(State, normalized_state_indiv)) + 
   geom_col() + 
-  coord_flip()
+  coord_flip() +
+  ylab("Proportion of Region Affected by Breaches")
 ```
+
 By normalizing the individuals affected by the state population a better comparison of the breaches affects in a state.  Virginia, Puerto Rico, and Illinois are the states with the top percentage of individuals affected in their state.  Therefore in these states getting affected by a breach is more likely.  
 
 ```{r}
@@ -936,30 +942,41 @@ breaches <- breaches %>%
 
 ```{r}
 breaches %>%
+  ggplot(aes(x = region, y = normalized_indiv_affected, fill = region)) +
+  geom_col() +
+  ylab("Proportion of Region Affected by Breaches")
+```
+
+```{r}
+breaches %>%
   filter(large_affected == TRUE) %>%
   ggplot(aes(region, normalized_indiv_affected)) +
   geom_boxplot() +
-  labs(title = "Large breach -all")
+  labs(title = "Large breach -all")+
+  ylab("Proportion of Region Affected by Breaches")
 
 breaches %>%
   filter(large_affected == FALSE) %>%
   ggplot(aes(region, normalized_indiv_affected)) +
   geom_boxplot()+
-  labs(title = "Small breach -all")
+  labs(title = "Small breach -all")+
+  ylab("Proportion of Region Affected by Breaches")
 
 breaches %>%
   filter(large_affected == TRUE, region != "other") %>%
   ggplot(aes(region, normalized_indiv_affected)) +
   geom_boxplot()+
-  labs(title = "Large breach -no other")
+  labs(title = "Large breach -no other")+
+  ylab("Proportion of Region Affected by Breaches")
 
 breaches %>%
   filter(large_affected == FALSE, region != "other") %>%
   ggplot(aes(region, normalized_indiv_affected)) +
   geom_boxplot()+
-  labs(title = "Small breach -no other")
+  labs(title = "Small breach -no other")+
+  ylab("Proportion of Region Affected by Breaches")
 ```
-By normalizing the individuals by state population and then grouping into regions we can compare the affect of each breach by region.  The other region, which includes PR and HI, has a much higher percentage of their population being affected by breaches, for both large and small breaches.  To observe the distribution of the other regions of the US better I removed the other region, but overall there were not any strong trends in either the small breach or the large breach.  In small breaches, the northeast has a slightly higher distribution of percent of individuals affected by breaches, but nothing significant engough to make a claim about.  
+By normalizing the individuals by state population and then grouping into regions we can compare the affect of each breach by region.  The other region, which includes PR and HI, has a much higher percentage of their population being affected by breaches, seen in the bar chart and the boxplots.  To observe the distribution of the other regions of the US better I removed the other region, but overall there were not any strong trends in either the small breach or the large breach.  In small breaches, the northeast has a slightly higher distribution of percent of individuals affected by breaches, but nothing significant engough to make a claim about.  
 
 **- Discuss how the observed patterns support/reject your hypotheses or answer your questions.**
 The state of the breach does affect the number of individuals affected by the breach.  The states with the most individuals affected have a large city associated with them, Virginia(Virginia Beach, Arlington), CA (Los Angles, San Francisco), IL (Chicago), FL(Miami and Tampa), NY(New York City), TN(Nashville), TX(Houston, San Antonio, Dallas, Austin), AL(Birmingham), MA(Boston), NJ(Newark), UT(Salt Lake City). PR which is a territory breaks this trend. Since most of the breaches were in the medical field, states with large cities have larger populations and therefore have more opportunity to affect more individuals. Also looking at the distribution of normalized values for individuals affected, the states VA, PR, and IL stand out, as well as the other region, which includes PR and HI, for higher percentages of their population being affected by breaches.  From this analysis we can answer the question that if you are in a certain state if you are more likely to be affected by a breach, by saying if you are in VA, IL, HI, and especially PR you are more likely to be effected by a breach. 
@@ -978,6 +995,9 @@ breaches %>%
   ggplot(aes(region, Individuals_Affected)) +
   geom_boxplot()
 ```
+
+
+
 Fit the model and display its predictions overlaid on the orginial data
 
 ```{r}
@@ -1052,3 +1072,7 @@ ggplot(small_breaches, aes(region, normalized_indiv_affected)) +
 ```
 
 Overall the models do not do a good job of predicting the number of individuals affected by a breach, or the percentage of individuals affected out of a state population.  This is seen by all of the models only having a significant p value (represented by the 2 or 3 stars) for the other region.  The model that has the strongest significance is the normalized individuals affected and small data breaches by region, which has a 2 p values that are significant, for the southern region and other region. Since most of the p values are not statistically significant the models can not be accurately used to predict the individuals affected by region.
+
+## Conclusion 
+Based on the analysis of individuals affected in a breach by both state and region, Puerto Rico stands out in it’s vulnerability to attacks. While there are a few states that had very large breaches which increased their proportion of individuals affected, overall the proportion of Puerto Rico being affected by cyber attacks is much higher than any other state or region.  Looking at how to improve cybersecurity in the future, individuals’ information in Puerto Rico needs to be better protected.  Efforts should be made to improve the cybersecurity in Puerto Rico since they have such a large proportion of the individuals in the territory being affected by the breaches in security.  I expected there to be a trend between the Northeast region and having more breaches since a lot of big cities are in the Northeast, and therefore there is more opportunity for breaches to occur.  This trend did not occur, but this makes sense since many big cities have had to increase their cyber security as technology becomes more prevalent to protect the business in the cities.  Puerto Rico on the other hand does not have a big metropolitan area and therefore may lack the cyber security that comes with that growth, making them more vulnerable to cyber attacks. 
+

@@ -1,0 +1,2245 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+  \usepackage{amssymb}
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={State\_and\_indiv},
+  pdfauthor={Courtney},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{State\_and\_indiv}
+\author{Courtney}
+\date{4/5/2021}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.0.6     v dplyr   1.0.4
+## v tidyr   1.1.2     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggpubr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'ggpubr' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{\textquotesingle{}Cyber Security Breaches (1).csv\textquotesingle{}}\NormalTok{,}
+                     \AttributeTok{col\_types =} \FunctionTok{cols}\NormalTok{(}
+                      \AttributeTok{State =} \FunctionTok{col\_factor}\NormalTok{(),}
+                      \AttributeTok{Individuals\_Affected =} \FunctionTok{col\_integer}\NormalTok{()}
+\NormalTok{                     )}
+\NormalTok{                  )}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X1' [1]
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 14
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 8 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>
+\end{verbatim}
+
+\hypertarget{state-variable}{%
+\section{State Variable}\label{state-variable}}
+
+\hypertarget{visualizing-distribution-of-state-variable}{%
+\subsection{Visualizing Distribution of State
+Variable}\label{visualizing-distribution-of-state-variable}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{state\_bar }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =}\NormalTok{ State }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{()}
+
+\NormalTok{state\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-4-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{count\_state }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =}\NormalTok{ State }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(State)}
+
+\NormalTok{count\_state}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 52 x 2
+##    State     n
+##  * <fct> <int>
+##  1 VT        1
+##  2 ME        1
+##  3 SD        1
+##  4 HI        1
+##  5 ID        2
+##  6 ND        3
+##  7 DE        3
+##  8 MT        4
+##  9 NH        4
+## 10 WY        4
+## # ... with 42 more rows
+\end{verbatim}
+
+\textbf{- Which values are the most common? Why?}
+
+Breaches in the State of California are the most common since they have
+the most breaches at 113. This is most likely due to the fact that
+California is highly populated with lots of buisnesses and tech
+industries, therefore can have more opportunities for breaches.
+
+\textbf{- Which values are rare? Why? Does that match your
+expectations?} The most rare values are VT, ME, SD, and HI which all
+have only one breach. Since these are not very largely populated states
+this does make sense.
+
+\textbf{- Can you see any unusual patterns? What might explain them?}
+
+There does not appear to be any unusal patterns in the State breach
+count. Some states have more breaches than others but there is not any
+outliers of cycles of number of breaches.
+
+\textbf{- Are there clusters in the data? If so,} No there are no
+clusters in the data, all of the data is relatively evenly distributed.
+
+\textbf{- How are the observations within each cluster similar to or
+different from each other?}
+
+As mentioned above there are no clusters present.
+
+\textbf{- How can you explain or describe the clusters?}
+
+As mentioned above there are no clusters present.
+
+\hypertarget{unusual-values}{%
+\paragraph{3.1.2.2 Unusual values}\label{unusual-values}}
+
+\textbf{- Describe and demonstrate how you determine if there are
+unusual values in the data. E.g. too large, too small, negative, etc.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =}\NormalTok{ State }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-5-1} \end{center}
+
+There were no negative state breaches and no values that were
+unexpectadly high or low. This is seen in the bar graph. More
+exploration has to be done to determine if any values should be removed.
+
+\textbf{- Describe and demonstrate how you determine if they are
+outliers.}
+
+An outlier is 1.5 times the interquartile range away from either the
+lower or upper quartile. In order to determine if any of the state count
+values are outliers the interquartile range, first quartile, and third
+quartile need to be calculated. The State count data then has to be
+filtered for values that are less than the first quartile minus the IQR
+times 1.5 and values that are greater than the third quartile plus the
+IQR times 1.5. The outliers can be seen in the outlier list data frame,
+it includes, TX, CA, FL.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{state\_count }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(State) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{()}
+\NormalTok{state\_count}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 52 x 2
+## # Groups:   State [52]
+##    State     n
+##    <fct> <int>
+##  1 TX       83
+##  2 MO       25
+##  3 AK        5
+##  4 DC        9
+##  5 CA      113
+##  6 PA       40
+##  7 TN       32
+##  8 NY       58
+##  9 NC       32
+## 10 MI       26
+## # ... with 42 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{stdev }\OtherTok{\textless{}{-}}  \FunctionTok{sd}\NormalTok{(state\_count}\SpecialCharTok{$}\NormalTok{n, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{stdev}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 21.85544
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{innerQ }\OtherTok{\textless{}{-}}  \FunctionTok{IQR}\NormalTok{(state\_count}\SpecialCharTok{$}\NormalTok{n, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{innerQ}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 22
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{firstQ }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(state\_count}\SpecialCharTok{$}\NormalTok{n, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{firstQ }\OtherTok{\textless{}{-}}\NormalTok{ firstQ[[}\DecValTok{1}\NormalTok{]]}
+
+\NormalTok{thirdQ }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(state\_count}\SpecialCharTok{$}\NormalTok{n, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{thirdQ }\OtherTok{\textless{}{-}}\NormalTok{ thirdQ[[}\DecValTok{1}\NormalTok{]]}
+
+\NormalTok{outlier\_list }\OtherTok{\textless{}{-}}\NormalTok{ state\_count }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(n }\SpecialCharTok{\textless{}}\NormalTok{ (firstQ }\SpecialCharTok{{-}}\NormalTok{ innerQ }\SpecialCharTok{*} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{|} 
+\NormalTok{        n }\SpecialCharTok{\textgreater{}}\NormalTok{ (thirdQ }\SpecialCharTok{+}\NormalTok{ innerQ }\SpecialCharTok{*} \FloatTok{1.5}\NormalTok{))}
+
+\NormalTok{outlier\_list}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 3 x 2
+## # Groups:   State [3]
+##   State     n
+##   <fct> <int>
+## 1 TX       83
+## 2 CA      113
+## 3 FL       66
+\end{verbatim}
+
+\textbf{- Show how do your distributions look like with and without the
+unusual values.}
+
+With the outliers removed the distribution is made narrower with less
+variation. Since the largest state breach counts are removed overall the
+distribution becomes more similar throughout.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{outlier\_state }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"TX"}\NormalTok{, }\StringTok{"CA"}\NormalTok{, }\StringTok{"FL"}\NormalTok{)}
+
+\NormalTok{no\_out\_bar }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =}\NormalTok{ State }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{(State }\SpecialCharTok{\%in\%}\NormalTok{ outlier\_state)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{110}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Outliers removed"}\NormalTok{)}
+
+\NormalTok{out\_in\_bar }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =}\NormalTok{ State }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{ylim}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{110}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Outliers included"}\NormalTok{)}
+
+\FunctionTok{ggarrange}\NormalTok{(no\_out\_bar, out\_in\_bar, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 1 rows containing missing values (geom_bar).
+\end{verbatim}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-7-1} \end{center}
+
+\textbf{- Discuss whether or not you need to remove unusual values and
+why.}
+
+Since the largest values will provide d the most insight into why
+breaches are happeing at such a large rate in certain states they should
+not be removed.
+
+\hypertarget{missing-values}{%
+\paragraph{3.1.2.3 Missing values}\label{missing-values}}
+
+\textbf{- Does this variable include missing values? Demonstrate how you
+determine that.}
+
+There are no missing values in the State variable. The method is.na with
+the column name can be used and then the vector returned can be turned
+into a data frame that represents the number of NA values (TRUE) and non
+NA values (FALSE). It can also be confirmed by calling summary() on the
+State, which also shows that there are no NA values in the State
+variable. There should also be information for all 50 states plus PR and
+DC, which is confirmed using unique() to show there are 52 unqique State
+values.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{missing }\OtherTok{\textless{}{-}} \FunctionTok{is.na}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State)}
+
+\NormalTok{num\_missing }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(missing))}
+
+\NormalTok{num\_missing}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   missing Freq
+## 1   FALSE 1055
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  TX  MO  AK  DC  CA  PA  TN  NY  NC  MI  MA  IL  UT  NV  AZ  RI  PR  FL  NM  CO 
+##  83  25   5   9 113  40  32  58  32  26  32  49   9   5  21   7  31  66  10  18 
+##  WY  WI  WA  CT  AL  NE  SC  KY  MN  VA  OH  KS  GA  MD  IN  ID  OR  NJ  DE  IA 
+##   4  14  25  17  12   9  13  26  21  18  33   7  30  18  40   2  15  20   3   8 
+##  OK  AR  MS  LA  NH  MT  WV  ND  HI  SD  ME  VT 
+##   6  11   5   7   4   4   5   3   1   1   1   1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{State }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{unique}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1] TX MO AK DC CA PA TN NY NC MI MA IL UT NV AZ RI PR FL NM CO WY WI WA CT AL
+## [26] NE SC KY MN VA OH KS GA MD IN ID OR NJ DE IA OK AR MS LA NH MT WV ND HI SD
+## [51] ME VT
+## 52 Levels: TX MO AK DC CA PA TN NY NC MI MA IL UT NV AZ RI PR FL NM CO ... VT
+\end{verbatim}
+
+\textbf{- Demonstrate and discuss how you handle the missing values.
+E.g., removing, replacing with a constant value, or a value based on the
+distribution, etc.}
+
+There are no missing values so they do no need to be handled.
+
+\textbf{- Show how your data looks in each case after handling missing
+values.Describe and discuss the distribution.}
+
+Since there is no missing values the distribution does not changed, see
+earlier bar graph for distribution.
+
+\hypertarget{does-converting-the-type-of-this-variable-help-exploring-the-distribution-of-its-values-or-identifying-outliers-or-missing-values-3}{%
+\paragraph{3.1.2.4 Does converting the type of this variable help
+exploring the distribution of its values or identifying outliers or
+missing values?
+(3)}\label{does-converting-the-type-of-this-variable-help-exploring-the-distribution-of-its-values-or-identifying-outliers-or-missing-values-3}}
+
+Yes converting State to a logical may be helpful in exploring the
+distribution of its values or identifying outliers or missing values
+since logical are simpler to evaluate when larger continuous data is
+converted into two groups.
+
+\textbf{- What type can the variable be converted to?}
+
+State is of type factor, but it can converted to a logical. By making
+the value of State TRUE when the State is in the northeast and FALSE
+when the value of the State is not in the northeast, we can see if the
+northeast has a large number of breaches. Converting State to a logical
+is a simpler way to interpret State values. The converted State type is
+saved as a new variable northeast.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{northeast\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"CT"}\NormalTok{, }\StringTok{"MA"}\NormalTok{, }\StringTok{"NH"}\NormalTok{, }\StringTok{"NJ"}\NormalTok{, }\StringTok{"NY"}\NormalTok{, }\StringTok{"PA"}\NormalTok{, }\StringTok{"RI"}\NormalTok{, }\StringTok{"VT"}\NormalTok{, }\StringTok{"DE"}\NormalTok{, }\StringTok{"MD"}\NormalTok{, }\StringTok{"ME"}\NormalTok{)}
+\CommentTok{\#function to determine if the states are in the northeast}
+\NormalTok{northeast\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ northeast\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{northeast }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State, northeast\_check)}
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 15
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 9 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>
+\end{verbatim}
+
+\textbf{- How will the distribution look? Please demonstrate with
+appropriate plots.}
+
+From plotting the converted logical State as a bar graph, we can see
+that the majority of the breaches were not in the northeast. However the
+number of breaches is large for the northeast since there is only 9
+states vs the other 43 States and territories. We can also see that
+there are no NA values, which confirms the analysis done earlier.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{northeast, }\AttributeTok{fill =}\NormalTok{ northeast)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\hypertarget{what-new-variables-do-you-need-to-create-3}{%
+\paragraph{3.1.2.5 What new variables do you need to create?
+(3)}\label{what-new-variables-do-you-need-to-create-3}}
+
+\textbf{- List the variables} northeast, westcoast, midwest, south.
+
+All are logical variables that are true or false if the breach is in the
+region.
+
+Region, which is a factor variable that sorts the US into northeast,
+westcoast, midwest, south and other.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{westcoast\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"WY"}\NormalTok{, }\StringTok{"CO"}\NormalTok{, }\StringTok{"UT"}\NormalTok{, }\StringTok{"NV"}\NormalTok{, }\StringTok{"ID"}\NormalTok{, }\StringTok{"CA"}\NormalTok{, }\StringTok{"OR"}\NormalTok{, }\StringTok{"WA"}\NormalTok{, }\StringTok{"AK"}\NormalTok{, }\StringTok{"AZ"}\NormalTok{, }\StringTok{"NM"}\NormalTok{)}
+\CommentTok{\#function to determine if the states are on the West Coast}
+\NormalTok{westcoast\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ westcoast\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{westcoast }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State, westcoast\_check)}
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 16
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 10 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{midwest\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"ND"}\NormalTok{, }\StringTok{"SD"}\NormalTok{, }\StringTok{"NE"}\NormalTok{, }\StringTok{"KS"}\NormalTok{, }\StringTok{"MO"}\NormalTok{, }\StringTok{"IA"}\NormalTok{, }\StringTok{"MN"}\NormalTok{, }\StringTok{"WI"}\NormalTok{, }\StringTok{"MI"}\NormalTok{, }\StringTok{"IL"}\NormalTok{, }\StringTok{"IN"}\NormalTok{, }\StringTok{"OH"}\NormalTok{, }\StringTok{"MT"}\NormalTok{)}
+\CommentTok{\#function to determine if the states are in the midwest}
+\NormalTok{midwest\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ midwest\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{midwest }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State, midwest\_check)}
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 17
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 11 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>, midwest <lgl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{southwest\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"AZ"}\NormalTok{, }\StringTok{"NM"}\NormalTok{, }\StringTok{"OK"}\NormalTok{, }\StringTok{"TX"}\NormalTok{)}
+\NormalTok{other\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"DC"}\NormalTok{, }\StringTok{"PR"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{south\_list }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"MD"}\NormalTok{, }\StringTok{"DE"}\NormalTok{, }\StringTok{"VA"}\NormalTok{, }\StringTok{"WV"}\NormalTok{, }\StringTok{"KY"}\NormalTok{, }\StringTok{"TN"}\NormalTok{, }\StringTok{"NC"}\NormalTok{, }\StringTok{"SC"}\NormalTok{, }\StringTok{"FL"}\NormalTok{, }\StringTok{"GA"}\NormalTok{, }\StringTok{"AL"}\NormalTok{, }\StringTok{"MS"}\NormalTok{, }\StringTok{"LA"}\NormalTok{, }\StringTok{"AK"}\NormalTok{, }\StringTok{"OK"}\NormalTok{, }\StringTok{"TX"}\NormalTok{, }\StringTok{"DC"}\NormalTok{, }\StringTok{"AR"}\NormalTok{)}
+\CommentTok{\#function to determine if the states are in the south}
+\NormalTok{south\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ south\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{south }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State, south\_check)}
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 18
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 12 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>, midwest <lgl>, south <lgl>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{region\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ westcoast\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\StringTok{"westcoast"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ northeast\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\StringTok{"northeast"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ midwest\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\StringTok{"midwest"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\%in\%}\NormalTok{ south\_list)\{}
+    \FunctionTok{return}\NormalTok{(}\StringTok{"south"}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\StringTok{"other"}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{State, region\_check)}
+
+\NormalTok{region\_levels }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\StringTok{"northeast"}\NormalTok{, }\StringTok{"midwest"}\NormalTok{, }\StringTok{"south"}\NormalTok{, }\StringTok{"westcoast"}\NormalTok{, }\StringTok{"other"}\NormalTok{)}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{region, }\AttributeTok{levels=}\NormalTok{ region\_levels)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ region, }\AttributeTok{y =}\NormalTok{ Individuals\_Affected, }\AttributeTok{fill =}\NormalTok{ region)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Number of Individuals Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\textbf{- Describe and discuss why they are needed and how you plan to
+use them.} northeast, westcoast, midwest, and south, are all a logical
+variable. They are needed in exploring the distribution of breaches per
+state in different regions of the US. Logical variables are used since
+logical are simpler to evaluate when larger factor data is converted
+into two groups. I plan to use the variables to compare individuals
+affected by their location.
+
+The region variable sorts the US into regions based on the state the
+breach occured in. I am planning on using the region variable to compare
+the categorical states to the individuals affected in boxplots and bar
+graphs.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{northeast\_bar }\OtherTok{\textless{}{-}} 
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{northeast, }\AttributeTok{fill =}\NormalTok{ northeast)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+
+\NormalTok{midwest\_bar }\OtherTok{\textless{}{-}} 
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{midwest, }\AttributeTok{fill =}\NormalTok{ midwest)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+
+\NormalTok{westcoast\_bar }\OtherTok{\textless{}{-}} 
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{westcoast, }\AttributeTok{fill =}\NormalTok{ westcoast)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+
+\NormalTok{south\_bar }\OtherTok{\textless{}{-}} 
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{south, }\AttributeTok{fill =}\NormalTok{ south)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{()}
+
+\FunctionTok{ggarrange}\NormalTok{(northeast\_bar, midwest\_bar, westcoast\_bar, south\_bar, }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-17-1.pdf}
+\# Individuals\_affected Variable
+
+\hypertarget{visualising-distributions-barcharts-histograms}{%
+\subsection{Visualising distributions (Barcharts,
+Histograms)}\label{visualising-distributions-barcharts-histograms}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{indiv\_box }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+
+\NormalTok{indiv\_hist }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{()}
+
+\NormalTok{indiv\_box\_zoom }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{35000}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"0 to 35,000 zoom in"}\NormalTok{)}
+
+\NormalTok{indiv\_hist\_zoom }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{xlim}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{35000}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"0 to 35,000 zoom in"}\NormalTok{)}
+
+\FunctionTok{ggarrange}\NormalTok{(indiv\_box, indiv\_hist, indiv\_box\_zoom, indiv\_hist\_zoom,  }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 69 rows containing non-finite values (stat_boxplot).
+\end{verbatim}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 69 rows containing non-finite values (stat_bin).
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 2 rows containing missing values (geom_bar).
+\end{verbatim}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        X1             Number       Name_of_Covered_Entity     State    
+##  Min.   :   1.0   Min.   :   0.0   Length:1055            CA     :113  
+##  1st Qu.: 264.5   1st Qu.: 263.5   Class :character       TX     : 83  
+##  Median : 528.0   Median : 527.0   Mode  :character       FL     : 66  
+##  Mean   : 528.0   Mean   : 527.0                          NY     : 58  
+##  3rd Qu.: 791.5   3rd Qu.: 790.5                          IL     : 49  
+##  Max.   :1055.0   Max.   :1054.0                          PA     : 40  
+##                                                           (Other):646  
+##  Business_Associate_Involved Individuals_Affected Date_of_Breach    
+##  Length:1055                 Min.   :    500      Length:1055       
+##  Class :character            1st Qu.:   1000      Class :character  
+##  Mode  :character            Median :   2300      Mode  :character  
+##                              Mean   :  30262                        
+##                              3rd Qu.:   6941                        
+##                              Max.   :4900000                        
+##                                                                     
+##  Type_of_Breach     Location_of_Breached_Information Date_Posted_or_Updated
+##  Length:1055        Length:1055                      Min.   :2014-01-23    
+##  Class :character   Class :character                 1st Qu.:2014-01-23    
+##  Mode  :character   Mode  :character                 Median :2014-01-23    
+##                                                      Mean   :2014-02-23    
+##                                                      3rd Qu.:2014-03-24    
+##                                                      Max.   :2014-06-30    
+##                                                                            
+##    Summary           breach_start          breach_end              year     
+##  Length:1055        Min.   :1997-01-01   Min.   :2007-06-14   Min.   :1997  
+##  Class :character   1st Qu.:2010-11-08   1st Qu.:2012-04-22   1st Qu.:2010  
+##  Mode  :character   Median :2012-01-11   Median :2012-10-29   Median :2012  
+##                     Mean   :2011-12-09   Mean   :2012-10-28   Mean   :2011  
+##                     3rd Qu.:2013-03-07   3rd Qu.:2013-05-29   3rd Qu.:2013  
+##                     Max.   :2014-06-02   Max.   :2013-11-30   Max.   :2014  
+##                                          NA's   :910                        
+##  northeast       westcoast        midwest          south        
+##  Mode :logical   Mode :logical   Mode :logical   Mode :logical  
+##  FALSE:854       FALSE:828       FALSE:815       FALSE:674      
+##  TRUE :201       TRUE :227       TRUE :240       TRUE :381      
+##                                                                 
+##                                                                 
+##                                                                 
+##                                                                 
+##        region   
+##  northeast:201  
+##  midwest  :240  
+##  south    :355  
+##  westcoast:227  
+##  other    : 32  
+##                 
+## 
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{IQR}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5941
+\end{verbatim}
+
+\textbf{- Which values are the most common? Why?}
+
+The values in the IQR are the most common which ranges from 500 to 6941
+people. This can be seen in the histogram since the peak is centered
+around 2300 people, which is the median. The majority of the values fall
+in this range and therefore they are statistically the most common. This
+can be interpreted that in most data breaches the number of individuals
+affected is usually between 500 to around 7000 people.
+
+\textbf{- Which values are rare? Why? Does that match your
+expectations?}
+
+Values above 1 million are more rare. This does match my expectations
+since large breaches are less common, and therefore breaches with
+indiviuals affected being above 1 million are more rare.
+
+\textbf{- Can you see any unusual patterns? What might explain them?}
+
+There is no cycle pattern present in the individuals affected data. The
+only slightly unusual pattern is that there is a strong right skew.
+There are some very large values for individuals affected that drag the
+mean up, and therefore the data is very right skewed. Overall the median
+is a better reference to the middle of the data than the mean. This
+right skew is caused by a few data breaches that had very high numbers
+of indivuals affected.
+
+\textbf{- Are there clusters in the data? If so,} There is a large
+grouping of data at about 5000 individuals affected and below. There is
+not another large grouping however that could be defined as a cluster.
+
+\textbf{- How are the observations within each cluster similar to or
+different from each other?}
+
+The observations in the low individuals affected cluster all come from
+different states, and there isn't an obvious connection between the
+points.
+
+\textbf{- How can you explain or describe the clusters?}
+
+The cluster can possibly be explained by the fact that most breaches are
+on the smaller side, and that breaches that affect a lot of people are
+harder to pull off and therefore more rare.
+
+\hypertarget{unusual-values-1}{%
+\paragraph{3.1.2.2 Unusual values}\label{unusual-values-1}}
+
+\textbf{- Describe and demonstrate how you determine if there are
+unusual values in the data. E.g. too large, too small, negative, etc.}
+
+There are no negative values for individuals affected, and there are two
+very large values, above 3 million. I filtered for both situations to
+confirm this result of unusual values.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{neg\_indiv }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Individuals\_Affected }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{)}
+
+\NormalTok{neg\_indiv}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 0 x 19
+## # ... with 19 variables: X1 <dbl>, Number <dbl>, Name_of_Covered_Entity <chr>,
+## #   State <fct>, Business_Associate_Involved <chr>, Individuals_Affected <int>,
+## #   Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>, midwest <lgl>, south <lgl>, region <fct>
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_indiv }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Individuals\_Affected }\SpecialCharTok{\textgreater{}} \DecValTok{3000000}\NormalTok{)}
+
+\NormalTok{large\_indiv}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 2 x 19
+##      X1 Number Name_of_Covered_Entity State Business_Associate~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                  <fct> <chr>                          <int>
+## 1   410    409 TRICARE Management Ac~ VA    Science Applicatio~          4900000
+## 2   800    799 Advocate Health and H~ IL    <NA>                         4029530
+## # ... with 13 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>, midwest <lgl>, south <lgl>, region <fct>
+\end{verbatim}
+
+\textbf{- Describe and demonstrate how you determine if they are
+outliers.}
+
+An outlier is 1.5 times the interquartile range away from either the
+lower or upper quartile. In order to determine if any of the indivuals
+affected values are outliers the interquartile range, first quartile,
+and third quartile need to be calculated. The indivduals affected data
+then has to be filtered for values that are less than the first quartile
+minus the IQR times 1.5 and values that are greater than the third
+quartile plus the IQR times 1.5. The 129 outliers can be seen in the
+outlier list.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{stdev }\OtherTok{\textless{}{-}}  \FunctionTok{sd}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{stdev}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 227859.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{innerQ }\OtherTok{\textless{}{-}}  \FunctionTok{IQR}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{innerQ}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 5941
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{firstQ }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, }\FloatTok{0.25}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{firstQ }\OtherTok{\textless{}{-}}\NormalTok{ firstQ[[}\DecValTok{1}\NormalTok{]]}
+
+\NormalTok{thirdQ }\OtherTok{\textless{}{-}} \FunctionTok{quantile}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, }\FloatTok{0.75}\NormalTok{, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{thirdQ }\OtherTok{\textless{}{-}}\NormalTok{ thirdQ[[}\DecValTok{1}\NormalTok{]]}
+
+\NormalTok{outlier\_list }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Individuals\_Affected }\SpecialCharTok{\textless{}}\NormalTok{ (firstQ }\SpecialCharTok{{-}}\NormalTok{ innerQ }\SpecialCharTok{*} \FloatTok{1.5}\NormalTok{) }\SpecialCharTok{|} 
+\NormalTok{        Individuals\_Affected }\SpecialCharTok{\textgreater{}}\NormalTok{ (thirdQ }\SpecialCharTok{+}\NormalTok{ innerQ }\SpecialCharTok{*} \FloatTok{1.5}\NormalTok{))}
+
+\NormalTok{outlier\_list}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 129 x 19
+##       X1 Number Name_of_Covered_Enti~ State Business_Associate~ Individuals_Aff~
+##    <dbl>  <dbl> <chr>                 <fct> <chr>                          <int>
+##  1    13     12 "Universal American"  NY    Democracy Data & C~            83000
+##  2    50     49 "Ernest T. Bice, Jr.~ TX    <NA>                           21000
+##  3    59     58 "Providence Hospital" MI    <NA>                           83945
+##  4    64     63 "Affinity Health Pla~ NY    <NA>                          344579
+##  5    66     65 "Praxair Healthcare ~ CT    <NA>                           54165
+##  6    70     69 "St. Joseph Heritage~ CA    <NA>                           22012
+##  7    76     75 "Emergency Healthcar~ IL    Millennium Medical~           180111
+##  8    81     80 "Silicon Valley Eyec~ CA    <NA>                           40000
+##  9    91     90 "Cincinnati Children~ OH    <NA>                           60998
+## 10    93     92 "AvMed, Inc."         FL    <NA>                         1220000
+## # ... with 119 more rows, and 13 more variables: Date_of_Breach <chr>,
+## #   Type_of_Breach <chr>, Location_of_Breached_Information <chr>,
+## #   Date_Posted_or_Updated <date>, Summary <chr>, breach_start <date>,
+## #   breach_end <date>, year <dbl>, northeast <lgl>, westcoast <lgl>,
+## #   midwest <lgl>, south <lgl>, region <fct>
+\end{verbatim}
+
+\textbf{- Show how do your distributions look like with and without the
+unusual values.}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{outliers\_removed }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(}\SpecialCharTok{!}\NormalTok{Individuals\_Affected }\SpecialCharTok{\%in\%}\NormalTok{ outlier\_list}\SpecialCharTok{$}\NormalTok{Individuals\_Affected) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected))}\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Outliers Removed"}\NormalTok{)}
+
+\NormalTok{outliers\_included }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_histogram}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Outliers Included"}\NormalTok{)}
+
+\FunctionTok{ggarrange}\NormalTok{(outliers\_removed, outliers\_included, }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+\end{verbatim}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\textbf{- Discuss whether or not you need to remove unusual values and
+why.}
+
+The unusual values should not be removed because since the high
+individuals affected values will most likely give the most insight into
+cyber security issues.
+
+\hypertarget{missing-values-1}{%
+\paragraph{3.1.2.3 Missing values}\label{missing-values-1}}
+
+\textbf{- Does this variable include missing values? Demonstrate how you
+determine that.}
+
+No there are no missing values. The method is.na with the column name
+can be used and then the vector returned can be turned into a data frame
+that represents the number of NA values (TRUE) and non NA values
+(FALSE). It can also be confirmed by calling summary() on the
+Individuals Affected variable, which also shows that there are no NA
+values in the Individuals affected variable.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{missing }\OtherTok{\textless{}{-}} \FunctionTok{is.na}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected)}
+
+\NormalTok{num\_missing }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{table}\NormalTok{(missing))}
+
+\NormalTok{num\_missing}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   missing Freq
+## 1   FALSE 1055
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     500    1000    2300   30262    6941 4900000
+\end{verbatim}
+
+\textbf{- Demonstrate and discuss how you handle the missing values.
+E.g., removing, replacing with a constant value, or a value based on the
+distribution, etc.}
+
+There are no missing values
+
+\textbf{- Show how your data looks in each case after handling missing
+values.Describe and discuss the distribution.}
+
+There are no missing values. Refer to histogram and boxplots above for
+distribution.
+
+\hypertarget{does-converting-the-type-of-this-variable-help-exploring-the-distribution-of-its-values-or-identifying-outliers-or-missing-values-3-1}{%
+\paragraph{3.1.2.4 Does converting the type of this variable help
+exploring the distribution of its values or identifying outliers or
+missing values?
+(3)}\label{does-converting-the-type-of-this-variable-help-exploring-the-distribution-of-its-values-or-identifying-outliers-or-missing-values-3-1}}
+
+Yes converting Individuals affected to a logical may be helpful in
+exploring the distribution of its values or identifying outliers or
+missing values since logical are simpler to evaluate when larger
+continuous data is converted into two groups.
+
+\textbf{- What type can the variable be converted to?}
+
+Individuals affected is of type integer, but it can converted to a
+logical. By making the value of Individuals affected TRUE when the value
+is greater than 20,000 and FALSE when the value is lower than than
+20,000, we can see if the Inidviduals Affected level is considered high
+or not. Converting Individuals Affected to a logical is a simpler way to
+interpret Individuals values. The converted Individuals Affected type is
+saved as a new variable Large\_Affected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{high\_check }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{\textgreater{}=} \DecValTok{20000}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{large\_affected }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{Individuals\_Affected, high\_check)}
+\FunctionTok{head}\NormalTok{(breaches)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 6 x 20
+##      X1 Number Name_of_Covered_Entity  State Business_Associat~ Individuals_Aff~
+##   <dbl>  <dbl> <chr>                   <fct> <chr>                         <int>
+## 1     1      0 Brooke Army Medical Ce~ TX    <NA>                           1000
+## 2     2      1 Mid America Kidney Sto~ MO    <NA>                           1000
+## 3     3      2 Alaska Department of H~ AK    <NA>                            501
+## 4     4      3 Health Services for Ch~ DC    <NA>                           3800
+## 5     5      4 L. Douglas Carlson, M.~ CA    <NA>                           5257
+## 6     6      5 David I. Cohen, MD      CA    <NA>                            857
+## # ... with 14 more variables: Date_of_Breach <chr>, Type_of_Breach <chr>,
+## #   Location_of_Breached_Information <chr>, Date_Posted_or_Updated <date>,
+## #   Summary <chr>, breach_start <date>, breach_end <date>, year <dbl>,
+## #   northeast <lgl>, westcoast <lgl>, midwest <lgl>, south <lgl>, region <fct>,
+## #   large_affected <lgl>
+\end{verbatim}
+
+\textbf{- How will the distribution look? Please demonstrate with
+appropriate plots.}
+
+From plotting the converted logical Individuals Affected variable as a
+bar graph, we can see that the majority of the breaches were above
+20,000 people affected. We can also see that there are no NA values,
+which confirms the analysis done earlier.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{large\_affected, }\AttributeTok{fill =}\NormalTok{ large\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x =} \StringTok{"Breach over 20,000 Individuals"}\NormalTok{, }\AttributeTok{title =} \StringTok{"Distribution of large and small breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\hypertarget{what-new-variables-do-you-need-to-create-3-1}{%
+\paragraph{3.1.2.5 What new variables do you need to create?
+(3)}\label{what-new-variables-do-you-need-to-create-3-1}}
+
+\textbf{- List the variables} The new variable large\_affected was
+created above and also explained above.
+
+\textbf{- Describe and discuss why they are needed and how you plan to
+use them.} Large\_affected is needed to look at the outliers of the
+individuals affected and see if there is a trend with the large values
+and the states. I plan to use the logical and see if there is a
+correlation with the state the breach occured in.
+
+\hypertarget{what-type-of-covariation-occurs-between-the-variables}{%
+\subsection{3.2. What type of covariation occurs between the
+variables?}\label{what-type-of-covariation-occurs-between-the-variables}}
+
+If you don't have variables of a certain type in the original dataset or
+among the created variables (features), you can further create them from
+the existing variables. See RDS chap.~5, 7.5 and 7.6.
+
+\hypertarget{between-a-categorical-and-continuous-variable}{%
+\subsubsection{3.2.1 Between a categorical and continuous
+variable}\label{between-a-categorical-and-continuous-variable}}
+
+\textbf{- Describe what type of visualization you can use and why.} A
+boxplot of State as a categorical variable and Individuals Affected as a
+continuous variable can be used. Using the box plot makes it clear the
+spread of the data depending on each state of the US. Boxplots are also
+compact and easier to compare the different states and the individuals
+affected distributions. A bar graph can also be used to look at the
+total number of individuals affected rather than the distribution by
+state.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Number of Individuals Affected in Breaches by State"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-25-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{State =} \FunctionTok{as.factor}\NormalTok{(State) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_infreq}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{fct\_rev}\NormalTok{()) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Number of Individuals Affected in Breaches by State }
+\StringTok{       (in order of states with most breaches)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-25-2} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total\_affected\_state }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(State) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{sum\_indiv =} \FunctionTok{sum}\NormalTok{(Individuals\_Affected))}
+
+\NormalTok{total\_affected\_state}\SpecialCharTok{$}\NormalTok{State }\OtherTok{=} \FunctionTok{with}\NormalTok{(total\_affected\_state, }\FunctionTok{reorder}\NormalTok{(State, sum\_indiv))}
+
+
+\NormalTok{total\_affected\_state}\SpecialCharTok{$}\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(total\_affected\_state}\SpecialCharTok{$}\NormalTok{State, region\_check)}
+
+
+\NormalTok{total\_affected\_state}\SpecialCharTok{$}\NormalTok{region }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(total\_affected\_state}\SpecialCharTok{$}\NormalTok{region, }\AttributeTok{levels=}\NormalTok{ region\_levels)}
+
+\NormalTok{total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(State, sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Number of Individuals Affected in Breaches by State }
+\StringTok{       (in order of states with most individuals affected)"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Total Number of Individuals Affected in Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-25-3} \end{center}
+
+\textbf{- Describe the patterns and relationships you observe. Could the
+identified patterns be due to coincidence (i.e.~random chance)?} The
+boxplot does not appear to have a clear pattern, but there are a lot of
+outliers, indicating that there were many breaches that affected a large
+number of individuals. Looking at the bar graphs, the states with big
+well known cities have breaches that affect the most number of people.
+This could be due to chance since just one large breach could influence
+a state's total individuals affected, however the trend seems to be
+consistent for most of the states with big cities. The outlier in this
+trend is Puerto Rico, which doesn't have a large city.
+
+\textbf{- Describe the relationship implied by the pattern? (e.g.,
+positive or negative correlation)}
+
+There is a positive correlation between the states with big cities and
+the number of individuals affected. Overall however since States is not
+a measurable factor there is not a correlation. Sorting by feature may
+lead to a stronger correlation by region.
+
+\textbf{- Calculate the strength of the relationship implied by the
+pattern (e.g., correlation)}
+
+One approach at looking at correlation between categorical and
+continuous variables is from
+``\url{https://medium.com/@outside2SDs/an-overview-of-correlation-measures-between-categorical-and-continuous-variables-4c7f85610365}''.
+
+The approach is to group the continuous variable using the categorical
+variable, measure the variance in each group and comparing it to the
+overall variance of the continuous variable. If the variance after
+grouping falls down significantly, it means that the categorical
+variable can explain most of the variance of the continuous variable and
+so the two variables likely have a strong association. If the variables
+have no correlation, then the variance in the groups is expected to be
+similar to the original variance.
+
+These calculations were done and can be seen in the data frames
+state\_and\_indiv and indiv\_summary. Overall I would say there is
+minimal correlation because the variance for just the indivuals affected
+variable is 51920099070, and when breaches is grouped by region,
+northeast, westcoast, and other variances decrease, but midwest and
+south increase. Therefore grouping by region has a minimal correlation
+on the Individuals Affected data.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{state\_and\_indiv }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(region) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{sd =} \FunctionTok{sd}\NormalTok{(Individuals\_Affected))}
+
+\NormalTok{state\_and\_indiv }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{var =}\NormalTok{ sd}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 5 x 3
+##   region         sd          var
+## * <fct>       <dbl>        <dbl>
+## 1 northeast 146987. 21605211841.
+## 2 midwest   260387. 67801639077.
+## 3 south     284834. 81130225641.
+## 4 westcoast 150096. 22528726555.
+## 5 other     106298. 11299218049.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{indiv\_summary }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{sd =} \FunctionTok{sd}\NormalTok{(Individuals\_Affected))}
+
+\NormalTok{indiv\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{var =}\NormalTok{ sd}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 1 x 2
+##        sd          var
+##     <dbl>        <dbl>
+## 1 227860. 51920099070.
+\end{verbatim}
+
+\textbf{- Discuss what other variables might affect the relationship}
+Some other variables that may affect the relationship between State and
+Individuals Affected are type, length of breach, year, and location of
+breached information, all of which are being explored by other members.
+
+\textbf{- Does the relationship change if you look at individual
+subgroups of the data? Please discuss and demonstrate.}
+
+Looking at whether the breach was below 20,000 people affected or above,
+gives new insight into the relationship between State and Individuals
+affected. In the small breaches, WY and LA and PR all stand out with a
+box plot that has a median higher than the other states. In just the
+large breaches VA, GA, FL, IL, MA, CA and TN are all positively skewed
+in the large breach, meaning they have breaches with a larger variation
+above the median.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_breach }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breach: Less than 20,000 Affected"}\NormalTok{)}
+
+\NormalTok{large\_breach }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breach: More than 20,000 Affected"}\NormalTok{)}
+
+\NormalTok{small\_breach}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-27-1} \end{center}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_breach}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-27-2} \end{center}
+
+\textbf{- Demonstrate if converting the type of these variables help
+exploring the relationship.} Converting the State to a factor, called
+region we are able to explore how the distribution and total number of
+individuals affected changes by region.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_breach\_region }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{region, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breach: Less than 20,000 Affected"}\NormalTok{)}
+
+\NormalTok{large\_breach\_region }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{region, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breach: More than 20,000 Affected"}\NormalTok{)}
+
+
+\NormalTok{region\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{region, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Bar"}\NormalTok{)}
+
+\FunctionTok{ggarrange}\NormalTok{(small\_breach\_region, large\_breach\_region, }\AttributeTok{nrow =} \DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{region\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-28-2.pdf}
+
+In small breaches, the other states have a higher median value than the
+other regions, however the total number of individuals affected is the
+lowest. The south's distribution has the most variation in the large
+breaches and also has the highest total number of individuals affected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{northeast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(northeast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"All Breaches in Northeast"}\NormalTok{)}
+
+\NormalTok{large\_northeast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(northeast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breaches in Northeast"}\NormalTok{)}
+
+\NormalTok{small\_northeast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(northeast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breaches in Northeast"}\NormalTok{)}
+
+\NormalTok{northeast\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"northeast"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Bar"}\NormalTok{)}
+
+\NormalTok{northeast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-29-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_northeast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-29-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_northeast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-29-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{northeast\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-29-4.pdf}
+New Jersey has the highest median of individuals affected for large
+breaches, but does not stand out in small breaches. New York does not
+stand out in either small or large breaches, however it does have an
+extremely large outlier value, which makes it the largest total number
+of individuals affected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{westcoast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(westcoast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"All Breaches in Westcoast"}\NormalTok{)}
+
+\NormalTok{large\_westcoast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(westcoast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breaches in Westcoast"}\NormalTok{)}
+
+\NormalTok{small\_westcoast\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(westcoast }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breaches in Westcoast"}\NormalTok{)}
+
+\NormalTok{westcoast\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"westcoast"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Total Indivduals Affected by State in Westcoast"}\NormalTok{)}
+
+\NormalTok{westcoast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-30-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_westcoast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-30-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_westcoast\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-30-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{westcoast\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-30-4.pdf}
+There are not many large breaches on the westcoast, with CA as the
+exception, having 3 outlier breaches that lead to CA having the highest
+total number of individuals affected on the Westcoast. Overall the small
+breaches have a median of slightly below 2500 indivuals affected, with
+ID and WY standing out and having a higher median. However both ID and
+WY are two of the lowest total number of individuals affected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{midwest\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(midwest }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"All Breaches in midwest"}\NormalTok{)}
+
+\NormalTok{large\_midwest\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(midwest }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breaches in midwest"}\NormalTok{)}
+
+\NormalTok{small\_midwest\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(midwest }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breaches in midwest"}\NormalTok{)}
+
+\NormalTok{midwest\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"midwest"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Total Indivduals Affected by State in midwest"}\NormalTok{)}
+
+\NormalTok{midwest\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-31-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_midwest\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-31-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_midwest\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-31-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{midwest\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-31-4.pdf}
+In the small breaches, there are many outlier values, but no states
+median is significantly higher than any of the others. SD is the
+exception, but there is only one small breach and that value is
+therefore the median. IL stands out in the large breaches, having the
+widest distribution and the largest outlier value. IL is significantly
+higher in the total number of individuals affected.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{south\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(south }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"All Breaches in south"}\NormalTok{)}
+
+\NormalTok{large\_south\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(south }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breaches in south"}\NormalTok{)}
+
+\NormalTok{small\_south\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(south }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breaches in south"}\NormalTok{)}
+
+\NormalTok{south\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"south"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Total Indivduals Affected by State in south"}\NormalTok{)}
+
+\NormalTok{south\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-32-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_south\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-32-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_south\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-32-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{south\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-32-4.pdf}
+In the south the top 5 states by total individuals affected are VA, FL,
+TN, TX, and AL, all of which have distribution that are more spread out
+in large breaches, other than TX. Texas does have 2 outlier values in
+the large breaches that bring the total individuals affected up. In
+smaller breaches, LA has a higher median, but the total number of
+individuals affected is one of the lowest in the south.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{other\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"other"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"All Breaches in other states"}\NormalTok{)}
+
+\NormalTok{large\_other\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"other"}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large Breaches in other states"}\NormalTok{)}
+
+\NormalTok{small\_other\_states }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"other"}\NormalTok{, large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{ ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small Breaches in other states"}\NormalTok{)}
+
+\NormalTok{other\_bar }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(region }\SpecialCharTok{==} \StringTok{"other"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{State, }\AttributeTok{y=}\NormalTok{sum\_indiv)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Total Indivduals Affected by State in other states"}\NormalTok{)}
+
+\NormalTok{other\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-33-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_other\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-33-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_other\_states}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-33-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{other\_bar}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-33-4.pdf}
+The only state that truly plays a role in breaches in other is PR, which
+has some outlier individuals affected in the large breach, that brings
+the total number of individuals up. HI only had 1 breach and it was a
+small breach.
+
+\textbf{Normalized individuals} Since each region has different total
+populations, looking at the normalized Individuals Affected gives a
+better picture of how impactful the breaches were. Also the other region
+only includes PR and HI so any breach
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{state\_populations }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"state{-}population.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Missing column names filled in: 'X3' [3], 'X4' [4]
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## -- Column specification --------------------------------------------------------
+## cols(
+##   State = col_character(),
+##   Population = col_number(),
+##   X3 = col_logical(),
+##   X4 = col_logical()
+## )
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{state\_populations }\OtherTok{\textless{}{-}}\NormalTok{ state\_populations }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(State, Population)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total\_affected\_state }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(state\_populations)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "State"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total\_affected\_state }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{normalized\_state\_indiv =}\NormalTok{ sum\_indiv }\SpecialCharTok{/}\NormalTok{ Population)}
+
+\NormalTok{total\_affected\_state\_sorted }\OtherTok{\textless{}{-}}\NormalTok{ total\_affected\_state[}\FunctionTok{order}\NormalTok{(total\_affected\_state}\SpecialCharTok{$}\NormalTok{normalized\_state\_indiv),]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{total\_affected\_state\_sorted}\SpecialCharTok{$}\NormalTok{State }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(total\_affected\_state\_sorted}\SpecialCharTok{$}\NormalTok{State, }\AttributeTok{levels =}\NormalTok{ total\_affected\_state\_sorted}\SpecialCharTok{$}\NormalTok{State)}
+\NormalTok{total\_affected\_state\_sorted }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(State, normalized\_state\_indiv)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-36-1} \end{center}
+
+By normalizing the individuals affected by the state population a better
+comparison of the breaches affects in a state. Virginia, Puerto Rico,
+and Illinois are the states with the top percentage of individuals
+affected in their state. Therefore in these states getting affected by a
+breach is more likely.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{northeast\_total\_population }\OtherTok{\textless{}{-}} \DecValTok{56059240}
+\NormalTok{midwest\_total\_population }\OtherTok{\textless{}{-}} \DecValTok{68126781}
+\NormalTok{west\_total\_population }\OtherTok{\textless{}{-}} \DecValTok{77257329}
+\NormalTok{south\_total\_population }\OtherTok{\textless{}{-}} \DecValTok{123542189}
+\NormalTok{other\_total\_population }\OtherTok{\textless{}{-}} \DecValTok{3375000} \SpecialCharTok{+} \DecValTok{1424000}
+
+\NormalTok{normal\_function }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x) \{}
+  \ControlFlowTok{if}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(x))\{}
+    \FunctionTok{return}\NormalTok{(}\ConstantTok{NA}\NormalTok{)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"northeast"}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(northeast\_total\_population)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"midwest"}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(midwest\_total\_population)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"westcoast"}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(west\_total\_population)}
+\NormalTok{  \}}
+  \ControlFlowTok{else} \ControlFlowTok{if}\NormalTok{(x }\SpecialCharTok{==} \StringTok{"south"}\NormalTok{)\{}
+    \FunctionTok{return}\NormalTok{(south\_total\_population)}
+\NormalTok{  \}}
+  \ControlFlowTok{else}\NormalTok{\{}
+    \FunctionTok{return}\NormalTok{(other\_total\_population)}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+
+\NormalTok{breaches}\SpecialCharTok{$}\NormalTok{normalized\_indiv\_affected }\OtherTok{\textless{}{-}} \FunctionTok{sapply}\NormalTok{(breaches}\SpecialCharTok{$}\NormalTok{region, normal\_function)}
+
+
+\NormalTok{breaches }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{normalized\_indiv\_affected =}\NormalTok{ Individuals\_Affected }\SpecialCharTok{/}\NormalTok{ normalized\_indiv\_affected)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ region, }\AttributeTok{y =}\NormalTok{ normalized\_indiv\_affected, }\AttributeTok{fill =}\NormalTok{ region)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_col}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large breach {-}all"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-39-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small breach {-}all"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-39-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{, region }\SpecialCharTok{!=} \StringTok{"other"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Large breach {-}no other"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-39-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{, region }\SpecialCharTok{!=} \StringTok{"other"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Small breach {-}no other"}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Proportion of Region Affected by Breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-39-4.pdf}
+By normalizing the individuals by state population and then grouping
+into regions we can compare the affect of each breach by region. The
+other region, which includes PR and HI, has a much higher percentage of
+their population being affected by breaches, seen in the bar chart and
+the boxplots. To observe the distribution of the other regions of the US
+better I removed the other region, but overall there were not any strong
+trends in either the small breach or the large breach. In small
+breaches, the northeast has a slightly higher distribution of percent of
+individuals affected by breaches, but nothing significant engough to
+make a claim about.
+
+\textbf{- Discuss how the observed patterns support/reject your
+hypotheses or answer your questions.} The state of the breach does
+affect the number of individuals affected by the breach. The states with
+the most individuals affected have a large city associated with them,
+Virginia(Virginia Beach, Arlington), CA (Los Angles, San Francisco), IL
+(Chicago), FL(Miami and Tampa), NY(New York City), TN(Nashville),
+TX(Houston, San Antonio, Dallas, Austin), AL(Birmingham), MA(Boston),
+NJ(Newark), UT(Salt Lake City). PR which is a territory breaks this
+trend. Since most of the breaches were in the medical field, states with
+large cities have larger populations and therefore have more opportunity
+to affect more individuals. Also looking at the distribution of
+normalized values for individuals affected, the states VA, PR, and IL
+stand out, as well as the other region, which includes PR and HI, for
+higher percentages of their population being affected by breaches. From
+this analysis we can answer the question that if you are in a certain
+state if you are more likely to be affected by a breach, by saying if
+you are in VA, IL, HI, and especially PR you are more likely to be
+effected by a breach.
+
+\hypertarget{model-building}{%
+\subsection{Model Building}\label{model-building}}
+
+Load modelr
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(modelr)}
+\FunctionTok{options}\NormalTok{(}\AttributeTok{na.action =}\NormalTok{ na.warn)}
+\end{Highlighting}
+\end{Shaded}
+
+Look at distribution of small breaches by region.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(region, Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-41-1.pdf}
+
+Fit the model and display its predictions overlaid on the orginial data
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_breaches }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{mod }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Individuals\_Affected }\SpecialCharTok{\textasciitilde{}}\NormalTok{ region, }\AttributeTok{data =}\NormalTok{ small\_breaches)}
+
+\FunctionTok{summary}\NormalTok{(mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Individuals_Affected ~ region, data = small_breaches)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+##  -5349  -2588  -1544   1004  16018 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)       3619.9      292.2  12.389  < 2e-16 ***
+## regionmidwest     -416.0      393.2  -1.058  0.29036    
+## regionsouth       -120.9      365.0  -0.331  0.74062    
+## regionwestcoast    173.1      401.8   0.431  0.66665    
+## regionother       2333.8      885.4   2.636  0.00853 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 3920 on 942 degrees of freedom
+## Multiple R-squared:  0.01139,    Adjusted R-squared:  0.007197 
+## F-statistic: 2.714 on 4 and 942 DF,  p-value: 0.02882
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid }\OtherTok{\textless{}{-}}\NormalTok{ small\_breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{data\_grid}\NormalTok{(region) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_predictions}\NormalTok{(mod, }\StringTok{"Individuals\_Affected"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(small\_breaches, }\FunctionTok{aes}\NormalTok{(region, Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ grid, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\StringTok{"Model for small data breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-42-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_breaches }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{mod }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Individuals\_Affected }\SpecialCharTok{\textasciitilde{}}\NormalTok{ region, }\AttributeTok{data =}\NormalTok{ large\_breaches)}
+
+\FunctionTok{summary}\NormalTok{(mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = Individuals_Affected ~ region, data = large_breaches)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -332691 -248168 -189683  -79784 4546565 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(>|t|)
+## (Intercept)       220862     148313   1.489    0.139
+## regionmidwest      57336     218311   0.263    0.793
+## regionsouth       132573     188634   0.703    0.484
+## regionwestcoast     3416     201181   0.017    0.986
+## regionother       -93484     261132  -0.358    0.721
+## 
+## Residual standard error: 679700 on 103 degrees of freedom
+## Multiple R-squared:  0.01124,    Adjusted R-squared:  -0.02716 
+## F-statistic: 0.2927 on 4 and 103 DF,  p-value: 0.8822
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid }\OtherTok{\textless{}{-}}\NormalTok{ large\_breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{data\_grid}\NormalTok{(region) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_predictions}\NormalTok{(mod, }\StringTok{"Individuals\_Affected"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(large\_breaches, }\FunctionTok{aes}\NormalTok{(region, Individuals\_Affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ grid, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\StringTok{"Model for large data breaches"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-43-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{large\_breaches }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{mod }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(normalized\_indiv\_affected }\SpecialCharTok{\textasciitilde{}}\NormalTok{ region, }\AttributeTok{data =}\NormalTok{ large\_breaches)}
+
+\FunctionTok{summary}\NormalTok{(mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = normalized_indiv_affected ~ region, data = large_breaches)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.021466 -0.003319 -0.002471 -0.001429  0.072436 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      0.0039398  0.0028369   1.389    0.168    
+## regionmidwest    0.0001437  0.0041758   0.034    0.973    
+## regionsouth     -0.0010790  0.0036081  -0.299    0.766    
+## regionwestcoast -0.0010368  0.0038481  -0.269    0.788    
+## regionother      0.0226028  0.0049948   4.525 1.62e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.013 on 103 degrees of freedom
+## Multiple R-squared:  0.2204, Adjusted R-squared:  0.1901 
+## F-statistic: 7.279 on 4 and 103 DF,  p-value: 3.34e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid }\OtherTok{\textless{}{-}}\NormalTok{ large\_breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{data\_grid}\NormalTok{(region) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_predictions}\NormalTok{(mod, }\StringTok{"normalized\_indiv\_affected"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(large\_breaches, }\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ grid, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\StringTok{"Model for large data breaches with normalized indiv affected"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-44-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{small\_breaches }\OtherTok{\textless{}{-}}\NormalTok{ breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(large\_affected }\SpecialCharTok{==} \ConstantTok{FALSE}\NormalTok{)}
+
+\NormalTok{mod }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(normalized\_indiv\_affected }\SpecialCharTok{\textasciitilde{}}\NormalTok{ region, }\AttributeTok{data =}\NormalTok{ small\_breaches)}
+
+\FunctionTok{summary}\NormalTok{(mod)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = normalized_indiv_affected ~ region, data = small_breaches)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -1.115e-03 -3.232e-05 -1.769e-05  1.168e-05  2.463e-03 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)      6.457e-05  1.089e-05   5.930 4.24e-09 ***
+## regionmidwest   -1.754e-05  1.465e-05  -1.197  0.23147    
+## regionsouth     -3.625e-05  1.360e-05  -2.665  0.00783 ** 
+## regionwestcoast -1.548e-05  1.497e-05  -1.034  0.30159    
+## regionother      1.176e-03  3.299e-05  35.644  < 2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.0001461 on 942 degrees of freedom
+## Multiple R-squared:  0.6059, Adjusted R-squared:  0.6043 
+## F-statistic: 362.1 on 4 and 942 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{grid }\OtherTok{\textless{}{-}}\NormalTok{ small\_breaches }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{data\_grid}\NormalTok{(region) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{add\_predictions}\NormalTok{(mod, }\StringTok{"normalized\_indiv\_affected"}\NormalTok{)}
+
+\FunctionTok{ggplot}\NormalTok{(small\_breaches, }\FunctionTok{aes}\NormalTok{(region, normalized\_indiv\_affected)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ grid, }\AttributeTok{colour =} \StringTok{"red"}\NormalTok{, }\AttributeTok{size =} \DecValTok{4}\NormalTok{)}\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\StringTok{"Model for small data breaches with normalized indiv affected"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{CourtneyKennedy_files/figure-latex/unnamed-chunk-45-1.pdf}
+
+Overall the models do not do a good job of predicting the number of
+individuals affected by a breach, or the percentage of individuals
+affected out of a state population. This is seen by all of the models
+only having a significant p value (represented by the 2 or 3 stars) for
+the other region. The model that has the strongest significance is the
+normalized individuals affected and small data breaches by region, which
+has a 2 p values that are significant, for the southern region and other
+region. Since most of the p values are not statistically significant the
+models can not be accurately used to predict the individuals affected by
+region.
+
+\end{document}
