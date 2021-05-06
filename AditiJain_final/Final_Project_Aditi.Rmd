@@ -1,0 +1,835 @@
+---
+title: "Final_Project_Aditi"
+author: "Aditi Jain"
+date: "4/13/2021"
+output: pdf_document
+---
+
+# OVERALL QUESTIONS: How much time passed between the breach date and the date the breach was found? How long does a breach normally last? How do the two relate to the States and the Individuals Affected?
+
+
+# Question 1: How much time passed between the breach date and the date the breach was found?  
+
+```{r}
+library(tidyverse)
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(hexbin)
+library(modelr)
+library(ggpubr)
+```
+
+```{r}
+cyberdata = read_csv("Cyber Security Breaches.csv")
+```
+
+# Variables being explored: Date_of_Breach and Date_Posted_or_Updated
+
+## Types of the variables 
+
+After checking the type of the variables, they were character variables. So, I converted them to the Date type to make it easier to look at patterns and explore their relationship. 
+
+Furthermore, since I will only be exploring the relationships between the dates in the cyberdata data frame, I will filter out all the other variables. 
+
+```{r}
+str(cyberdata$Date_of_Breach)
+str(cyberdata$Date_Posted_or_Updated)
+str(cyberdata$breach_start)
+str(cyberdata$breach_end)
+
+#Change type of Data_of_Breach:
+cyberdata_edited = data.frame(cyberdata)
+cyberdata_edited <- cyberdata_edited %>% mutate(Date_of_Breach = mdy(Date_of_Breach))
+
+#Change type of Date_Posted_or_Updated
+cyberdata_edited <- cyberdata_edited %>% mutate(Date_Posted_or_Updated = mdy(Date_Posted_or_Updated))
+
+#Change type of breach_start and breach_end 
+cyberdata_edited <- cyberdata_edited %>% mutate(breach_start = mdy(breach_start))
+
+cyberdata_edited <- cyberdata_edited %>% mutate(breach_end = mdy(breach_end))
+
+cyberdata_edited <- cyberdata_edited %>% select(Date_of_Breach, Date_Posted_or_Updated, breach_start, breach_end, year)
+
+str(cyberdata_edited$Date_of_Breach)
+str(cyberdata_edited$Date_Posted_or_Updated)
+str(cyberdata_edited$breach_start)
+str(cyberdata_edited$breach_end)
+
+
+```
+
+## Describe why these variables are relevant and why others are not relevant?
+
+These two variables of Date_of_Breach and Date_Posted_or_Updated are relevant because we want to explore the time it takes for a breach to be detected after it occurs. We will determine by this by first individually understanding the variables and then looking at their distribution of their difference to observe a trend. 
+
+
+## Variable 1: Date_of_breach
+
+## Visualizing distribution 
+
+1. Which values are most common and why? 
+
+When filtering the data set to look at the number of values that are the most common, there are 11 date/date-ranges that appear 4 times. When looking at dates/data ranges that have values that repeat more than 4 times, I find that the date that is repeated the most is 2012-01-11 and 2011-06-24 with a count of 7.  
+
+```{r}
+cyberdata_edited %>% group_by(Date_of_Breach) %>% count() %>% filter(n==4)
+```
+
+
+```{r}
+cyberdata_edited %>% group_by(Date_of_Breach) %>% count() %>% filter(n>4)
+```
+
+2. Which values are rare? Why? Does that match your expectations? 
+
+The values that are rare are the ones that only have a count of 1. There are 488 dates that have these counts. This just means that this date occurs only once in the data set. The date of 1997-01-01 is the earliest date that occurs once and then the years 2002-05-06, 2003-03-29, 2004-05-01 are also rare occurences when considering the year. Additionally, the year 2008 also has only two occurences in the months of January and December.     
+
+```{r}
+cyberdata_edited %>% group_by(Date_of_Breach) %>% count() %>% filter(n==1)
+```
+
+
+3. Can you see any unusual patterns? What might explain them? 
+
+When plotting the year variable, which represents the year of the Date of Breach, we can see that there is a left skewed distribution. This means that there is a lot of data towards the left, which consists of the years 2010-2013. The unusual pattern we can see is that not a lot of data points are available for the years before 2009. 
+
+```{r}
+cyberdata_edited %>% group_by(year) %>% ggplot(aes(year)) + geom_histogram() +labs(x="Year of Breach", y="Count of Breaches", title="Histogram of Year of Breach")
+
+```
+
+
+4. How are the observations within each cluster similar to or different from each other?
+
+When observing the clusters of months within each of the years among the Date of Breach category, we can see that in 2009, a majority of the breaches occured towards the last months such as August to December. In the years 2010 through 2013, there seems to be breaches occuring in all the months. But in 2014, we can see that breaches occur in the first couple of months from January through May and then significantly decline. 
+
+Additionally, we must keep in the mind the NA values that are represented in the last bar after the month of December. There seems to be the most number of NA values in the year 2012, followed by 2013 and then 2011. 
+
+```{r}
+cyberdata_edited <- cyberdata_edited %>% mutate(month_of_breach = strftime(cyberdata_edited$Date_of_Breach, "%m"))
+
+ggplot(data = cyberdata_edited) + 
+  geom_bar(mapping = aes(x = month_of_breach)) + 
+  facet_wrap(~year) + 
+  theme(axis.text.x = element_text(angle = 90)) + labs(x="Month of Breach", y="Count of Breaches", title="Facet Bar Graphs of Breaches Distribution in each year")
+```
+
+5. How can you explain or describe the clusters?
+
+While there is no explanation explicitly for why these clusters occur, I believe its mostly because throughout the years from 2010-2013, there were probably more number of breaches. However, other than that, there is no clear way to account for the clusters.  
+ 
+## Unusual values
+
+1. Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
+
+The largest or latest date in the data set is 2014-06-02 or 2nd of June, 2014. The smallest or earliest date in the data set is 1997-01-01 or 1st of January, 1997. Additionally, we find no negative values which is what we expect since they are dates. 
+
+Hence we determine there to be no unusual values. 
+
+```{r}
+max_dates <- summarize(cyberdata_edited, max(Date_of_Breach, na.rm = TRUE))
+max_dates
+
+min_dates <- summarize(cyberdata_edited, min(Date_of_Breach, na.rm = TRUE))
+min_dates
+
+filter(cyberdata_edited, Date_of_Breach<0)
+```
+
+
+2. Describe and demonstrate how you determine if they are outliers.
+
+In order to determine if they are outliers, we will first check the count of the years that represent the Date of Breach to determine which dates are not in the range of 2009-2014 since this range contains a majority of the date values. From the counts below, we can tell that the years 1997, 2002, 2003, 2006 and 2007 occur only once. However, we cannot determine them to be outliers because in the boxplot, they don't appear separated from the tail.    
+
+```{r}
+cyberdata_edited %>% summarize(year) %>% count(year)
+```
+
+```{r}
+ggplot(data = cyberdata_edited, aes(x = Date_of_Breach)) + geom_boxplot()+labs(x="Date of Breach", title="Boxplot of Date of Breach")
+```
+
+
+3. Show how do your distributions look like with and without the unusual values.
+
+Since we determined there to be no outliers, we will only look at the original distribution of the Date_of_Breach variable that has no unusual values to begin with. 
+
+However, if we were to examine the distribution by disregarding the small counts of 2008 and below, we can do that as well. 
+
+```{r}
+ggplot(data = cyberdata_edited, mapping = aes(Date_of_Breach)) + geom_histogram(binwidth = 50, color="black") + labs(x="Date of Breach", y="Count of Breaches", title="Histogram of Date of Breach Distribution")
+```
+
+```{r}
+cyberdata_DB_outliers <- cyberdata_edited %>% filter(year(Date_of_Breach) > 2008)
+
+ggplot(data = cyberdata_DB_outliers, mapping = aes(Date_of_Breach)) + geom_histogram(binwidth = 50, fill="red") + labs(x="Date of Breach", y="Count of Breaches", title="Histogram of Date of Breaches Distribution")
+```
+
+
+4. Discuss whether or not you need to remove unusual values and why.
+
+I don't think we should remove the unusual values such as the dates that are below 2009 because they provide us with important information that there were not a lot of breaches during this time. Additionally, removing the unusual values might inhibit us from understanding when breaches were more versus less and thus removing them is not recommended.
+
+## Missing values
+
+1. Does this variable include missing values? Demonstrate how you determine that
+
+Yes, the Date_of_Breach variable does consist of 146 NA or missing values. 
+
+```{r}
+filter(cyberdata_edited, is.na(Date_of_Breach))
+```
+
+
+2. Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.
+
+Due to converting the type of the Date_of_Breach variable to Date type, the rows that had a range of dates in this column obtained NA values. However, I didn't lose the data representing the range of dates because the breach_start and breach_end columns showcase the starting and ending date of the range respectively. 
+
+Hence, instead of removing the rows with NAs, I will keep them since they represent the ranges. I will later look at the breach length which represents the ranges that were supposed to exist in the Date_of_Breach column. 
+
+3. Show how your data looks in each case after handling missing values.Describe and discuss the distribution.
+
+If we were to remove the NA values to analyze them better, we can look at the distribution below to see what it would look like. From the scatterplot distribution, we can clearly see the monthly distribution of the values in each year. From the years 2010 to 2013, all the 12 months have breaches in them. And there seem to be no breaches in the years 1998 through 2001 and 2005 through 2007. 
+
+```{r}
+cyberdata_noNA <- cyberdata_edited %>% filter(!is.na(Date_of_Breach))
+
+ggplot(data = cyberdata_noNA, mapping = aes(Date_of_Breach)) + geom_histogram(binwidth = 50, fill=NA, color="purple") + labs(x="Date of Breach", y="Count of Breaches", title="Histogram of Date of Breach Distribution")
+```
+
+```{r}
+ggplot(data = cyberdata_noNA) + 
+  geom_count(mapping = aes(x = year(Date_of_Breach), y = month(Date_of_Breach), color = year(Date_of_Breach))) + scale_y_continuous(breaks=c(1:12)) + scale_x_continuous(breaks=c(1997:2014)) + theme(axis.text.x = element_text(angle = 90)) + labs(x="Year of Breach", y="Month of Breaches", title="Scatterplot of Breaches Distribution")
+```
+
+
+## Does converting the type of this variable help exploring the distribution of its values or identifying outliers or missing values?
+
+1. What type can the variable be converted to? 
+
+Since originally, the type of the Date_of_Breach variable was character and we converted it to the Date type to conduct our analysis, there is no further conversion of types that we need to do. 
+
+2. How will the distribution look? Please demonstrate with appropriate plots.
+
+
+
+## What new variables do you need to create from this
+
+1. List the variables
+
+2. Describe and discuss why they are needed and how you plan to use them.
+
+There are no new variables we need to create, however, we must analyze the breach_start and breach_end variables to further understand breaches when they occur over a period of time. 
+
+First however, we will look at how the Date_of_Breach variable relates to the Date_Posted_or_Updated variable. We will do this to understand the amount of time it takes for breaches to be recognized after they occur. Again, accounting for the NA values which represent the range in the Date_of_Breach variable, we will look at them later with the breach_end variable. 
+
+## variable 2: Date_Posted_or_Updated 
+
+## 1. Which values are most common and why? Which values are rare? Why? Does that match your expectations?
+
+After segmenting the counts of dates into those that are less than 10 and those that are more than 10, the most common value is the date of 2014-01-23 with 691 counts, then followed by 2014-03-24 with 48 counts. These values with higher counts indicate that a majority of the breaches were found during this time.
+
+As for values that are rare, we find many dates with counts of 1 such as 2014-01-31, 2014-02-25, 2014-02-26, 2014-03-05, 2014-03-21, 2014-03-31, 2014-04-22, 2014-05-06 and 2014-06-11. This means these very the rare dates when a breach was found.
+
+```{r}
+cyberdata_edited %>% group_by(Date_Posted_or_Updated) %>% count() %>% filter(n<=10)
+cyberdata_edited %>% group_by(Date_Posted_or_Updated) %>% count() %>% filter(n>10)
+```
+
+## 3. Can you see any unusual patterns? What might explain them?
+
+When finding the count of the Date_Posted_or_Updated data set using its year, we find that the entire column is only of the year 2014. 
+Hence, when we make our distribution, we see the distribution of breaches in each month of the year 2014. The month of January has the highest count of breaches that are posted followed by June. This is also confirmed from the count table. 
+
+But we don't find any unusual trends in the data. 
+
+```{r}
+cyberdata_edited %>% group_by(year(Date_Posted_or_Updated)) %>% count()
+
+cyberdata_edited %>% group_by(Date_Posted_or_Updated) %>% ggplot(aes(Date_Posted_or_Updated)) + geom_histogram() + labs(x="Date Posted or Updated", y="Count of Date", title="Histogram of Date Posted or Updated")
+
+cyberdata_edited %>% group_by(month(Date_Posted_or_Updated)) %>% count()
+```
+
+4. How are the observations within each cluster similar to or different from each other? How can you explain or describe the clusters?
+
+When examining the dates in this variable, we see that the months of January and April have less spread out breach dates as compared to February, March, May and June. 
+
+While there is no explicit reasoning for why these clusters occur, the best explanation is because the months of January and April have the certain dates when they focus on detecting breaches and so not a lot of days are spent on detecting them. On the other hand, in the rest of the months, there are more days when they work on detecting the breaches and thus there are more spread out data points. 
+
+```{r}
+ggplot(data = cyberdata_edited) + geom_count(mapping = aes(x = month(Date_Posted_or_Updated), y = day(Date_Posted_or_Updated), color = month(Date_Posted_or_Updated))) + scale_x_continuous(breaks=c(1:6))+ labs(x="Month of Date Posted", y="Day of Date Posted", title="Scatterplot of Date Posted or Updated Distribution") 
+```
+
+## Unusual values
+
+1. Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
+
+The latest date or the largest date in the data set is 2014-06-30 or the 30th of June, 2014. The earliest or the smallest date in the data set is 2014-01-23 or the 23rd of January, 2014. There are no negative date values determined in the data set which is expected since these are dates. 
+
+```{r}
+max_dates_posted <- summarize(cyberdata_edited, max(Date_Posted_or_Updated, na.rm = TRUE))
+max_dates_posted
+
+min_dates_posted <- summarize(cyberdata_edited, min(Date_Posted_or_Updated, na.rm = TRUE))
+min_dates_posted
+
+filter(cyberdata_edited, Date_Posted_or_Updated<0)
+```
+
+2. Describe and demonstrate how you determine if they are outliers.
+
+In order to determine if they are outliers, we will create a boxplot and look for points that are separated from the tail. We see that there are 2 points that act as outliers. 
+
+```{r}
+ggplot(data = cyberdata_edited, aes(x = Date_Posted_or_Updated)) + geom_boxplot()+ labs(x="Date Posted or Updated", title="Boxplot of Date Posted or Updated")
+
+```
+
+3. Show how do your distributions look like with and without the unusual values.
+
+Since the only unusual values are the outliers, we will examine the distribution without them. After filtering out the values that have dates later than 2014-06-29, which consists of 13 values, we can recreate the boxplot and we see that it doesn't consist of the outliers. 
+
+Additionally, the original distribution in black and the new distribution in red shows a very minute difference only in the last bin which is shorted in height. 
+
+```{r}
+cyberdata_DPoU_outliers <- cyberdata_edited %>% group_by(Date_Posted_or_Updated) %>% filter(!(month(Date_Posted_or_Updated) == 6 & day(Date_Posted_or_Updated) > 29))
+
+ggplot(data = cyberdata_DPoU_outliers, aes(x = Date_Posted_or_Updated)) + geom_boxplot()+ labs(x="Date Posted or Updated", title="Boxplot of Date Posted or Updated", subtitle="(No outliers)")
+```
+
+```{r}
+ggplot(data = cyberdata_edited, mapping = aes(Date_Posted_or_Updated)) + geom_histogram(binwidth = 10, fill=NA, color="black")+ labs(x="Date Posted or Updated", y="Count of Dates", title="Histogram of Date Posted or Updated")
+```
+
+```{r}
+ggplot(data = cyberdata_DPoU_outliers, mapping = aes(Date_Posted_or_Updated)) + geom_histogram(binwidth = 10, fill=NA, color="red")+ labs(x="Date Posted or Updated", y="Count of Dates", title="Histogram of Date Posted or Updated", subtitle="(No outliers)")
+
+```
+
+4. Discuss whether or not you need to remove unusual values and why.
+
+No, we should not remove the missing values because they aren't that different from the other values in the data. Even though those data points are classified as outliers by the box plot distribution, they are not values that should be removed. These values are part of the distribution and are valuable in determining the length of time it takes for a breach to be detected. 
+
+## Missing Values 
+
+1. Does this variable include missing values? Demonstrate how you determine that
+
+No, this variable does not include any NA values. 
+```{r}
+filter(cyberdata_edited, is.na(Date_Posted_or_Updated))
+```
+## Analyzing length of detection of breach
+
+In order to determine the time it takes for a breach to be detected, we will subtract the Date_of_Breach variable from the Date_Posted_or_Updated variable to give us the difference between the two. 
+
+
+```{r}
+cyberdata_edited <- cyberdata_edited %>% mutate(detection_length = Date_Posted_or_Updated - Date_of_Breach) 
+```
+
+## Comparing detection length with Date posted 
+
+The scatterplot shows us that the month of January has higher detection_length values that are scattered and reach above 6000. The month of February and March have the smallest distribution in values, with values lesser than 1500. Similarly, April and June also consist of values that are within the range of 2500 detection_length values. For the month of May, the values are mostly less than 2000 except for one extreme value. 
+
+The same conclusions can be made from looking at the boxplot distribution. The month of January and May show the outliers. Outliers occur in the later half of January and towards the middle of the month for May. 
+
+```{r}
+ggplot(data = cyberdata_edited) + geom_point(mapping = aes(x = month(Date_Posted_or_Updated), y = detection_length, color = month(Date_Posted_or_Updated)))+ labs(x="Month of Date Posted or Updated", y="Detection length of Breach", title="Scatterplot of Month Breach was Posted vs How long it took to Post")
+```
+
+```{r}
+ggplot(data = cyberdata_edited, mapping = aes(x = day(Date_Posted_or_Updated), y = detection_length)) + geom_boxplot() + facet_wrap(~month(Date_Posted_or_Updated)) + scale_x_continuous(breaks=c(1,5,10,15,20,25,30))+ labs(x="Day of Date Posted or Updated", y="Detection length of Breach", title="Boxplot distribution of Detection length of Breach for each Month", subtitle="(Date Posted or Updated)")
+```
+Graph below doesn't show proper trend even though linear because detection length is mostly indicative of the year 2014 and so examining the yearly trend will most definitely show decreasing trend. 
+
+```{r}
+ggplot(data = cyberdata_edited, aes(x=year, y=detection_length)) + geom_point() + geom_smooth()
+```
+
+
+```{r}
+ggplot(data = cyberdata_edited, mapping = aes(x = day(Date_Posted_or_Updated), y = detection_length)) + geom_boxplot()+ labs(x="Day of Date Posted or Updated", y="Detection length of Breach", title="Boxplot of Detection length versus Day", subtitle="Date Posted or Updated")
+
+```
+
+This analysis and distribution tells us that the months of January and May have a higher range of distribution lengths, meaning that for some breaches, it takes longer for the breach to be detected. Hence, in the months of February, March, April and June, the detection lengths are not that widely distributed, meaning that the detection of the breach happens in fairly less time. The month of March, however, has the quickest detection time as indicated by the smallest distribution of detection lengths. 
+
+
+## Comparing detection length with Date of Breach 
+
+```{r}
+ggplot(data = cyberdata_edited) + geom_point(mapping = aes(x = month(Date_of_Breach), y = detection_length, color = month(Date_of_Breach))) + scale_x_continuous(breaks=c(1:12))+ labs(x="Month of Date of Breach", y="Detection length of Breach", title="Scatterplot of Detection length vs Month of Breach", subtitle="Date of Breach")
+```
+
+```{r}
+ggplot(data = cyberdata_edited) + 
+  geom_boxplot(mapping = aes(x = month_of_breach, y= detection_length))+ labs(x="Month of Breach", y="Detection length of Breach", title="Boxplot distribution of Detection length vs Month of Breach", subtitle="Date of Breach")
+```
+
+```{r}
+ggplot(data = cyberdata_edited) + 
+  geom_boxplot(mapping = aes(x = reorder(year,detection_length, FUN = median), y=detection_length))+ labs(x="Year of Breach", y="Detection length of Breach", title="Boxplot distribution of Detection length vs Year of Breach", subtitle="Date of Breach")
+```
+
+From our analysis above, we see that creating a distribution of the detection length with the month of the Date of Breach showcases that the detection lengths have some outliers in the months of January, March and May. The trend here is that the detection of the breach seems to be quick from January till June, and then increases in July, decreases in August, increases from September to October and then decreases in November, with finally increasing in December. 
+Even the boxplot distribution shows that the highest median is in the month of June. 
+
+As for looking at the years boxplot, we can see that the years from 2008 to 2013 the median of the detection length decreases. This means that from 2008 to 2013, the detection length decreases meaning that the time between the breach occuring and the breach being posted, reduces, hence it is put into the system quicker.
+
+The detection length histogram created to understand how long detection takes by examining the yearly frames. 
+
+```{r}
+ggplot(data = cyberdata_edited, mapping = aes(detection_length)) + geom_histogram(binwidth = 50, color="darkgreen")+ labs(x="Detection Length of Breach", y="Count of Lengths", title="Histogram of Detection Length of Breach", subtitle = "Separated into year frames") + geom_vline(xintercept = 365) + geom_vline(xintercept = 730) + geom_vline(xintercept = 1095)
+```
+
+## Comparing detection length with State 
+
+Since the cyberdata_edited data set only contains the date variables, we will create a new data frame and add the variables we need to compare the detection lengths against such as the state and the number of individuals affected.  
+
+```{r}
+cyberdata_combined <- cbind(cyberdata_edited, cyberdata)
+cyberdata_combined <- subset(cyberdata_combined, select=-c(8,9,10,12,14:21))
+```
+
+
+```{r}
+ggplot(data = cyberdata_combined, mapping = aes(x = detection_length)) + 
+  geom_freqpoly(mapping = aes(colour = State), binwidth = 500)+ labs(x="Detection Length of Breach", y="Count of Lengths", title="Polygraph of Detection lengths in States")
+```
+
+```{r}
+cyberdata_combined %>% group_by(State) %>% summarize(max_length = max(detection_length, na.rm = TRUE)) 
+```
+
+```{r}
+ggplot(data = cyberdata_combined, aes(x=State, y=detection_length)) + geom_jitter() + theme(axis.text.x = element_text(angle = 90)) + labs(x="State", y="Detection length of Breach", title="Jitter distribution of Detection lengths in States")
+```
+
+```{r}
+ggplot(data = cyberdata_combined, aes(x=State, y=detection_length)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90)) + labs(x="State", y="Detection length of Breach", title="Boxplot distribution of Detection length in States")
+```
+
+```{r}
+ggplot(data = cyberdata_combined, aes(x=State, y=detection_length)) + geom_violin() + theme(axis.text.x = element_text(angle = 90)) + labs(x="State", y="Detection length of Breach", title="Violin distribution of Detection lengths in States")
+```
+
+
+Examining the frequency polygraph, we can see that a majority of the states have shorter detection lengths and fewer states have larger detection lengths due to the lesser number of polygraphs over the 2500 mark. Arizona, Massachusetts, North Carolina, and Ohio are found to be the states that are above the 2500 mark, making these the states that take the longest to detect the breach after it has been found. This is proved by the jitter graph, boxplot and violin graphs since these 4 states have outliers and the largest distribution of values. 
+
+## Comparing detection length with individuals affected 
+
+```{r}
+ggplot(data = cyberdata_combined) +
+  geom_bin2d(mapping = aes(x = Individuals_Affected, y = detection_length)) + labs(x="Individuals Affected", y="Detection length of Breach", title="Bin graph of Detection lengths vs Individuals affected")
+```
+
+```{r}
+ggplot(data = cyberdata_combined) +
+  geom_hex(mapping = aes(x = Individuals_Affected, y = detection_length)) + labs(x="Individuals Affected", y="Detection length of Breach", title="Hex graph of Detection lengths vs Individuals affected") 
+```
+
+```{r}
+ggplot(data = cyberdata_combined) +
+  geom_point(mapping = aes(x = Individuals_Affected, y = detection_length)) + labs(x="Individuals Affected", y="Detection length of Breach", title="Scatterplot of Detection lengths vs Individuals affected")
+```
+
+When comparing the individuals affected with the detection time for the breach, very few individuals are affected by increasing detection lengths. Even for detection lengths over 6000, there are extremely few individuals who are affected by the breach. The most number of individuals are affected by a detectin length that is less than the 1000 mark, but there a good amount of individuals in the 1000-2000 range of detection lengths as well. 
+
+In order to better understand the spread of data, we will look at a small set of data values in the detection_length variable
+
+```{r}
+cyberdata_concentrated <- data.frame(cyberdata_combined)
+cyberdata_concentrated <- cyberdata_concentrated %>% filter(detection_length<2000 & Individuals_Affected<2000000)
+```
+
+```{r}
+ggplot(data = cyberdata_concentrated) +
+  geom_point(mapping = aes(x = Individuals_Affected, y = detection_length))+ labs(x="Individuals Affected", y="Detection length of Breach", title="Scatterplot of Detection lengths vs Individuals affected", subtitle="(Concentrated data)")
+```
+
+After concentrating our data to only look at number of individuals that are affected to be less than 2,000,000 and the detection lengths to be less than 2000, we can see that the data is a little bit more spread out with no clear trend. However, we do see that when the individuals that are affected are larger, the detection lengths usually lie in the 750-1750 range. 
+
+
+# QUESTION 2: How long does a breach normally last? 
+
+
+## Describe why these variables are relevant and why others are not relevant?
+The breach_end and breach_start variables are relevant because they represent the beginning and end of the breach respectively. Additionally, they are also Date variables making comparison and evaluation easily. The other variables don't show what the questions is asking for. 
+
+
+## Variable 3: breach_start 
+
+1. Which values are the most common? Why? Which values are rare? Why? Does that match your expectations?
+
+Since we determined this variable to be representative of the Date_of_Breach for single day breaches, a lot of our analysis will be similar to that of Date_of_Breach. However, this variable will have more values than that in the Date_of_Breach column because it is not affected by the multiple day breaches, since it still represents the initial day of the breach in the period. 
+
+From the histogram, we can tell that around 2012 is when the count is the highest for the breach_start variable. Hence, this data is the most common. From filtering the data set to examine the variable, we can confirm that the value that has the highest count of 8 occurences is 2012-06-15 or the 15th of June, 2012. 
+
+As for which values are rare, a majority of the dates in the initial years such as in the range from 1997 to 2008 seem to have rare occurences. We determine there to be 522 values with rare occurences or counts of 1. 
+```{r}
+ggplot(cyberdata_edited, aes(breach_start)) + geom_histogram(binwidth = 100, fill="purple")+labs(x="Breach start date", y="Count of date", title="Histogram of Breach Start dates")
+```
+
+```{r}
+cyberdata_edited %>% group_by(breach_start) %>% count() %>% filter(n>5)
+cyberdata_edited %>% group_by(breach_start) %>% count() %>% filter(n==1)
+```
+2. Can you see any unusual patterns? What might explain them?
+
+After plotting the month, year and day of the breach_start variable, we can get a better idea of any unusual patterns. We can determine that a majority of the breaches started in the month of September, followed by March. The year that faced the most breach starts was the year 2013, followed by 2012/2011. As for days, we see that the beginning days had the highest count. 
+
+Hence, while there are no explicit unusual values, what we notice is that every month has almost a good count of breach starts but the latter half of the years seem to be the ones with higher breaches. As for days, the beginning and middle have high counts but in between those, the breach start counts are fairly low.
+
+When thinking about what might explain these trends, we can attribute it to the fact that the restrictions or the data protection methods were weak in the years from 2011-2013 and the violators probably plotted on how to conduct the breach towards the end of the month so they can breach at the start of each month, and even planned in the first half so they can steal data in the middle of the month. 
+
+```{r}
+cyberdata_edited %>% ggplot(aes(year(breach_start))) + geom_histogram()+ labs(x="Year of Breach start date", y="Count of date", title="Histogram of Year of Breach start dates")
+
+cyberdata_edited %>% ggplot(aes(month(breach_start))) + geom_histogram() + scale_x_continuous(breaks=c(1:12)) + labs(x="Month of Breach start date", y="Count of date", title="Histogram of Month of Breach start dates")
+
+cyberdata_edited %>% ggplot(aes(day(breach_start))) + geom_histogram() + labs(x="Day of Breach start date", y="Count of date", title="Histogram of Day of Breach start dates")
+```
+
+3. Are there clusters in the data? How are the observations within each cluster similar to or different from each other? How can you explain or describe the clusters?
+
+For the month of the breach_start variable, there are no clusters since their counts seem to increase and decrease randomly. For the year of the breach_start, the cluster is formed by the years from 2010 to 2013 due to their high counts. For the day of the breach_start variable, the days in the first half(between the initial and the mid) and the days in the second half(after the mid) can also be clustered due to their low counts in the same range. 
+
+## Unusual values
+
+1. Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.
+
+The maximum date value is found to be 2014-06-02 or the 2nd of June in 2014. The minimum date value is found to be 1997-01-01 or the 1st of January in 1997. There are no negative values found in the breach_start column which is expected because it is a date. 
+
+```{r}
+max_breach_start <- summarize(cyberdata_edited, max(breach_start, na.rm = TRUE))
+max_breach_start
+
+min_breach_start <- summarize(cyberdata_edited, min(breach_start, na.rm = TRUE))
+min_breach_start
+
+sum(cyberdata_edited$breach_start<0)
+```
+
+2. Describe and demonstrate how you determine if they are outliers.
+
+In creating the boxplot, we can see that there are no data points that are far away from the whisker. So there are no outliers in this variable. The median is found to be at 2012. 
+
+```{r}
+ggplot(data = cyberdata_edited, aes(x = breach_start)) + geom_boxplot()+ labs(x="Breach start date", title="Boxplot of Breach start")
+```
+
+3. Show how do your distributions look like with and without the unusual values.
+
+Since there are no unusual values, our distribution will look the same.But we can filter out the beginning values in the years below 2008 to look at the data in a more zoomed in sense. 
+
+```{r}
+cyberdata_BS_outliers <- cyberdata_edited %>% filter(year(breach_start) > 2008)
+
+ggplot(data = cyberdata_BS_outliers, mapping = aes(breach_start)) + geom_histogram(binwidth = 50, fill=NA, color="red")+ labs(x="Breach start date", y="Count of date", title="Histogram of Breach start dates", subtitle="(Edited)")
+```
+
+4. Discuss whether or not you need to remove unusual values and why.
+
+There are no unusual values or outliers in the data set and so no need to remove anything. 
+
+## Missing Values 
+
+1. Does this variable include missing values? Demonstrate how you determine that.
+
+This variable has no missing or NA values. 
+
+```{r}
+sum(is.na(cyberdata_edited$breach_start))
+```
+
+## Variable 4: breach_end 
+
+1. Which values are the most common? Why? Which values are rare? Why? Does that match your expectations?
+
+This variable has values when the Date_of_Breach was not a single day event but in fact took a period of time to execute. 
+
+The histogram shows that the bulk of breach end dates occur from 2011-2014.
+The most common value is the date 2012-10-01 or the 1st of October 2012 because it has 11 counts. There are many rare values, 108 to be precise, due to their count being 1. 
+
+```{r}
+ggplot(cyberdata_edited, aes(breach_end)) + geom_histogram(binwidth = 100, fill="blue")+ labs(x="Breach end date", y="Count of date", title="Histogram of Breach end dates")
+```
+
+```{r}
+cyberdata_edited %>% group_by(breach_end) %>% count() %>% filter(n==1) 
+cyberdata_edited %>% group_by(breach_end) %>% count() %>% filter(n>1)
+```
+
+2. Can you see any unusual patterns? What might explain them?
+
+The unusual patterns we see is that in the histogram distribution, only the years 2007, 2011, 2012 and 2013 exist. This means that for the other years, the breach only took a single day to occur. But in these aforementioned years, breaches took place over a couple days. The month of October, followed by March seem to have the most counts, meaning these months had the most period breaches. As for the days, we notice the same trend as we saw in breach_start, with the very beginning and the mid of the month to have the highest count. Something that explains this is that performing the breach takes a while so they usually began and ended around the same time they began but after a couple days. 
+
+```{r}
+cyberdata_edited %>% ggplot(aes(year(breach_end))) + geom_histogram()+ labs(x="Year of Breach end date", y="Count of date", title="Histogram of Year of Breach end dates")
+
+cyberdata_edited %>% ggplot(aes(month(breach_end))) + geom_histogram()+ scale_x_continuous(breaks=c(1:12)) + labs(x="Month of Breach end date", y="Count of date", title="Histogram of Month of Breach end dates")
+
+cyberdata_edited %>% ggplot(aes(day(breach_end))) + geom_histogram() + labs(x="Day of Breach end date", y="Count of date", title="Histogram of Day of Breach end dates") 
+```
+
+3. Are there clusters in the data? How are the observations within each cluster similar to or different from each other? How can you explain or describe the clusters?
+
+There are no clusters in the year of the breach_start. The months from April through September form a cluster since their count is all under 12. The days from the same clusters as we determined in the breach_start variable - between 1-12 and 15-31. 
+
+## Unusual values
+
+1. Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc.
+
+The largest value or the latest date is 2013-11-30 or the 30th of November 2013. The smallest value or the earliest date is 2007-06-14 or the 14th of June 2014. 
+There are no negative values which is expected because this is a date. 
+
+```{r}
+max_breach_end <- summarize(cyberdata_edited, max(breach_end, na.rm = TRUE))
+max_breach_end
+
+min_breach_end <- summarize(cyberdata_edited, min(breach_end, na.rm = TRUE))
+min_breach_end
+
+sum(cyberdata_edited$breach_end<0)
+```
+
+2. Describe and demonstrate how you determine if they are outliers.
+
+In creating the boxplot, we can see that there are no data points that are far away from the whisker. So there are no outliers in this variable. The median is found to be between 2012 and 2013 but closer to the latter. 
+
+```{r}
+ggplot(data = cyberdata_edited, aes(x = breach_end)) + geom_boxplot()+labs(x="Breach end date", title="Boxplot of Breach end")
+```
+
+3. Show how do your distributions look like with and without the unusual values.
+
+Since there are no unusual values, our distribution will look the same.But we can filter out the beginning values in the years below 2010 to look at the data in a more zoomed in sense. 
+
+```{r}
+cyberdata_BE_outliers <- cyberdata_edited %>% filter(breach_end > '2010-01-01')
+
+ggplot(data = cyberdata_BE_outliers, mapping = aes(breach_end)) + geom_histogram(binwidth = 50, fill=NA, color="red")+labs(x="Breach end date", y="Count of date", title="Histogram of Breach end dates", subtitle="(Edited)")
+```
+
+4. Discuss whether or not you need to remove unusual values and why.
+
+There are no unusual values or outliers in the data set and so no need to remove anything. 
+
+## Missing Values 
+
+1. Does this variable include missing values? Demonstrate how you determine that.
+
+This variable has 910 missing or NA values. We determined this by using the is.na() function. 
+
+```{r}
+sum(is.na(cyberdata_edited$breach_end))
+```
+2. Demonstrate and discuss how you handle the missing values. E.g., removing, replacing with a constant value, or a value based on the distribution, etc.
+
+The missing values in this column exist to represent the breaches that only took a single day to occur and thus didn't have a breach_end since the breach_start was representative. We will not remove these rows, but we can replace them with the same value in the breach_start variable for future analysis. So when we subtract the breach_start from the breach_end, we will be able to obtain 0 values for the single day breaches and actual values for the multiple day breaches. 
+
+In our code below, we have replaced the values and have checked the type of the variable to ensure its a Date. 
+
+```{r}
+cyberdata_BE_replacedNA <- data.frame(cyberdata_edited)
+
+invalid_dates <- is.na(cyberdata_BE_replacedNA$breach_end)
+if(any(invalid_dates)) {
+  cyberdata_BE_replacedNA$breach_end[invalid_dates] <- cyberdata_BE_replacedNA$breach_start[invalid_dates]
+}
+
+str(cyberdata_BE_replacedNA$breach_end)
+str(cyberdata_BE_replacedNA$breach_start)
+
+```
+
+3. Show how your data looks in each case after handling missing values.Describe and discuss the distribution.
+
+After handling the missing values by adding in the breach_start values in place of the NA values in the breach_end column, we can see that the distribution has a larger density of values starting from 2010. The distribution now also consists of values prior to 2008, such as including the 1997 year as well. 
+
+```{r}
+ggplot(cyberdata_edited, aes(breach_end)) + geom_histogram(binwidth = 100, fill=NA, color="blue")+labs(x="Breach end date", y="Count of date", title="Histogram of Breach end dates")
+```
+
+```{r}
+ggplot(cyberdata_BE_replacedNA, aes(breach_end)) + geom_histogram(binwidth = 100, fill=NA, color="blue")+labs(x="Breach end date", y="Count of date", title="Histogram of Breach end dates", subtitle="(NA replaced)")
+```
+
+
+## Analyzing breach time span for multiple day breaches 
+
+Since we determined that multiple day breaches usually have a breach_end value that different from the breach_start value or that is not NA, we will determine how much time it takes for breaches to happen. 
+
+The breach period variable consists of the breach start subtracted from the breach end variable. This tells us how long it takes for the breach to take place. 
+```{r}
+cyberdata_BE_replacedNA <- cyberdata_BE_replacedNA %>% mutate(breach_period = breach_end - breach_start)
+```
+
+This distribution shows us that a majority of the values in the breach period variable are 0, this means that there are mostly single day breaches. There are very few multiple day breaches and to understand them better, we will take a closer look at the data. 
+
+```{r}
+ggplot(cyberdata_BE_replacedNA, aes(breach_period)) + geom_histogram(binwidth = 100, fill=NA, color="black")+labs(x="Breach period", y="Count of date", title="Histogram distribution of Breach period", subtitle="(NA replaced)")
+```
+
+This distribution below tells us that there are a few counts of dates that have extremely large breach periods. This indicates that for a couple breaches, it took a long time for the breach to happen. 
+
+```{r}
+cyberdata_BP_concentrated <- data.frame(cyberdata_BE_replacedNA)
+cyberdata_BP_concentrated <- cyberdata_BE_replacedNA %>% filter(breach_period>0)
+
+ggplot(cyberdata_BP_concentrated, aes(breach_period)) + geom_histogram(binwidth = 100, fill="orange")+labs(x="Breach period", y="Count of date", title="Histogram distribution of Breach period", subtitle="(Edited)")
+```
+
+After filtering the data set to only look at values that have breach period counts greater than 1, we see that the most common breach period is 1 day followed by  108 days and then 2 days. The largest breach period that occurs is 2891 days. 
+
+```{r}
+cyberdata_BP_concentrated %>% group_by(breach_period) %>% count() %>% filter(n>1) 
+
+cyberdata_BP_concentrated %>% summarize(max_breach_period = max(breach_period), min_breach_period = min(breach_period)) 
+```
+
+Created a new data frame by combining the State and Individuals Affected variables with the created detection length and breach period values. 
+
+Graph below shows no trend since values are scattered everywhere. 
+
+```{r}
+cyberdata_final_combined <- cbind(cyberdata_combined, cyberdata_BE_replacedNA)
+cyberdata_final_combined <- subset(cyberdata_final_combined, select= -c(1:7))
+
+ggplot(data = cyberdata_final_combined, aes(x = year, y = breach_period)) + geom_point() + geom_smooth()
+```
+
+
+## Analysing breach period against the Individuals Affected 
+
+This shows us that the number of people getting affected when the breach takes a long time is fairly low. Similarly, when more people get affected, the breach period is low. 
+
+```{r}
+
+ggplot(data = cyberdata_final_combined) + geom_point(mapping = aes(x = Individuals_Affected, y = breach_period)) + ylim(0,2000) + xlim(0,2000000) +labs(x="Individuals Affected", y="Breach Period", title="Scatterplot distribution of Breach period vs Individuals Affected")
+
+ggplot(data = cyberdata_final_combined, mapping = aes(x = Individuals_Affected, y = breach_period)) + 
+  geom_hex() +labs(x="Individuals Affected", y="Breach Period", title="Hex distribution of Breach period vs Individuals Affected")
+
+```
+
+## Analyzing breach period with States 
+
+The analysis below shows that the states usually have a fairly pyramid shaped distribution of the breach periods around 0. This means that a majority of the states have extremely small breach periods, or usually have single day breaches. There are only a couple states that have longer breach periods and they are determined to be Massachusetts(2145), North Carolina(2857), New York(2202) and Texas(2891). We can see this in the jitter graph distribution as well since these 4 states have the highest distribution. 
+
+```{r}
+ggplot(data = cyberdata_final_combined, mapping = aes(x = breach_period)) + 
+  geom_freqpoly(mapping = aes(colour = State), binwidth = 500)+ labs(x="Breach Period", y="Count of Lengths", title="Polygraph of Breach Periods in States")
+```
+
+```{r}
+cyberdata_final_combined %>% group_by(State) %>% summarize(max_period = max(breach_period, na.rm = TRUE))
+```
+
+```{r}
+ggplot(data = cyberdata_final_combined, aes(x=State, y=breach_period)) + geom_jitter() + theme(axis.text.x = element_text(angle = 90)) + labs(x="State", y="Breach Period", title="Jitter distribution of Breach Periods in States")
+
+ggplot(data = cyberdata_final_combined, aes(x=State, y=breach_period, color=State)) + geom_boxplot() + theme(axis.text.x = element_text(angle = 90)) + labs(x="State", y="Breach Period", title="Coxcomb distribution of Breach Period", subtitle = "States") + coord_flip() + coord_polar()
+
+```
+
+## Analyzing Breach periods in the year of the Date of Breach 
+
+We can see that the year 2005 followed by 2008 has the longest breach period. This means that this year had a majority of the multiple day breaches. 
+
+```{r}
+ggplot(data = filter(cyberdata_final_combined, breach_period>0)) + 
+  geom_bar(mapping = aes(x=breach_period)) + 
+  facet_wrap(~year) + 
+  theme(axis.text.x = element_text(angle = 90)) + labs(x="Breach Period", y="Length of period", title="Facet Bar graph of Breach Periods in each year")
+
+```
+
+```{r}
+cyberdata_final_combined %>% group_by(year, breach_period) %>% count()
+```
+
+## Analyzing detection length versus year and versus breach period 
+
+Abline is added that shows that there is no linear trend between the two. Due to the fact that detection length decreases upto 2014 since it subtracts dates in the Date of Breach from Date posted which are all 2014. Similarly no linear trend with breach period. 
+
+```{r}
+cyberdata_test_combined <- data.frame(cyberdata_final_combined)
+cyberdata_test_combined <- cyberdata_test_combined %>% mutate(detection_length = as.numeric(detection_length), breach_period = as.numeric(breach_period))
+
+cyberdata_test_combined %>% ggplot(aes(x = detection_length, y = breach_period)) + geom_point() + geom_abline()
+
+cyberdata_test_combined %>% ggplot(aes(x = year, y = detection_length)) + geom_point() + geom_abline()
+
+```
+
+Graphs made of breach period versus detection length but no trend found. Breach period is plotted against the states as boxplot resulting in the same findings as above. The bar graph distribution shows how the values are distributed apart from 0. 
+
+```{r}
+cyber_test <- cyberdata_final_combined %>% filter(breach_period!=0)
+
+ggplot(data = cyberdata_test_combined, aes(x=breach_period, y = detection_length)) + geom_point() + xlim(0,100) + ylim(0,100)
+
+ggplot(data = cyber_test, mapping = aes(x = State, y = as.numeric(breach_period))) +
+  geom_boxplot() + coord_flip()
+
+ggplot(data = cyberdata_test_combined) +
+  geom_point(mapping = aes(x = Individuals_Affected, y = breach_period))
+
+cyberdata_final_combined %>% 
+  filter(breach_period>0) %>%
+  ggplot(aes(x=as.factor(breach_period))) + geom_bar() +coord_flip() + labs(x="Count of Breach Period", y="Breach Periods", title="Bar Graph distribution of Breach Period")
+
+
+cyberdata_final_combined %>% 
+  filter(breach_period<365) %>%
+  ggplot(aes(x=as.factor(breach_period))) + geom_bar() +coord_flip()
+```
+
+## Residuals and predictions for month of breach and detection length
+
+No model can be made since the correlation coefficient is NA. This is because month is a categorical variable. The red dots represent the predicted values in the model. 
+
+```{r}
+
+model <- lm(detection_length ~ month_of_breach, data = cyberdata_test_combined)
+model
+summary(model)
+
+
+model_edited <- cyberdata_test_combined %>% add_predictions(model)
+coef(model_edited)
+
+ggplot(cyberdata_test_combined, aes(x=month_of_breach)) + 
+  geom_point(aes(y = detection_length)) +
+  geom_point(data = model_edited, aes(y = pred), colour = "red", size = 4) 
+
+
+```
+
+
+## Model Analysis for Individuals Affected and detection length
+
+A slightly positive trend is seen as determined by the correlation of coefficient. 
+
+```{r}
+
+model1 <- lm(detection_length ~ Individuals_Affected, data = cyberdata_test_combined)
+model1
+summary(model1)
+
+res <- cor.test(cyberdata_test_combined$detection_length, cyberdata_test_combined$Individuals_Affected, method = "pearson")
+res
+
+ggscatter(cyberdata_test_combined, x="Individuals_Affected", y="detection_length", add = "reg.line", cor.coef = TRUE, cor.method = "pearson") + labs(x="Individuals Affected", y="Detection Length", title="Scatter plot of the model analysis")
+```
+
+
+# FINDINGS
+
+After conducting the above analysis, my final findings show that overall, the amount of time that passes before a breach is found and the duration of breaches are both fairly low. This indicates that the company tends to detect breaches fairly quickly after the breach occurs. It also faces breaches that usually occur within one day and thus are maybe not very complex. However, when looking at the states, North Carolina and Massachusetts have the largest amount of detection lengths and breach periods. This means that these two states take the longest time to detect a breach and have breaches that span over many days. The analysis also determined that the number of individuals affected doesn’t seem to increase with the longer breach durations, which is a trend I expected. One would think that larger breach durations correspond to more complex breaches, and thus more individuals being affected, but this trend was not shown. This might have happened because the company might be good at protecting the individuals from losing too much of their data during breaches. However, as for the number of individuals being affected with longer detection lengths, we can determine a slightly positive correlation. This slight linear trend is expected because the more time it takes for the company to detect the breach, more individuals will be harmed in the process since they might have to delay their work or take precautions.  
+
