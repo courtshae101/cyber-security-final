@@ -364,6 +364,8 @@ Upon graphing just the first variable, location_of_breached_information, I assum
 
 
 **- Modeling**
+ Attempts to model this relationship as shown below showed that there appears to be no reason to do so, the relationship between these two variables does not need to be described in a linear or polynomial fashion. This can be explained by the fact that the summary statistics (in Figure 7) show that the R and p-values are statistically insignificant. Thus, modeling a relationship between the given categorical variable and continuous variables would not accurately give us predictions.
+
 ```{r}
 breach_data %>%
   ggplot(aes(x=location_singles, y=log10(Individuals_Affected), fill =location_singles)) +geom_point(aes(color = location_singles)) + ggtitle("Relationship between individuals affected and type of breach location") +  scale_x_discrete(guide = guide_axis(n.dodge=2))+
@@ -383,4 +385,5 @@ ggplot(breach_data, aes(x=location_singles, y=(Individuals_Affected))) + geom_po
 model3 <- lm(breach_data$Individuals_Affected ~  location_singles, data= breach_data)
 summary(model3)
 ```
+
 
