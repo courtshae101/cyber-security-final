@@ -100,7 +100,7 @@ missing
   There is an increasing trend for the number of breaches as the year increases.
 
 - Describe what new questions your analysis may generate. (5 points)
-  Does the trend continue past 2014?
+  Does the trend continue past 2014? What is the trend in the different type of breaches?
 
 - Discuss if you have enough evidence to make a conclusion about your analysis. (5 points)
   There is not enough data as the data stops at 2014 and starts roughly at 2005 with a few data points from prior to 2005. 
@@ -119,4 +119,164 @@ ggplot(number_of_breaches, aes(year, freq)) +
   geom_col() +
   geom_line(data = range, colour = "red", size = 1)
 ```
+```{r}
+subset_breaches <- number_of_breaches %>%
+  filter(year < 2014 & year > 2007)
+mod <- lm(freq ~ year, data = subset_breaches)
 
+range2 <- subset_breaches %>% 
+  add_predictions(mod, "freq1") 
+
+ggplot(subset_breaches, aes(year, freq)) +
+  geom_col() +
+  geom_line(data = range2, colour = "red", size = 1)
+```
+Followup Question Analysis:
+# Step 1. Describe what question is being tested.
+What is the trend in the different type of breaches?
+
+# Step 2. Identify variables that are relevant to the question.
+Only the year and the type of breaches column in the dataset is relevant to count the number of breaches each year for each type of breaches.
+
+# Step 3. Search for evidence by visualising, transforming, and modeling your data
+(Check RDS 3, 5, 7.3, 7.4, 7.5, 7.6 for ideas and inspiration)
+
+## 3.1 What type of variation occurs within each variable?
+
+### 3.1.1 Variable
+#### 3.1.1.1 Visualising distributions (Barcharts, Histograms)
+Counting the number of breaches in the different of types of breaches:
+```{r}
+types_of_breaches <- breaches %>% 
+  count(Type_of_Breach)
+types_of_breaches
+```
+There is the most number of breaches when the breach type is theft.
+
+Visualising for the number of breaches when the type of breaches is theft:
+```{r}
+number_of_breaches_theft <- breaches %>% 
+  filter(str_detect("Theft",Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_theft, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+As shown in the graph, there seems to be a steady increase up to 2011 and a decrease from there for when the breach type is theft.
+A cluster is shown from year 2010 to 2012.
+
+Visualising for the number of breaches when the type of breaches is loss:
+```{r}
+number_of_breaches_loss <- breaches %>% 
+  filter(str_detect("Loss", Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_loss, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+There seems to be no change in the number of breaches from 2010 to 2012. The trend increases in 2013 and decreases in 2014 for when the type of breach is loss.
+
+Visualising for the number of breaches when the type of breaches is other:
+```{r}
+number_of_breaches_other <- breaches %>% 
+  filter(str_detect("Other", Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_other, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+There is a cluster of data in the year 2010 and 2013 with more breaches in 2013 for the type of breach (other) .
+
+Visualising for the number of breaches when the type of breaches is Hacking/IT Incident:
+```{r}
+number_of_breaches_hacking <- breaches %>% 
+  filter(str_detect("Hacking/IT Incident", Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_hacking, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+There is an increase in the number of breaches up to the year 2013 for the breach type hacking/it incidents.
+
+Visualising for the number of breaches when the type of breaches is Improper Disposal:
+```{r}
+number_of_breaches_disposal <- breaches %>% 
+  filter(str_detect("Improper Disposal", Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_disposal, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+There is not much of a change in the data besides a decrease in 2011 for when the type of breach is improper disposal.
+
+Visualising for the number of breaches when the type of breaches is Unauthorized Access/Disclosure:
+```{r}
+number_of_breaches_access <- breaches %>% 
+  filter(str_detect("Unauthorized Access/Disclosure", Type_of_Breach)) %>%
+  group_by(year)%>%
+  summarise(freq = n())
+ggplot(number_of_breaches_access, aes(year, freq)) +
+  geom_histogram(stat = "identity")+
+  xlim(1995, 2015) +
+  ylim(0, 125)
+```
+There is an increase in the trend up to the year 2013 for when the type of breaches is Unauthorized Access/Disclosure.
+
+Since some of the breaches' type is unknown, they were not examined since the type could be anything. 
+For all the types of breaches, the trend decreases in the year 2014. 
+    
+#### 3.1.1.2 Unusual values (2 points)
+- Describe and demonstrate how you determine if there are unusual values in the data. E.g. too large, too small, negative, etc. 
+```{r}
+ggplot(number_of_breaches_theft, aes(x = year)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(number_of_breaches_loss, aes(x = year)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(number_of_breaches_access, aes(x = year)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(number_of_breaches_disposal, aes(x = year)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(number_of_breaches_other, aes(x = year)) +
+  geom_boxplot()
+```
+```{r}
+ggplot(number_of_breaches_hacking, aes(x = year)) +
+  geom_boxplot()
+```
+  
+- Describe and demonstrate how you determine if they are outliers. 
+  I use a box plot to determine the outliers within this data.
+
+- Discuss whether or not you need to remove unusual values and why. 
+  There is no need to remove unusual values because I am interested in the overall trend of the data.
+  
+#### 3.1.1.3 Missing values
+
+- Does this variable include missing values? Demonstrate how you determine that. 
+```{r}
+missing_type <- breaches %>% filter(is.na(Type_of_Breach))
+missing_type
+```
+
+Final Findings:
+Based on the most dense part of the data, the number of cyber crimes is increasing. The cause of the sudden drop in the year 2014 may be 
+due to the dataset ending in the middle of that year. Given the overall trend and the assumption that the dataset stops in the middle of 2014, the number of cybersecurity breaches is increasing throughout the years in the dataset. This is important in that it supports the hypothesis that the number of breaches is increasing and that the issue of cybersecurity will be more prevalent in the future. 
+Each type of breaches and how the number of breaches for each type increase or decrease was also analyzed to see if there is a trend for a specific type that is concerning. There is, however, no significant trend besides the fact that all types of breaches are increasing in number with theft having the most number of breaches overall. 
